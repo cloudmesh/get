@@ -1,3 +1,4 @@
+<pre>
 #! /bin/sh
 mkdir -p ~/github/cloudmesh
 cd ~/github/cloudmesh
@@ -19,3 +20,4 @@ fab server.start
 cm cloud list
 echo "y" | cm cloud on sierra
 cm flavor sierra --refresh
+</pre>
