@@ -1,12 +1,12 @@
 #! /bin/sh
 
 # <pre>
-
+sudo apt-get update
+sudo apt-get install git
 git clone https://github.com/cloudmesh/cloudmesh.git
 virtualenv ~/ENV
 source ~/ENV/bin/activate
 cd cloudmesh
-sudo apt-get update
 sudo ./install system
 ./install requirements
 ./install new
