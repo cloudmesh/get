@@ -5,15 +5,16 @@ sudo apt-get update
 sudo apt-get install python-dev
 /usr/bin/yes|sudo apt-get install git
 /usr/bin/yes|sudo apt-get install python-virtualenv
-git clone https://github.com/cloudmesh/cloudmesh.git
+git clone https://github.com/cloudmesh/cloudmesh.git cloudmesh
 virtualenv ~/ENV
 source ~/ENV/bin/activate
 cd cloudmesh
+echo -e "\nsource ~/ENV/bin/activate\ncd cloudmesh\n" >> ~/.bashrc
 sudo ./install system
 ./install requirements
 ./install new
-# ./install rc fetch --username=
-# ./install rc fill
+./install rc fetch --username=$username
+./install rc fill
 ./install cloudmesh
 fab mongo.start
 #fab mongo.boot
