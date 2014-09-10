@@ -13,9 +13,9 @@ echo -e "\nsource ~/ENV/bin/activate\ncd cloudmesh\n" >> ~/.bashrc
 sudo ./install system
 ./install requirements
 ./install new
-./install rc fetch --username=$username
-./install rc fill
 ./install cloudmesh
+cm-iu user fetch --username=$username
+cm-iu user create
 fab mongo.start
 #fab mongo.boot
 #fab user.mongo
