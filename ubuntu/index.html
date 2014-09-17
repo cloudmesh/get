@@ -16,13 +16,13 @@ sudo ./install system
 cm-iu user fetch --username=$username
 cm-iu user create
 fab mongo.start
-#fab mongo.boot
-#fab user.mongo
-#fab mongo.simple
-fab mongo.reset
+fab mongo.boot
+fab user.mongo:cloudmesh
+fab mongo.simple
+#fab mongo.reset
 fab server.start
 cm cloud list
-cm cloud on sierra
-cm flavor sierra --refresh
+cm cloud on india
+cm flavor india --refresh
 
 #</pre>
