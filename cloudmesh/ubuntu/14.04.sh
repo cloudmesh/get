@@ -18,7 +18,7 @@ deps=${deps[@]:1}
 sudo apt-get update
 sudo apt-get -y install ${deps[@]}
 
-if [[ test -d "$VENV" ]]; then
+if test -d "$VENV"; then
     echo "WARNING: $VENV already exists, using it"
 else
     virtualenv ~/ENV
