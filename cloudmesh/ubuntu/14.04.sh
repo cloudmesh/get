@@ -11,6 +11,7 @@ fi
 
 set -o pipefail
 set -o errexit
+set -o xtrace
 
 deps=${deps[@]:1}
 
