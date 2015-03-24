@@ -22,7 +22,7 @@ if test -d "$VENV"; then
 else
     virtualenv ~/ENV
 fi
-source "$VENV"
+source "$VENV"/bin/activate
 
 
 pip install cloudmesh
