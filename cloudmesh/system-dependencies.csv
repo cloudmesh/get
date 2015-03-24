@@ -1,0 +1,13 @@
+name,version,ubuntu/14.04,fedora/21, comment, url
+graphviz,,graphviz, graphviz
+libffi,,libffi-dev, libffi-devel
+libldap2,,libldap2-dev, openldap-devel
+libpng,,libpng-dev, libpng-devel
+libsasl2,,libsasl2-dev, cyrus-sasl-devel
+libssl,,libssl-dev, openssl-devel
+libyaml,,libyaml-dev, libyaml-devel
+mongodb server,,mongodb-server, mongodb-server
+python headers,,python-dev, python-devel
+python setuptools,,python-setuptools, python-setuptools
+python virtualenv,,python-virtualenv, python-virtualenv
+rabbitmq server,,rabbitmq-server, rabbitmq-server
