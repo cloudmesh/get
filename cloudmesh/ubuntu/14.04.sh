@@ -25,4 +25,4 @@ fi
 source "$VENV"/bin/activate
 
 
-pip install cloudmesh
+pip install cloudmesh_base cloudmesh
