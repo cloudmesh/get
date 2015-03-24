@@ -9,6 +9,9 @@ if [[ ! ${deps[0]} -eq "ubuntu/14.04" ]]; then
     echo "Please submit a bug"
 fi
 
+set -o pipefail
+set -o errexit
+
 deps=${deps[@]:1}
 
 sudo apt-get update
