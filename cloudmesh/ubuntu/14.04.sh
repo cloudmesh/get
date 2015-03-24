@@ -20,7 +20,7 @@ sudo apt-get -y install ${deps[@]}
 if test -d "$VENV"; then
     echo "WARNING: $VENV already exists, using it"
 else
-    virtualenv ~/ENV
+    virtualenv "$VENV"
 fi
 source "$VENV"/bin/activate
 
