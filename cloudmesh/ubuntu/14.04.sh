@@ -14,8 +14,8 @@ set -o xtrace
 
 deps=${deps[@]:1}
 
-sudo apt-get update
-sudo apt-get -y install ${deps[@]}
+sudo apt-get -qq update
+sudo apt-get -qq -y install ${deps[@]}
 
 if test -d "$VENV"; then
     echo "WARNING: $VENV already exists, using it"
