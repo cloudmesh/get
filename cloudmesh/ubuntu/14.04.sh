@@ -9,7 +9,6 @@ if [[ ! ${deps[0]} == "ubuntu/14.04" ]]; then
     echo "Please submit a bug"
 fi
 
-set -o pipefail
 set -o errexit
 set -o xtrace
 
