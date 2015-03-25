@@ -1,7 +1,9 @@
+VERSION=dev
+
 VENV="$HOME/ENV"
 
-
-deps=($(curl https://raw.githubusercontent.com/cloudmesh/get/master/cloudmesh/system-dependencies.csv | cut -d, -f3))
+# 3rd column is ubuntu/14.04 dependencies
+deps=($(curl https://raw.githubusercontent.com/cloudmesh/get/$VERSION/cloudmesh/system-dependencies.csv | cut -d, -f3))
 
 if [[ ! ${deps[0]} == "ubuntu/14.04" ]]; then
     # FIXME: bug report email address
