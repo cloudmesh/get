@@ -43,7 +43,6 @@ fi
 
 test -d $cloudmesh_dir || git clone https://github.com/cloudmesh/cloudmesh.git $cloudmesh_dir
 cd $cloudmesh_dir
-git checkout dev2.0 # FIXME: remove on merge into master
 git pull
 ./install new $install_extra_args
 
