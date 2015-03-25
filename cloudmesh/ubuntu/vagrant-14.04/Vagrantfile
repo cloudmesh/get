@@ -3,8 +3,10 @@ Vagrant.configure(2) do |config|
   config.vm.box_check_update = true
   config.vm.network "private_network", ip: "192.168.33.10"
 
-  config.vm.provision "shell", inline: <<-SHELL
-    su --login vagrant
-    curl https://raw.githubusercontent.com/cloudmesh/get/master/cloudmesh/ubuntu/14.04.sh | bash
+  config.vm.synced_folder "../", "/get"
+
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    # curl https://raw.githubusercontent.com/cloudmesh/get/master/cloudmesh/ubuntu/14.04.sh | bash
+    /get/14.04.sh
   SHELL
 end
