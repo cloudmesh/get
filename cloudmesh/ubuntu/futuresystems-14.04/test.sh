@@ -5,7 +5,7 @@ set -o errexit
 
 PROVISION_CMD="curl https://raw.githubusercontent.com/cloudmesh/get/master/cloudmesh/ubuntu/14.04.sh | bash"
 IMAGE=futuresystems/ubuntu-14.04
-FLAVOR=m1.small
+FLAVOR=m1.medium
 
 tmpname=$(mktemp -d get-cloudmesh-test-XXXXX)
 pushd $tmpname
