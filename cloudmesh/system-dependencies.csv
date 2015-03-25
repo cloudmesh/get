@@ -1,5 +1,5 @@
 name,version,ubuntu/14.04,fedora/21,comment,url
-git,any,git,git,needed for ./install new ,N/A
+git,any,git,git,needed for ./install new,N/A
 graphviz,any,graphviz,graphviz,N/A,N/A
 libffi,any,libffi-dev,libffi-devel,N/A,N/A
 libldap2,any,libldap2-dev,openldap-devel,N/A,N/A
