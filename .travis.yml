@@ -1,0 +1,10 @@
+
+- install:
+    - apt-get -qq update
+    - cut -d, -f3 cloudmesh/system-dependencies.csv | tail -n +1 | xargs apt-get install
+    - pip install --upgrade pip
+    - pip install cloudmesh
+
+- script:
+    - which cm
+    - cm help
