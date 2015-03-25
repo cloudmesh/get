@@ -9,6 +9,7 @@ if [[ ! ${deps[0]} == "ubuntu/14.04" ]]; then
     # FIXME: bug report email address
     echo "An unexpected error occurred."
     echo "Please submit a bug"
+    exit 1
 fi
 
 set -o errexit
