@@ -27,8 +27,9 @@ else
 fi
 source "$VENV"/bin/activate
 
-# due to circular dependencies, separate lines are needed
-pip install cloudmesh_base
+# upgrade pip to handle some dependency issues
+pip install --upgrade pip
+
 pip install cloudmesh
 
 # need to install files into ~/.cloudmesh
