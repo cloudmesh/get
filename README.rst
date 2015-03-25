@@ -1,15 +1,25 @@
-get
+Get
 =====================
 
-This directory is used to simplify the instalation process of cloudmesh for users of 
+This provides a "one-line-install" process for setting up applications
+developed by the Cloudmesh organization.
 
-* ubuntu
-* futuregrid (using ubuntu)
+For instance, to install cloudmesh on an Ubuntu/14.04 system, see the
+``cloudmesh/ubuntu/14.04.sh`` script. You can run this directly using::
+
+  $ curl https://raw.githubusercontent.com/cloudmesh/get/master/cloudmesh/ubuntu/14.04.sh | bash
 
 
-If you have an install for other OS please let us know and we can upload it here.
+System Dependencies
+----------------------------------------------------------------------
 
-However the instalation of cloudmesh is actually very simple via the scripts we provide 
-as part of the cloudmesh code. Thus inm principal, you do not need this.
+A list system dependencies that cloudmesh requires are provided in
+`cloudmesh/system-dependencies.csv`_.  This provides the name of the
+dependency, the appropriate package on systems such as Ubuntu/14.04 or
+Fedora 21, etc. Additional script can then use this list as part of
+provisioning procedures.
 
-Gregor (laszewski@gmail.com)
+
+
+
+.. _cloudmesh/system-dependencies.csv: https://github.com/cloudmesh/get/blob/dev/cloudmesh/system-dependencies.csv
