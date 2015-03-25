@@ -9,20 +9,21 @@ if [[ ! ${deps[0]} == "ubuntu/14.04" ]]; then
     echo "Please submit a bug"
 fi
 
-set -o pipefail
 set -o errexit
+set -o xtrace
 
 deps=${deps[@]:1}
 
-sudo apt-get update
-sudo apt-get -y install ${deps[@]}
+sudo apt-get -qq update
+sudo apt-get -qq -y install ${deps[@]}
 
 if test -d "$VENV"; then
     echo "WARNING: $VENV already exists, using it"
 else
-    virtualenv ~/ENV
+    virtualenv "$VENV"
 fi
 source "$VENV"/bin/activate
 
-
-pip install cloudmesh_base cloudmesh
+# due to circular dependencies, separate lines are needed
+pip install cloudmesh_base
+pip install cloudmesh
