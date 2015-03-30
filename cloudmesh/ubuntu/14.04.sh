@@ -1,4 +1,4 @@
-VERSION=dev
+VERSION=get-cloudmesh-1.2.0
 
 VENV="$HOME/ENV"
 
