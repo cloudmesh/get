@@ -30,13 +30,39 @@ nova boot \
 
 nova list
 echo "Waiting until an IP is assigned"
-sleep 5s
+for i in $(seq 10); do
+    state=$(nova list | grep $tmpname | awk '{print $6}')
+    if [ "$state" == "ACTIVE" ]; then
+	break
+    else
+	sleep 5s
+    fi
+done
 nova list
 
 ipaddr=$(nova list | grep $tmpname | egrep -o 'int-net=([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)' | cut -d= -f2)
 
+if [ -z $ipaddr ]; then
+    echo "Timeout waiting for machine to start up"
+    exit 1
+fi
+
 echo "Waiting until ssh is running"
-sleep 30s
+for i in $(seq 10); do
+    if nc -zv $ipaddr 22; then
+	ok="Y"
+	break
+    else
+	ok=
+	sleep 10s
+    fi
+done
+
+if [ -z $ok ]; then
+    echo "Timeout waiting for ssh connection"
+    exit 1
+fi
+
 ssh -i $keyname ubuntu@$ipaddr \
     -o StrictHostKeyChecking=no \
     -o UserKnownHostsFile=/dev/null \
