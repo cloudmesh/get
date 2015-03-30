@@ -1,14 +1,14 @@
-name,version,ubuntu/14.04,fedora/21,comment,url
-git,any,git,git,needed for ./install new,N/A
-graphviz,any,graphviz,graphviz,N/A,N/A
-libffi,any,libffi-dev,libffi-devel,N/A,N/A
-libldap2,any,libldap2-dev,openldap-devel,N/A,N/A
-libpng,any,libpng-dev,libpng-devel,N/A,N/A
-libsasl2,any,libsasl2-dev,cyrus-sasl-devel,N/A,N/A
-libssl,any,libssl-dev,openssl-devel,N/A,N/A
-libyaml,any,libyaml-dev,libyaml-devel,N/A,N/A
-mongodb server,any,mongodb-server,mongodb-server,N/A,N/A
-python headers,any,python-dev,python-devel,N/A,N/A
-python setuptools,any,python-setuptools,python-setuptools,N/A,N/A
-python virtualenv,any,python-virtualenv,python-virtualenv,N/A,N/A
-rabbitmq server,any,rabbitmq-server,rabbitmq-server,N/A,N/A
+ubuntu/14.04,fedora/21
+git,git
+graphviz,graphviz
+libffi-dev,libffi-devel
+libldap2-dev,openldap-devel
+libpng-dev,libpng-devel
+libsasl2-dev,cyrus-sasl-devel
+libssl-dev,openssl-devel
+libyaml-dev,libyaml-devel
+mongodb-server,mongodb-server
+python-dev,python-devel
+python-setuptools,python-setuptools
+python-virtualenv,python-virtualenv
+rabbitmq-server,rabbitmq-server
