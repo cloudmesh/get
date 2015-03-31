@@ -1,4 +1,9 @@
-VERSION=get-cloudmesh-1.2.0
+#!/usr/bin/env bash
+
+my_cloudmeshdir=$cloudmeshdir
+test -z $my_cloudmeshdir && my_cloudmeshdir="cloudmesh"
+
+VERSION=master # master branch is stable
 
 VENV="$venv"
 
@@ -38,7 +43,6 @@ pip install --upgrade pip
 pip install cloudmesh
 
 # need to install files into ~/.cloudmesh
-cloudmesh_dir=cloudmesh.git
 install_extra_args=
 if test -d ~/.cloudmesh; then
     echo "WARNING ~/.cloudmesh directory already exists, overwriting files"
@@ -46,8 +50,8 @@ if test -d ~/.cloudmesh; then
 fi
 
 
-test -d $cloudmesh_dir || git clone https://github.com/cloudmesh/cloudmesh.git $cloudmesh_dir
-cd $cloudmesh_dir
+test -d $my_cloudmeshdir || git clone https://github.com/cloudmesh/cloudmesh.git $my_cloudmeshdir
+cd $my_cloudmeshdir
 git pull
 ./install new $install_extra_args
 
