@@ -1,6 +1,11 @@
 VERSION=get-cloudmesh-1.2.0
 
-VENV="$HOME/ENV"
+VENV="$venv"
+
+if [ -z $VENV ]; then
+    VENV="$HOME/ENV"
+    echo "\$venv is not provided: setting to $VENV"
+fi
 
 # 1st column is ubuntu/14.04 dependencies
 deps=($(curl https://raw.githubusercontent.com/cloudmesh/get/$VERSION/cloudmesh/system-dependencies.csv | cut -d, -f1))
