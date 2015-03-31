@@ -1,11 +1,33 @@
+PORTALNAME = ENV['PORTALNAME']
+PROJECTID = ENV['PROJECTID']
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = true
   config.vm.network "private_network", ip: "192.168.33.10"
 
   config.vm.synced_folder "../", "/get"
+  config.vm.synced_folder "../../", "/setup"
 
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    bash /get/14.04.sh
+    set -x
+    set -e
+    export portalname=#{PORTALNAME}
+    export projectid=#{PROJECTID}
+    export venv=$HOME/ENV
+    export cloudmeshdir=cloudmesh.git
+    /get/14.04.sh
+    source $venv/bin/activate
+    /setup/configure.sh
+    /setup/start.sh
   SHELL
+
+  
+  # Forward ssh-agent so that `cm-iu fetch` will work without needing
+  # to copy the ssh keypair onto the VM
+  # In order for this to work you need to:
+  # $ eval `ssh-agent`
+  # $ ssh-add ~/.ssh_id
+  config.ssh.forward_agent = true;
+
 end
