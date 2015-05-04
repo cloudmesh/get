@@ -28,7 +28,12 @@ set -o xtrace
 deps=${deps[@]:1}
 
 sudo apt-get -qq update
+# see issue 10
+# https://github.com/cloudmesh/get/issues/10
+bash <<+END
 sudo apt-get -qq -y install ${deps[@]}
+exit $?
++END
 
 if test -d "$VENV"; then
     echo "WARNING: $VENV already exists, using it"
