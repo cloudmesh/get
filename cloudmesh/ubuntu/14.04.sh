@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# freeze versions due to issue https://github.com/cloudmesh/get/issues/11
+CMD3_VERSION=1.8.1
+CLOUDMESH_BASE_VERSION=2.5.15
+CLOUDMESH_VERSION=2.3.1
+CLOUDMESH_COMMIT=0022179a3eab180642482bd8001293e0a1d04576
+
 my_cloudmeshdir=$cloudmeshdir
 test -z $my_cloudmeshdir && my_cloudmeshdir="cloudmesh"
 
@@ -31,7 +37,7 @@ sudo apt-get -qq update
 # see issue 10
 # https://github.com/cloudmesh/get/issues/10
 bash <<+END
-sudo apt-get -qq -y install ${deps[@]}
+sudo apt-get -y install ${deps[@]}
 exit $?
 +END
 
@@ -45,7 +51,9 @@ source "$VENV"/bin/activate
 # upgrade pip to handle some dependency issues
 pip install --upgrade pip
 
-pip install cloudmesh
+pip install cmd3==$CMD3_VERSION
+pip install cloudmesh_base==$CLOUDMESH_BASE_VERSION
+pip install cloudmesh==$CLOUDMESH_VERSION
 
 # need to install files into ~/.cloudmesh
 install_extra_args=
@@ -58,5 +66,6 @@ fi
 test -d $my_cloudmeshdir || git clone https://github.com/cloudmesh/cloudmesh.git $my_cloudmeshdir
 cd $my_cloudmeshdir
 git pull
+git checkout $CLOUDMESH_COMMIT
 ./install new $install_extra_args
 
