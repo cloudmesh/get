@@ -1,5 +1,21 @@
-Get
-=====================
+Cloudmesh Instalation with curl
+===============================
+
+We are providing a variety of simple instalation workflows via a get
+repositoryy on github.
+
+Currently we maintain two different get systems. Firts we maintain one
+for users, and for developers. We will migrate all gets into the
+github pages location as it provides a much better url link that is
+mor readable.
+
+
+
+
+
+
+Get for users (use this)
+=========================
 
 This provides a "one-line-install" process for setting up applications
 developed by the Cloudmesh organization.
