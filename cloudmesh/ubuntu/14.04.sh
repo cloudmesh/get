@@ -48,11 +48,14 @@ else
 fi
 source "$VENV"/bin/activate
 
+# remove the InsecurePlatformWarning messages (issue #12)
+pip install --upgrade requests[security]
+
 # upgrade pip to handle some dependency issues
 pip install --upgrade pip
 
-pip install cmd3==$CMD3_VERSION
 pip install cloudmesh_base==$CLOUDMESH_BASE_VERSION
+pip install cmd3==$CMD3_VERSION
 pip install cloudmesh==$CLOUDMESH_VERSION
 
 # need to install files into ~/.cloudmesh
