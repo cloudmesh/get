@@ -12,3 +12,4 @@ python-dev,python-devel
 python-setuptools,python-setuptools
 python-virtualenv,python-virtualenv
 rabbitmq-server,rabbitmq-server
+libjpeg8-dev,
