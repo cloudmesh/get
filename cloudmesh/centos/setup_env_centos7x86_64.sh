@@ -5,7 +5,7 @@
 # This script is meant to be run on a fresh centOS machine and may not be necessarily idempotent.   #
 #####################################################################################################
 
-pybaseversion="$pybaseversion"
+pybaseversion="2.7"
 pyextversion="10"
 
 echo "### Installing prereq packages ###"
