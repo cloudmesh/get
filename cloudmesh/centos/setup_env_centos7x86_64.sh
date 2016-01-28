@@ -8,14 +8,13 @@
 echo "### Installing prereq packages ###"
 sudo yum install -y gcc wget zlib-devel openssl-devel sqlite-devel bzip2-devel
 
-echo "### Downloading Python 2.7.10 and scripts ###"
+echo "### Downloading Python 2.7.10 ###"
 cd $HOME
-
-echo "### Downloading Python 2.7.10 and supplemental scripts ###"
 if [ ! -e Python-2.7.10.tgz ]; then
     wget --no-check-certificate https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz
 fi
 
+echo "### Downloading Python supplemental scripts ###"
 if [ ! -e ez_setup.py ]; then
     wget --no-check-certificate https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 fi
