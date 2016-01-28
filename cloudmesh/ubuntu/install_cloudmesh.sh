@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ###########################################################################################################
-# The script installs the prerequisites and bootstraps a fresh Ubuntu 14.04 instance to install cloudmesh #
-# This script is meant to be run on a fresh Ubuntu 14.04 machine and may not be necessarily idempotent.   #
+# The script installs the prerequisites and bootstraps a fresh Ubuntu 14/15 instance to install cloudmesh #
+# This script is meant to be run on a fresh Ubuntu 14/15 machine and may not be necessarily idempotent.   #
 ###########################################################################################################
 
 pybaseversion="2.7"
