@@ -5,6 +5,8 @@
 # This script is meant to be run on a fresh centOS machine and may not be necessarily idempotent.   #
 #####################################################################################################
 
+pyversion="$pyversion"
+
 echo "### Installing prereq packages ###"
 sudo yum install -y git gcc wget zlib-devel openssl-devel sqlite-devel bzip2-devel
 
@@ -13,13 +15,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "### Downloading Python 2.7.10 ###"
+echo "### Downloading Python $pyversion ###"
 cd $HOME
-if [ ! -e Python-2.7.10.tgz ]; then
-    wget --no-check-certificate https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz
+if [ ! -e Python-$pyversion.tgz ]; then
+    wget --no-check-certificate https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tgz
 
     if [ $? -ne 0 ]; then
-        echo "ERROR: Cloud not download Python 2.7.10."
+        echo "ERROR: Cloud not download Python $pyversion."
         exit 1
     fi
 fi
@@ -44,20 +46,20 @@ if [ ! -e get-pip.py ]; then
     fi
 fi
 
-echo "### Installing Python 2.7.10 and configuring it ###"
-tar -xvzf Python-2.7.10.tgz
+echo "### Installing Python $pyversion and configuring it ###"
+tar -xvzf Python-$pyversion.tgz
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Could not extract python archive."
     exit 1
 fi
 
-cd Python-2.7.10
+cd Python-$pyversion
 ./configure --prefix=/usr/local
 sudo make && sudo make altinstall
 
 if [ $? -ne 0 ]; then
-    echo "ERROR: Error installing python 2.7.10."
+    echo "ERROR: Error installing python $pyversion."
     exit 1
 fi
 
@@ -192,7 +194,7 @@ fi
 cd $HOME/cloudmesh/client
 python setup.py install
 if [ $? -ne 0 ]; then
-    echo "ERROR: Error cloning cloudmesh client."
+    echo "ERROR: Error installing cloudmesh client."
     exit 1
 fi
 
