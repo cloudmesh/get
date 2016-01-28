@@ -5,7 +5,8 @@
 # This script is meant to be run on a fresh centOS machine and may not be necessarily idempotent.   #
 #####################################################################################################
 
-pyversion="$pyversion"
+pybaseversion="$pybaseversion"
+pyextversion="10"
 
 echo "### Installing prereq packages ###"
 sudo yum install -y git gcc wget zlib-devel openssl-devel sqlite-devel bzip2-devel
@@ -15,13 +16,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "### Downloading Python $pyversion ###"
+echo "### Downloading Python $pybaseversion.$pyextversion ###"
 cd $HOME
-if [ ! -e Python-$pyversion.tgz ]; then
-    wget --no-check-certificate https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tgz
+if [ ! -e Python-$pybaseversion.$pyextversion.tgz ]; then
+    wget --no-check-certificate https://www.python.org/ftp/python/$pybaseversion.$pyextversion/Python-$pybaseversion.$pyextversion.tgz
 
     if [ $? -ne 0 ]; then
-        echo "ERROR: Cloud not download Python $pyversion."
+        echo "ERROR: Cloud not download Python $pybaseversion.$pyextversion."
         exit 1
     fi
 fi
@@ -46,20 +47,20 @@ if [ ! -e get-pip.py ]; then
     fi
 fi
 
-echo "### Installing Python $pyversion and configuring it ###"
-tar -xvzf Python-$pyversion.tgz
+echo "### Installing Python $pybaseversion.$pyextversion and configuring it ###"
+tar -xvzf Python-$pybaseversion.$pyextversion.tgz
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Could not extract python archive."
     exit 1
 fi
 
-cd Python-$pyversion
+cd Python-$pybaseversion.$pyextversion
 ./configure --prefix=/usr/local
 sudo make && sudo make altinstall
 
 if [ $? -ne 0 ]; then
-    echo "ERROR: Error installing python $pyversion."
+    echo "ERROR: Error installing python $pybaseversion.$pyextversion."
     exit 1
 fi
 
@@ -67,11 +68,11 @@ export PATH="/usr/local/bin:$PATH"
 
 echo "### Checking Python version ###"
 
-/usr/local/bin/python2.7 --version
+/usr/local/bin/python$pybaseversion --version
 
 echo "### Installing setuptools ###"
 cd $HOME
-sudo /usr/local/bin/python2.7 ez_setup.py
+sudo /usr/local/bin/python$pybaseversion ez_setup.py
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Error while executing ez_setup.py."
@@ -79,7 +80,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "### Installing pip ###"
-sudo /usr/local/bin/python2.7 get-pip.py
+sudo /usr/local/bin/python$pybaseversion get-pip.py
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Error while executing get-pip.py."
@@ -87,7 +88,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "### Creating Symlinks ###"
-sudo ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+sudo ln -sf /usr/local/bin/python$pybaseversion /usr/local/bin/python
 sudo ln -sf /usr/local/bin/pip /usr/bin/pip
 
 if [ $? -ne 0 ]; then
