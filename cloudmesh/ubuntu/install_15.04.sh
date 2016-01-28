@@ -74,10 +74,10 @@ echo "### Checking Python version ###"
 
 echo "### Installing ez_setup ###"
 sudo /usr/local/lib/python$pybaseversion.$pyextversion/bin/python ez_setup.py
-check_error_exit "ERROR: Error installing ez_setup."
+#check_error_exit "ERROR: Error installing ez_setup."
 
 echo "### Installing pip and virtualenv ###"
-sudo /usr/local/lib/python$pybaseversion.$pyextversion/bin/easy_install pip
+#sudo /usr/local/lib/python$pybaseversion.$pyextversion/bin/easy_install pip
 sudo /usr/local/lib/python$pybaseversion.$pyextversion/bin/pip install virtualenv
 sudo apt-get install python-virtualenv
 check_error_exit "ERROR: Error installing virtualenv."
@@ -85,7 +85,6 @@ check_error_exit "ERROR: Error installing virtualenv."
 echo "### Creating symbolic links ###"
 sudo ln -sf /usr/local/lib/python$pybaseversion.$pyextversion/bin/easy_install /usr/bin/easy_install
 sudo ln -sf /usr/local/lib/python$pybaseversion.$pyextversion/bin/pip /usr/bin/pip
-check_error_exit "ERROR: Error creating symbolic links"
 
 echo "### Checking pip version ###"
 pip --version
