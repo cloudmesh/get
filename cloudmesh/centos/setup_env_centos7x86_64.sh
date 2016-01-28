@@ -6,28 +6,61 @@
 #####################################################################################################
 
 echo "### Installing prereq packages ###"
-sudo yum install -y gcc wget zlib-devel openssl-devel sqlite-devel bzip2-devel
+sudo yum install -y git gcc wget zlib-devel openssl-devel sqlite-devel bzip2-devel
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing prerequisite packages."
+    exit 1
+fi
 
 echo "### Downloading Python 2.7.10 ###"
 cd $HOME
 if [ ! -e Python-2.7.10.tgz ]; then
     wget --no-check-certificate https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz
+
+    if [ $? -ne 0 ]; then
+        echo "ERROR: Cloud not download Python 2.7.10."
+        exit 1
+    fi
 fi
 
 echo "### Downloading Python supplemental scripts ###"
 if [ ! -e ez_setup.py ]; then
     wget --no-check-certificate https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+
+    if [ $? -ne 0 ]; then
+        echo "ERROR: Cloud not download ez_setup.py."
+        exit 1
+    fi
 fi
+
 
 if [ ! -e get-pip.py ]; then
     wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
+
+    if [ $? -ne 0 ]; then
+        echo "ERROR: Cloud not download get-pip.py."
+        exit 1
+    fi
 fi
 
 echo "### Installing Python 2.7.10 and configuring it ###"
 tar -xvzf Python-2.7.10.tgz
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Could not extract python archive."
+    exit 1
+fi
+
 cd Python-2.7.10
 ./configure --prefix=/usr/local
 sudo make && sudo make altinstall
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing python 2.7.10."
+    exit 1
+fi
+
 export PATH="/usr/local/bin:$PATH"
 
 echo "### Checking Python version ###"
@@ -38,15 +71,35 @@ echo "### Installing setuptools ###"
 cd $HOME
 sudo /usr/local/bin/python2.7 ez_setup.py
 
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error while executing ez_setup.py."
+    exit 1
+fi
+
 echo "### Installing pip ###"
 sudo /usr/local/bin/python2.7 get-pip.py
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error while executing get-pip.py."
+    exit 1
+fi
 
 echo "### Creating Symlinks ###"
 sudo ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
 sudo ln -sf /usr/local/bin/pip /usr/bin/pip
 
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error while creating symlinks."
+    exit 1
+fi
+
 echo "### Ugrading pip if not latest ###"
 pip install -U pip
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error upgrading pip."
+    exit 1
+fi
 
 echo "### Checking pip version ###"
 pip --version
@@ -54,32 +107,94 @@ pip --version
 echo "### Installing virtualenv ###"
 sudo pip install virtualenv
 
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error while installing virtualenv."
+    exit 1
+fi
+
 echo "### Configuring and activating virtualenv ###"
 virtualenv -p /usr/local/bin/python $HOME/ENV
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error while configuring virtualenv."
+    exit 1
+fi
+
 source $HOME/ENV/bin/activate
 
 if ! [[ $(grep "ENV/bin/activate" $HOME/.bashrc) ]] > /dev/null; then
     echo "source $HOME/ENV/bin/activate" >> $HOME/.bashrc
+
+    if [ $? -ne 0 ]; then
+        echo "ERROR: Error adding activate command to bashrc."
+        exit 1
+    fi
 fi
 
 echo "Cloning the cloudmesh code repositories"
 cd $HOME
-mkdir cloudmesh
+
+if [ ! -d cloudmesh ]; then
+    mkdir cloudmesh
+fi
+
 cd cloudmesh
-git clone https://github.com/cloudmesh/base.git
-git clone https://github.com/cloudmesh/client.git
+
+if [ ! -d base ]; then
+    git clone https://github.com/cloudmesh/base.git
+fi
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error cloning cloudmesh base."
+    exit 1
+fi
+
+if [ ! -d client ]; then
+    git clone https://github.com/cloudmesh/client.git
+fi
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error cloning cloudmesh client."
+    exit 1
+fi
 
 pip install -r base/requirements.txt
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing cloudmesh base requirements."
+    exit 1
+fi
 pip install -r base/requirements-other.txt
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing cloudmesh base other requirements."
+    exit 1
+fi
 
 pip install -r client/requirements.txt
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing cloudmesh client requirements."
+    exit 1
+fi
 pip install -r client/requirements-doc.txt
 
-cd $HOME/base
-python setup.py install
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing cloudmesh client doc requirements."
+    # Ignoring the doc install error as it does not block the cloudmesh installation and function.
+    # exit 1
+fi
 
-cd $HOME/client
+cd $HOME/cloudmesh/base
 python setup.py install
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error installing cloudmesh base."
+    exit 1
+fi
+
+cd $HOME/cloudmesh/client
+python setup.py install
+if [ $? -ne 0 ]; then
+    echo "ERROR: Error cloning cloudmesh client."
+    exit 1
+fi
 
 cd $HOME
 
