@@ -12,9 +12,9 @@ sudo pip install ansible
 #
 # pip install git+git://github.com/ansible/ansible.git@devel
 
-#echo "#####################################"
-#echo "INSTALATION OF CLOUDEMSH ROBOT on OSX"
-#echo "#####################################"
+echo "#####################################"
+echo "INSTALATION OF CLOUDEMSH ROBOT on OSX"
+echo "#####################################"
 
 # curl -fsSL https://raw.githubusercontent.com/cloudmesh/cloudmesh.robot/master/bin/osx/setup.sh | sh 
 
@@ -39,8 +39,11 @@ brew install libusb
 brew install mosquitto
 
 brew cask install aquamacs
-brew cask install adafruit-arduino
+
 brew cask install pycharm-ce
+
+# the arduino is verion 1.6.4 so we do not install
+# brew cask install adafruit-arduino
 
 pip install numpy
 pip install matplotlib
@@ -51,10 +54,10 @@ pyenv virtualenv 3.6.1 ENV3
 
 
 
-#echo "#####################################"
-#echo "INSTALLATION COMPLETED"
-#echo "CHECK ABOVE FOR ERRORS"
-#echo "#####################################"
+echo "#####################################"
+echo "INSTALLATION COMPLETED"
+echo "CHECK ABOVE FOR ERRORS"
+echo "#####################################"
 
 exit 0
 
