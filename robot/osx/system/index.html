@@ -5,7 +5,12 @@
 # curl -fsSL http://cloudmesh.github.io/get/robot/osx/system | sudo sh
 
 sudo easy_install pip
+sudo pip install pip -U
+sudo pip install setuptools -U
+sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip install pycrypto
+
 sudo pip install ansible
+sudo pip install ansible --upgrade
 
 #
 # latest ansible dev
