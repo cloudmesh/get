@@ -7,9 +7,10 @@ Example
 
 View
 
-curl -i http://cloudmesh.github.io/get/dev
+curl -L http://cloudmesh.github.io/get/dev
 
 
-run 
+dont run them as we have not tested them !!!!!!!
+but this would be the command
 
-curl -i http://cloudmesh.github.io/get/dev | sh 
+curl -L http://cloudmesh.github.io/get/dev | sh 
