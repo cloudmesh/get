@@ -7,6 +7,7 @@ git clone https://github.com/cloudmesh/cloudmesh.common.git
 git clone https://github.com/cloudmesh/cloudmesh.cmd5.git
 git clone https://github.com/cloudmesh/cloudmesh.bar.git
 git clone https://github.com/cloudmesh/cloudmesh.sys.git
+git clone https://github.com/cloudmesh-community/cm.git
 cd cloudmesh.common
 python setup.py install
 pip install .
@@ -16,6 +17,10 @@ pip install .
 cd ../cloudmesh.sys
 python setup.py install
 pip install .
+cd ../cm
+python setup.py install
+pip install .
+
 cd ..
 
 exit 0
