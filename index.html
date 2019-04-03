@@ -1,27 +1,26 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<html> <head>
-<title></title>
-</head>
+#! /bin/sh
 
-<body>
-<h1>Setup of Cloudmesh via a simple script</h1>
+# <pre>
 
+git clone https://github.com/cloudmesh/cloudmesh-common.git
+git clone https://github.com/cloudmesh/cloudmesh-cmd5.git
+git clone https://github.com/cloudmesh/cloudmesh-sys.git
+git clone https://github.com/cloudmesh/cloudmesh-cm4.git
+cd cloudmesh-common
+python setup.py install
+pip install .
+cd ../cloudmesh-cmd5
+python setup.py install
+pip install .
+cd ../cloudmesh-sys
+python setup.py install
+pip install .
+cd ../cloudmesh-cm4
+python setup.py install
+pip install .
 
-simplify getting cloudmesh with a simple script
+cd ..
 
-<ul>
-<li> requires a futuregird account
-<li> is currently for ubuntu
-</ul>
-  
-Lnk:
+exit 0
 
-<a href="http://cloudmesh.github.io/get/ubuntu/">
-http://cloudmesh.github.io/get/ubuntu/ </a>
-
-
-
-<hr>
-<address></address>
-<!-- hhmts start -->Last modified: Fri Sep 19 12:38:50 EDT 2014 <!-- hhmts end -->
-</body> </html>
+</pre>
