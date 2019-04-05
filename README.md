@@ -79,7 +79,36 @@ and path of the modules with
 
 In case you see a module that you do not like go to the directory and uninstall
 it there dependent on how you installed it, either with pipi uninstall or
-removing the pycach and egg files in the directory.
+removing the pycach and egg files in the directory. The output will look something like  this:
+
+```
++--------------------+--------------------+---------+------------------------------------------+
+| name               | package            | version | source                                   |
++--------------------+--------------------+---------+------------------------------------------+
+| cloudmesh-cloud    | cloudmesh.cloud    | 4.0.17  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
+|                    |                    |         | NV3/lib/python3.7/site-                  |
+|                    |                    |         | packages/cloudmesh/cloud/__init__.py     |
+| cloudmesh-cmd5     | cloudmesh.cmd5     | 4.0.12  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
+|                    |                    |         | NV3/lib/python3.7/site-                  |
+|                    |                    |         | packages/cloudmesh/cmd5/__init__.py      |
+| cloudmesh-common   | cloudmesh.common   | 4.0.13  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
+|                    |                    |         | NV3/lib/python3.7/site-packages/cloudmes |
+|                    |                    |         | h_common-4.0.13-py3.7.egg/cloudmesh/comm |
+|                    |                    |         | on/__init__.py                           |
+| cloudmesh-sys      | cloudmesh.sys      | 4.0.12  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
+|                    |                    |         | NV3/lib/python3.7/site-                  |
+|                    |                    |         | packages/cloudmesh/sys/__init__.py       |
+| cloudmesh.workflow | cloudmesh.workflow | 1.4.10  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
+|                    |                    |         | NV3/lib/python3.7/site-                  |
+|                    |                    |         | packages/cloudmesh/workflow/__init__.py  |
+| git hash           |                    |         |                                          |
+| pip                |                    | 19.0.3  |                                          |
+| python             |                    | 3.7.2   |                                          |
++--------------------+--------------------+---------+------------------------------------------+
+You are running a supported version of python: 3.7.2
+You are running a supported version of pip: 19.0.3
+```
+
 
 ## Repositories
 
