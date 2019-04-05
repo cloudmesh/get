@@ -1,0 +1,27 @@
+#! /bin/sh
+
+# <pre>
+
+#
+# PULL
+#
+
+
+cd cloudmesh-common
+python setup.py install
+pip pull
+cd ../cloudmesh-cmd5
+python setup.py install
+pip pull
+cd ../cloudmesh-sys
+python setup.py install
+pip pull
+cd ../cloudmesh-cm4
+python setup.py install
+pip pull
+
+cd ..
+
+exit 0
+
+</pre>
