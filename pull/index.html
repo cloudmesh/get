@@ -6,22 +6,31 @@
 # PULL
 #
 
+for f in  \
+ cloudmesh-common \
+ cloudmesh-cmd5 \
+ cloudmesh-sys \
+ cloudmesh-cloud \
+ cloudmesh-storage \
+ cloudmesh-emr \
+ cloudmesh-openapi \
+ cloudmesh-nn \
+ cloudmesh-nist \
+ cloudmesh-inventory \
+ cloudmesh-conda \
+ get \
+ about \
+ cloudmesh.github.io \
+ cloudmesh-community.github.io
+do
+    cd $f
+    pit pull
+    cd ..
+done
 
-cd cloudmesh-common
-git pull
-python setup.py install
-
-cd ../cloudmesh-cmd5
-git pull
-python setup.py install
-
-cd ../cloudmesh-sys
-git pull
-python setup.py install
-
-cd ../cloudmesh-cloud
-git pull
-python setup.py install
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
+    cd $f
+    python setup.py install
 
 cd ..
 

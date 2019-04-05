@@ -89,6 +89,7 @@ removing the pycach and egg files in the directory.
 ### EXPERIMENTAL
 
 * https://github.com/cloudmesh/cloudmesh-inventory
+* https://github.com/cloudmesh/cloudmesh-conda
 
 ### MANAGEMENT ABD WEB PAGE
 
