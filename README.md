@@ -28,7 +28,7 @@ that you use pyenv or venv before you start the install.
 You will find now all subdirectories in your install directory. All of them have been 
 installed with pip in your python environment.    
 
-## Directories
+## Repositories
 
 
 ### CORE
@@ -48,7 +48,7 @@ installed with pip in your python environment.
 
 ### EXPERIMENTAL
 
-* git clone https://github.com/cloudmesh/cloudmesh-inventory
+* https://github.com/cloudmesh/cloudmesh-inventory
 
 ### MANAGEMENT ABD WEB PAGE
 
