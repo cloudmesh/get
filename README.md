@@ -52,7 +52,7 @@ Once you have installed the source code in the directory, you can update via a
 git pull for the core packages (common, cmd5, sys, openapi, bar, but also nn) it
 with
 
-    curl -Ls http://cloudmesh.github.io/pull
+    curl -Ls http://cloudmesh.github.io/get/pull
     
   Please note that other packages you have to update by hand
 
