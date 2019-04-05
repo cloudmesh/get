@@ -76,15 +76,15 @@ removing the pycach and egg files in the directory.
 * https://github.com/cloudmesh/cloudmesh-common
 * https://github.com/cloudmesh/cloudmesh-cmd5
 * https://github.com/cloudmesh/cloudmesh-sys
-* https://github.com/cloudmesh-community/cloudmesh-cm4
-* https://github.com/cloudmesh-community/cloudmesh-storage
-* https://github.com/cloudmesh-community/cloudmesh-emr
+* https://github.com/cloudmesh/cloudmesh-cloud
+* https://github.com/cloudmesh/cloudmesh-storage
+* https://github.com/cloudmesh/cloudmesh-emr
 
 ### OPEN API
 
 * https://github.com/cloudmesh/cloudmesh-openapi
 * https://github.com/cloudmesh/cloudmesh-nn
-* https://github.com/cloudmesh-community/nist
+* https://github.com/cloudmesh/cloudmesh-nist
 
 ### EXPERIMENTAL
 
