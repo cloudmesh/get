@@ -5,6 +5,7 @@
 echo #
 echo # UNINSTALL OLD CLOUDMESH, repeat 3 times to catch old versions
 echo #
+for i in {1..3}; do pip uninstall cloudmesh.cm4; done
 for i in {1..3}; do pip uninstall cloudmesh.cmd5; done
 for i in {1..3}; do pip uninstall cloudmesh.common; done
 for i in {1..3}; do pip uninstall cloudmesh.sys; done
