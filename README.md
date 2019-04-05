@@ -5,6 +5,22 @@ The install scripts are maintaned at
 
 * <https://github.com/cloudmesh/get>
 
+## Uninstall old cloudmesh verisons
+
+in case you installed cloudmesh with pip in your python you can uninstall it with:
+
+    curl -L http://cloudmesh.github.io/get/uninstall |sh
+
+Naturally if you have other python programs that depend on the old versions that
+you developed you should uninstall them also. In case you have use -e on pip, in
+cloudmesh related directories, simple visit them and say
+
+    make clean
+
+If it doe not have a make file or make does not work on your system, simple
+remov the `*egg` directory and remove all __pycache__ directories.
+
+
 ## Cloudmesh Version 4
 
 To install cloudmesh version 4 you can use curl or wget into a python virtual envireonment.
