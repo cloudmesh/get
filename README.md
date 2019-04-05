@@ -28,8 +28,8 @@ of a pyenv of the name ENV3 as discussed in our handbook.
 
     rm ~/.pyenv/shims/cms
     pyenv deactivate
-    peyenv uninstall ENV3
-    pyenv install 3.7.2 ENV3
+    pyenv uninstall ENV3
+    pyenv virtualenv 3.7.2 ENV3
     pyenv activate ENV3
 
 This will install a new completely empty environment
