@@ -2,8 +2,6 @@
 
 # <pre>
 
-banner
-
 banner()
 {
   echo "#################################################"
@@ -39,8 +37,11 @@ do
 done
 
 for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
+do
+    banner pip install $f
     cd $f
     python setup.py install
+done
 
 cd ..
 

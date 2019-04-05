@@ -3,50 +3,61 @@
 # <pre>
 
 
+banner()
+{
+  echo "#################################################"
+  echo "# $@"
+  echo "#################################################"
+}
+
+
 #
 # CORE
 #
-git clone https://github.com/cloudmesh/cloudmesh-common.git
-git clone https://github.com/cloudmesh/cloudmesh-cmd5.git
-git clone https://github.com/cloudmesh/cloudmesh-sys.git
-git clone https://github.com/cloudmesh/cloudmesh-cloud.git
-git clone https://github.com/cloudmesh/cloudmesh-storage.git
-git clone https://github.com/cloudmesh/cloudmesh-emr.git
-git clone https://github.com/cloudmesh/cloudmesh-comet.git
+for f in common cmd5 sys cloud storage emr comet
+do
+   git clone https://github.com/cloudmesh/cloudmesh-$f.git
+done
 
 #
 # OPEN API
 #
 
-git clone https://github.com/cloudmesh/cloudmesh-openapi.git
-git clone https://github.com/cloudmesh/cloudmesh-nn.git
-git clone https://github.com/cloudmesh/cloudmesh-nist.git
+for f in openapi nn nist
+do
+   git clone https://github.com/cloudmesh/cloudmesh-$f.git
+done
 
 #
 # EXPERIMENTAL
 #
-git clone https://github.com/cloudmesh/cloudmesh-inventory.git
+for f in inventory conda
+do
+   git clone https://github.com/cloudmesh/cloudmesh-$f.git
+done
 
 #
 # MANAGEMENT ABD WEB PAGE
 #
-git clone https://github.com/cloudmesh/get.git
-git clone https://github.com/cloudmesh/about.git
-git clone https://github.com/cloudmesh/cloudmesh.github.io.git
-git clone https://github.com/cloudmesh-community/cloudmesh-community.github.io.git
 
-cd cloudmesh-common
-python setup.py install
-pip install .
+for f in git about  cloudmesh.github.io
+do
+   git clone https://github.com/cloudmesh/$f.git
+done
+
+for f in cloudmesh-community.github.io
+do
+   git clone https://github.com/cloudmesh/$f.git
+done
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
+do
+  banner install $f
+  cd $f
+  python setup.py install
+  pip install .
+done 
 cd ../cloudmesh-cmd5
-python setup.py install
-pip install .
-cd ../cloudmesh-sys
-python setup.py install
-pip install .
-cd ../cloudmesh-cloud
-python setup.py install
-pip install .
 
 cd ..
 
