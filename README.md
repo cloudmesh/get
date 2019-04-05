@@ -109,6 +109,8 @@ You are running a supported version of python: 3.7.2
 You are running a supported version of pip: 19.0.3
 ```
 
+Bug: In some cases we found that the table does not show. Please help us debug
+it. The doce is in cloudmesh-cmd.
 
 ## Repositories
 
