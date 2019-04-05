@@ -9,7 +9,7 @@ The install scripts are maintaned at
 
 in case you installed cloudmesh with pip in your python you can uninstall it with:
 
-    curl -L http://cloudmesh.github.io/get/uninstall | sh
+    curl -Ls http://cloudmesh.github.io/get/uninstall | sh
 
 Naturally if you have other python programs that depend on the old versions that
 you developed you should uninstall them also. In case you have use -e on pip, in
@@ -21,17 +21,19 @@ If it doe not have a make file or make does not work on your system, simple
 remov the `*egg` directory and remove all __pycache__ directories.
 
 
-## Cloudmesh Version 4
+## Install Cloudmesh Source Version 4
 
-To install cloudmesh version 4 you can use curl or wget into a python virtual envireonment.
+To install cloudmesh version 4 you can use curl or wget into a python virtual
+envireonment.
 
 
 With curl you can use the command 
 
-    curl -L http://cloudmesh.github.io/get
+    curl -Ls http://cloudmesh.github.io/get
 
-to view the install script. If you like what you see you can install cloudmesh as follows
-First, create a directory. Let us assume you call it `cm`. Look into this directory.
+to view the install script. If you like what you see you can install cloudmesh
+as follows First, create a directory. Let us assume you call it `cm`. Look into
+this directory.
 
     mkdir cm
     cd cm
@@ -39,10 +41,20 @@ First, create a directory. Let us assume you call it `cm`. Look into this direct
 Next download cloudmesh source directories and install them with pip. We recommend 
 that you use pyenv or venv before you start the install.
 
-    curl -L http://cloudmesh.github.io/get | sh 
+    curl -Ls http://cloudmesh.github.io/get | sh 
     
 You will find now all subdirectories in your install directory. All of them have been 
 installed with pip in your python environment.    
+
+## Update Cloudmesh Source Version 4
+
+Once you have installed the source code in the directory, you can update via a
+git pull for the core packages (common, cmd5, sys, openapi, bar, but also nn) it
+with
+
+    curl -Ls http://cloudmesh.github.io/pull
+    
+  Please note that other packages you have to update by hand
 
 ## Repositories
 
