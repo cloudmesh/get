@@ -9,7 +9,7 @@ The install scripts are maintaned at
 
 in case you installed cloudmesh with pip in your python you can uninstall it with:
 
-    curl -L http://cloudmesh.github.io/get/uninstall |sh
+    curl -L http://cloudmesh.github.io/get/uninstall | sh
 
 Naturally if you have other python programs that depend on the old versions that
 you developed you should uninstall them also. In case you have use -e on pip, in
