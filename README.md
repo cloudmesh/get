@@ -98,9 +98,6 @@ removing the pycach and egg files in the directory. The output will look somethi
 | cloudmesh-sys      | cloudmesh.sys      | 4.0.12  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
 |                    |                    |         | NV3/lib/python3.7/site-                  |
 |                    |                    |         | packages/cloudmesh/sys/__init__.py       |
-| cloudmesh.workflow | cloudmesh.workflow | 1.4.10  | /Users/aida/.pyenv/versions/3.7.2/envs/E |
-|                    |                    |         | NV3/lib/python3.7/site-                  |
-|                    |                    |         | packages/cloudmesh/workflow/__init__.py  |
 | git hash           |                    |         |                                          |
 | pip                |                    | 19.0.3  |                                          |
 | python             |                    | 3.7.2   |                                          |
