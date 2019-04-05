@@ -32,7 +32,7 @@ for f in  \
  cloudmesh.github.io \
  cloudmesh-community.github.io
 do
-    banner(pull $f)
+    banner pull $f
     cd $f
     git pull
     cd ..
