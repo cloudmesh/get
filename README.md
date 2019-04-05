@@ -31,6 +31,7 @@ of a pyenv of the name ENV3 as discussed in our handbook.
     pyenv uninstall ENV3
     pyenv virtualenv 3.7.2 ENV3
     pyenv activate ENV3
+    pip install pip -U
 
 This will install a new completely empty environment
 
@@ -105,6 +106,10 @@ removing the pycach and egg files in the directory. The output will look somethi
 You are running a supported version of python: 3.7.2
 You are running a supported version of pip: 19.0.3
 ```
+
+Naturally you can also specify the format and output the information in json so its easier to paste and copy
+
+    cms version --format=json
 
 Bug: In some cases we found that the table does not show. Please help us debug
 it. The doce is in cloudmesh-cmd.
