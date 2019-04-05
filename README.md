@@ -20,6 +20,19 @@ cloudmesh related directories, simple visit them and say
 If it doe not have a make file or make does not work on your system, simple
 remov the `*egg` directory and remove all __pycache__ directories.
 
+## Uninstall the pyenv
+
+The easiest way to uninstall is if you used a pyenv or venv. In case of pyenv,
+you simple do the following commands. Let us assume you follwoed the inatltion
+of a pyenv of the name ENV3 as discussed in our handbook.
+
+    rm ~/.pyenv/shims/cms
+    pyenv deactivate
+    peyenv uninstall ENV3
+    pyenv install 3.7.2 ENV3
+    pyenv activate ENV3
+
+This will install a new completely empty environment
 
 ## Install Cloudmesh Source Version 4
 
