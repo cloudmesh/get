@@ -16,6 +16,8 @@ banner()
 #
 for f in common cmd5 sys cloud storage emr comet
 do
+   banner clone $f
+
    git clone https://github.com/cloudmesh/cloudmesh-$f.git
 done
 
@@ -25,6 +27,7 @@ done
 
 for f in openapi nn nist
 do
+   banner clone $f
    git clone https://github.com/cloudmesh/cloudmesh-$f.git
 done
 
@@ -33,6 +36,7 @@ done
 #
 for f in inventory conda
 do
+   banner clone $f
    git clone https://github.com/cloudmesh/cloudmesh-$f.git
 done
 
@@ -42,11 +46,13 @@ done
 
 for f in git about  cloudmesh.github.io
 do
+   banner clone $f
    git clone https://github.com/cloudmesh/$f.git
 done
 
 for f in cloudmesh-community.github.io
 do
+   banner clone $f
    git clone https://github.com/cloudmesh/$f.git
 done
 
