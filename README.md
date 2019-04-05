@@ -38,23 +38,10 @@ This will install a new completely empty environment
 ## Install Cloudmesh Source Version 4
 
 To install cloudmesh version 4 you can use curl or wget into a python virtual
-envireonment.
-
-
-With curl you can use the command 
-
-    curl -Ls http://cloudmesh.github.io/get
-
-to view the install script. If you like what you see you can install cloudmesh
-as follows First, create a directory. Let us assume you call it `cm`. Look into
-this directory.
+environment.
 
     mkdir cm
     cd cm
-    
-Next download cloudmesh source directories and install them with pip. We recommend 
-that you use pyenv or venv before you start the install.
-
     curl -Ls http://cloudmesh.github.io/get | sh 
     
 You will find now all subdirectories in your install directory. All of them have been 
