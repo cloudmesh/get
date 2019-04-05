@@ -56,6 +56,18 @@ with
     
   Please note that other packages you have to update by hand
 
+
+## Checking the Module Versions
+
+Once you successfully installed cloudmesh version 4 you can check the versions
+and path of the modules with
+
+    cms version
+
+In case you see a module that you do not like go to the directory and uninstall
+it there dependent on how you installed it, either with pipi uninstall or
+removing the pycach and egg files in the directory.
+
 ## Repositories
 
 
