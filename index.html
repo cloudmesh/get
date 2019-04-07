@@ -9,44 +9,30 @@ banner()
   echo "#################################################"
 }
 
-cloudmesh_clone()
-{
-  echo "#################################################"
-  echo "# clone -> $1"
-  echo "#################################################"
-  git clone https://github.com/cloudmesh/$1.git
-
-}
-
-community_clone()
-{
-  echo "#################################################"
-  echo "# clone -> $1"
-  echo "#################################################"
-  git clone https://github.com/cloudmesh-community/$1.git
-
-}
-
 #
 # CLONE
 #
-cloudmesh_clone  cloudmesh-common
-cloudmesh_clone  cloudmesh-cmd5
-cloudmesh_clone  cloudmesh-sys
-cloudmesh_clone  cloudmesh-cloud
-cloudmesh_clone  cloudmesh-storage
-cloudmesh_clone  cloudmesh-emr
-cloudmesh_clone  cloudmesh-comet
-cloudmesh_clone  cloudmesh-openapi
-cloudmesh_clone  cloudmesh-nn
-cloudmesh_clone  cloudmesh-nist
-cloudmesh_clone  cloudmesh-conda
-cloudmesh_clone  cloudmesh-cloudmeshhub.io
-cloudmesh_clone  cloudmesh-get
-cloudmesh_clone  cloudmesh-about
-community_clone cloudmesh-community.github.io
+git clone https://github.com/cloudmesh/cloudmesh-common.git
+git clone https://github.com/cloudmesh/cloudmesh-cmd5.git
+git clone https://github.com/cloudmesh/cloudmesh-sys.git
+git clone https://github.com/cloudmesh/cloudmesh-cloud.git
+git clone https://github.com/cloudmesh/cloudmesh-storage.git
+git clone https://github.com/cloudmesh/cloudmesh-emr.git
+git clone https://github.com/cloudmesh/cloudmesh-comet.git
+git clone https://github.com/cloudmesh/cloudmesh-openapi.git
+git clone https://github.com/cloudmesh/cloudmesh-nn.git
+git clone https://github.com/cloudmesh/cloudmesh-nist.git
+git clone https://github.com/cloudmesh/cloudmesh-conda.git
+git clone https://github.com/cloudmesh/cloudmesh-cloudmeshhub.io.git
+git clone https://github.com/cloudmesh/cloudmesh-get.git
+git clone https://github.com/cloudmesh/cloudmesh-about.git
+git clone https://github.com/cloudmesh-community/cloudmesh-community.github.io.git
 
-for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
+#
+# INSTALL
+#
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory cloudmesh-cloud
 do
   banner install $f
   cd $f
