@@ -11,30 +11,12 @@ python:
 
 install:
   - pwd
-  - git clone https://github.com/cloudmesh/cloudmesh-common.git
-  - git clone https://github.com/cloudmesh/cloudmesh-cmd5.git
-  - git clone https://github.com/cloudmesh/cloudmesh-cloud.git
-  - cd cloudmesh-common
-  - pip install -r requirements.txt
-  - pip install .
-  - cd ..
-  - cd cloudmesh-cmd5
-  - pip install -r requirements.txt
-  - pip install .
-  - cd ..
-  - cd cloudmesh-cloud
-  - pip install -r requirements.txt
-  - pip install .
-  - cd ..
-  - pip install -r requirements.txt
-  - pip install -r requirements-dev.txt
-  - pip install .
+  - curl -Ls http://cloudmesh.github.io/get | sh
   - mkdir -p ~/.cloudmesh
   - wget -P ~/.cloudmesh https://raw.githubusercontent.com/cloudmesh/cloudmesh-common/master/cloudmesh/etc/cloudmesh.yaml
   - wget -P ~/.cloudmesh https://raw.githubusercontent.com/cloudmesh/cloudmesh-cloud/master/cloudmesh/etc/cloudmesh4.yaml
   - wget -P ~/.cloudmesh https://raw.githubusercontent.com/cloudmesh/cloudmesh-inventory/master/cloudmesh/inventory/etc/inventory.yaml
   - cms help
-  - cms help inventory
 
-script: pytest -v tests/test_inventory.py
+script: pytest -v tests/test_get.py
 

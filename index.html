@@ -50,7 +50,8 @@ for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
 do
   banner install $f
   cd $f
-  python setup.py install
+  pip install -r requirements.txt
+  # python setup.py install
   pip install .
   cd ..
 done
