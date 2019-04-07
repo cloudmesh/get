@@ -2,59 +2,49 @@
 
 # <pre>
 
-
 banner()
 {
   echo "#################################################"
-  echo "# $@"
+  echo "# clone -> $@"
   echo "#################################################"
 }
 
+cloudmesh-clone()
+{
+  echo "#################################################"
+  echo "# clone -> $1"
+  echo "#################################################"
+  git clone https://github.com/cloudmesh/$1.git
+
+}
+
+community-clone()
+{
+  echo "#################################################"
+  echo "# clone -> $1"
+  echo "#################################################"
+  git clone https://github.com/cloudmesh-community/$1.git
+
+}
 
 #
-# CORE
+# CLONE
 #
-for f in common cmd5 sys cloud storage emr comet
-do
-   banner clone $f
-
-   git clone https://github.com/cloudmesh/cloudmesh-$f.git
-done
-
-#
-# OPEN API
-#
-
-for f in openapi nn nist
-do
-   banner clone $f
-   git clone https://github.com/cloudmesh/cloudmesh-$f.git
-done
-
-#
-# EXPERIMENTAL
-#
-for f in inventory conda
-do
-   banner clone $f
-   git clone https://github.com/cloudmesh/cloudmesh-$f.git
-done
-
-#
-# MANAGEMENT ABD WEB PAGE
-#
-
-for f in get about  cloudmesh.github.io
-do
-   banner clone $f
-   git clone https://github.com/cloudmesh/$f.git
-done
-
-for f in cloudmesh-community.github.io
-do
-   banner clone $f
-   git clone https://github.com/cloudmesh-community/$f.git
-done
+cloudmesh-clone  cloudmesh-common
+cloudmesh-clone  cloudmesh-cmd5
+cloudmesh-clone  cloudmesh-sys
+cloudmesh-clone  cloudmesh-cloud
+cloudmesh-clone  cloudmesh-storage
+cloudmesh-clone  cloudmesh-emr
+cloudmesh-clone  cloudmesh-comet
+cloudmesh-clone  cloudmesh-openapi
+cloudmesh-clone  cloudmesh-nn
+cloudmesh-clone  cloudmesh-nist
+cloudmesh-clone  cloudmesh-conda
+cloudmesh-clone  cloudmesh-cloudmeshhub.io
+cloudmesh-clone  cloudmesh-get
+cloudmesh-clone  cloudmesh-about
+community-clone cloudmesh-community.github.io
 
 for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-cloud
 do
@@ -64,7 +54,6 @@ do
   pip install .
   cd ..
 done
-
 
 exit 0
 
