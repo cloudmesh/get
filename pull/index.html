@@ -4,6 +4,8 @@
 
 banner()
 {
+  echo
+  echo
   echo "#################################################"
   echo "# $@"
   echo "#################################################"
@@ -36,11 +38,14 @@ do
     cd ..
 done
 
-for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory cloudmesh-cloud
+#cloudmesh-cloud
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
     banner pip install $f
     cd $f
-    python setup.py install
+    # python setup.py install
+    pip install .
     cd ..
 done
 
