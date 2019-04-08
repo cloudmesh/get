@@ -9,7 +9,7 @@ The install scripts are maintaned at
 
 in case you installed cloudmesh with pip in your python you can uninstall it with:
 
-    curl -Ls http://cloudmesh.github.io/get/uninstall | sh
+    curl -Ls http://cloudmesh.github.io/get/uninstall?$(date +%s) | sh
 
 Naturally if you have other python programs that depend on the old versions that
 you developed you should uninstall them also. In case you have use -e on pip, in
@@ -42,7 +42,7 @@ environment.
 
     mkdir cm
     cd cm
-    curl -Ls http://cloudmesh.github.io/get | sh 
+    curl -Ls http://cloudmesh.github.io/get?$(date +%s) | sh 
     
 You will find now all subdirectories in your install directory. All of them have been 
 installed with pip in your python environment.    
@@ -53,7 +53,7 @@ Once you have installed the source code in the directory, you can update via a
 git pull for the core packages (common, cmd5, sys, openapi, bar, but also nn) it
 with
 
-    curl -Ls http://cloudmesh.github.io/get/pull | sh
+    curl -Ls http://cloudmesh.github.io/get/pull?$(date +%s) | sh
     
   Please note that other packages you have to update by hand
 
