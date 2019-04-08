@@ -32,7 +32,7 @@ for f in  \
  cloudmesh-sys \
  cloudmesh-cloud \
  cloudmesh-storage \
- cloudmesh-emr \
+ cloudmesh-emr 
 do
     banner pull $f
     cd $f
@@ -40,18 +40,4 @@ do
     cd ..
 done
 
-#cloudmesh-cloud
 
-for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
-do
-    banner pip install $f
-    cd $f
-    # python setup.py install
-    pip install .
-    cd ..
-done
-
-
-exit 0
-
-# </pre>

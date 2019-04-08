@@ -38,13 +38,14 @@ git clone https://github.com/cloudmesh-community/cloudmesh-community.github.io.g
 # INSTALL
 #
 
-for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory cloudmesh-cloud
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
   banner install $f
   cd $f
+  pip uninstall $f
   pip install -r requirements.txt
   # python setup.py install
-  pip install .
+  pip install -e .
   cd ..
 done
 

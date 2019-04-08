@@ -47,8 +47,10 @@ for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
     banner pip install $f
     cd $f
+    pip uninstall $f
+    rm -f $f.egg-info
     # python setup.py install
-    pip install .
+    pip install -e .
     cd ..
 done
 
