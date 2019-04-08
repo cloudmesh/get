@@ -42,7 +42,7 @@ for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
   banner install $f
   cd $f
-  pip uninstall -y $f
+  pip uninstall $f --yes
   pip install -r requirements.txt
   # python setup.py install
   pip install -e .
