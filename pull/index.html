@@ -43,11 +43,24 @@ done
 
 #cloudmesh-cloud
 
+
+#
+# UNINSTALL
+#
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
+do
+  banner uninstall $f
+  cd $f
+  pip uninstall $f --yes
+  cd ..
+done
+
+
 for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
     banner pip install $f
     cd $f
-    pip uninstall $f --yes
     rm -f $f.egg-info
     # python setup.py install
     pip install -e .
