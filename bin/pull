@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+url -Ls http://cloudmesh.github.io/get/pull | sh
