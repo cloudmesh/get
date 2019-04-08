@@ -101,8 +101,34 @@ Naturally you can also specify the format and output the information in json so 
 Bug: In some cases we found that the table does not show. Please help us debug
 it. The doce is in cloudmesh-cmd.
 
-## Repositories
 
+
+# COde devlopment for cloud and storage
+
+After you have successfully done the previous step (if the previous step does
+not succeed do not continue and work with us to figure out what could be wrong),
+you need to install in case you work on 
+
+* vm providers install 
+
+  ```bash
+  cd cloudmesh-cloud 
+  pip install -e .
+  ```
+  
+* storage providers
+
+  ```bash
+  cd cloudmesh-cloud 
+  pip install -e . 
+  cd .. 
+  cd cloudmesh-storage 
+  pip install -e .
+#
+
+You must do this after a pull.
+
+## Repositories
 
 ### CORE
 
