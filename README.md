@@ -103,7 +103,7 @@ it. The doce is in cloudmesh-cmd.
 
 
 
-# COde devlopment for cloud and storage
+# Code devlopment for cloud and storage
 
 After you have successfully done the previous step (if the previous step does
 not succeed do not continue and work with us to figure out what could be wrong),
