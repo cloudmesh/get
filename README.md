@@ -128,6 +128,32 @@ you need to install in case you work on
 
 You must do this after a pull.
 
+## Alternative Install with local shell script
+
+This is an alternative way to install cloudmesh
+
+```bash
+mkdir cm
+cd cm
+git clone git@github.com:cloudmesh/get.git
+get/bin/get
+```
+
+Than when you need to update
+
+```bash
+get/bin/pull
+```
+
+You will still need to pull and pip install the 
+
+```
+cloudmesh-cloud
+cloudmesh-storage
+```
+
+directories! so make sure they are up to date
+
 ## Repositories
 
 ### CORE
