@@ -1,0 +1,55 @@
+#! /bin/sh
+
+# <pre>
+
+banner()
+{
+  echo
+  echo
+  echo "#################################################"
+  echo "# $@"
+  echo "#################################################"
+}
+
+#
+# PULL
+#
+
+for f in  \
+ cloudmesh-openapi \
+ cloudmesh-nn \
+ cloudmesh-nist \
+ cloudmesh-inventory \
+ cloudmesh-conda \
+ get \
+ about \
+ cloudmesh.github.io \
+ cloudmesh-community.github.io \
+ cloudmesh-common \
+ cloudmesh-cmd5 \
+ cloudmesh-sys \
+ cloudmesh-cloud \
+ cloudmesh-storage \
+ cloudmesh-emr \
+do
+    banner pull $f
+    cd $f
+    git status
+    cd ..
+done
+
+#cloudmesh-cloud
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
+do
+    banner pip install $f
+    cd $f
+    # python setup.py install
+    pip install .
+    cd ..
+done
+
+
+exit 0
+
+</pre>
