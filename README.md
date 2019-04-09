@@ -174,7 +174,7 @@ A very usefull install script manager for those that need to work on the cloudme
 Please visit that page for more information. You can install the installer with 
 
 ```bash
-$ pip install cloudmesh-install
+$ pip install cloudmesh-installer
 ```
 
 
