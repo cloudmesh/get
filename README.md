@@ -17,8 +17,17 @@ cloudmesh related directories, simple visit them and say
 
     make clean
 
-If it doe not have a make file or make does not work on your system, simple
+If it does not have a make file or make does not work on your system, simple
 remov the `*egg` directory and remove all __pycache__ directories.
+
+To find additional old versions you can also use commands such as find.
+
+```bash
+cd ~; find . -name "cloudmesh*egg*"
+cd /; find . -name "cloudmesh*egg*"
+```
+
+please delete them all. Certainly you can also start with a ne VM if you used one. 
 
 ## Uninstall the pyenv
 
