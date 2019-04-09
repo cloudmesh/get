@@ -163,6 +163,22 @@ cloudmesh-storage
 
 directories! so make sure they are up to date
 
+
+## Experimental installer scripts for cloudmesh Bundels
+
+We are providing at 
+
+* <https://github.com/cloudmesh/cloudmesh-install/blob/master/README.md>
+
+A very usefull install script manager for those that need to work on the cloudmesh source code.
+Please visit that page for more information. You can install the installer with 
+
+```bash
+$ pip install cloudmesh-install
+```
+
+
+
 ## Repositories
 
 ### CORE
