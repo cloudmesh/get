@@ -14,6 +14,9 @@ banner()
   echo "#################################################"
 }
 
+# cloudmesh.github.io \
+# cloudmesh-community.github.io
+
 #
 # PULL
 #
@@ -31,9 +34,7 @@ for f in  \
  cloudmesh-inventory \
  cloudmesh-conda \
  get \
- about \
- cloudmesh.github.io \
- cloudmesh-community.github.io
+ about 
 do
     banner pull $f
     cd $f
