@@ -14,6 +14,9 @@ banner()
   echo "#################################################"
 }
 
+# cloudmesh.github.io \
+# cloudmesh-community.github.io
+
 #
 # PULL
 #
@@ -31,12 +34,11 @@ for f in  \
  cloudmesh-inventory \
  cloudmesh-conda \
  get \
- about \
- cloudmesh.github.io \
- cloudmesh-community.github.io
+ about 
 do
     banner pull $f
     cd $f
+    pwd
     git pull
     cd ..
 done
@@ -52,7 +54,9 @@ for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
   banner uninstall $f
   cd $f
+  pwd
   pip uninstall $f --yes
+  rm -f $f.egg-info
   cd ..
 done
 
@@ -61,7 +65,7 @@ for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys cloudmesh-inventory
 do
     banner pip install $f
     cd $f
-    rm -f $f.egg-info
+    pwd
     # python setup.py install
     pip install -e .
     cd ..

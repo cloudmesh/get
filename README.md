@@ -60,7 +60,7 @@ installed with pip in your python environment.
 
 Once you have installed the source code in the directory, you can update via a
 git pull for the core packages (common, cmd5, sys, openapi, bar, but also nn) it
-with
+with (you must be in the same directory where you executed the get command in)
 
     curl -Ls http://cloudmesh.github.io/get/pull?$(date +%s) | sh
     
