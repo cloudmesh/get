@@ -4,7 +4,7 @@
 > Update: For a possibly easier approach see also 
 >
 > * <https://github.com/cloudmesh/cloudmesh-installer/blob/master/README.md>
-> * <ttps://github.com/cloudmesh/cloudmesh-installer/blob/master/FAQ.md>
+> * <https://github.com/cloudmesh/cloudmesh-installer/blob/master/FAQ.md>
 >
 > ---------------------------
 
