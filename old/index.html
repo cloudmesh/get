@@ -1,0 +1,64 @@
+#! /bin/sh
+
+# curl -Ls http://cloudmesh.github.io/get | sh
+
+# <pre>
+
+
+banner()
+{
+  echo
+  echo
+  echo "#################################################"
+  echo "# clone $@"
+  echo "#################################################"
+}
+
+#
+# CLONE
+#
+git clone https://github.com/cloudmesh/cloudmesh-common.git
+git clone https://github.com/cloudmesh/cloudmesh-cmd5.git
+git clone https://github.com/cloudmesh/cloudmesh-sys.git
+git clone https://github.com/cloudmesh/cloudmesh-inventory.git
+git clone https://github.com/cloudmesh/cloudmesh-cloud.git
+git clone https://github.com/cloudmesh/cloudmesh-storage.git
+git clone https://github.com/cloudmesh/cloudmesh-emr.git
+git clone https://github.com/cloudmesh/cloudmesh-comet.git
+git clone https://github.com/cloudmesh/cloudmesh-openapi.git
+git clone https://github.com/cloudmesh/cloudmesh-nn.git
+git clone https://github.com/cloudmesh/cloudmesh-nist.git
+git clone https://github.com/cloudmesh/cloudmesh-conda.git
+# git clone https://github.com/cloudmesh/cloudmesh-github.io.git
+git clone https://github.com/cloudmesh/get.git
+git clone https://github.com/cloudmesh/about.git
+# git clone https://github.com/cloudmesh-community/cloudmesh-community.github.io.git
+
+#
+# UNINSTALL
+#
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys
+do
+  banner uninstall $f
+  cd $f
+  pip uninstall $f --yes
+  cd ..
+done
+
+#
+# INSTALL
+#
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys
+do
+  banner install $f
+  cd $f
+  pip install -r requirements.txt
+  # python setup.py install
+  pip install -e .
+  cd ..
+done
+
+exit 0
+
+# </pre>
