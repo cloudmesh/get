@@ -1,5 +1,10 @@
 # Cloudmesh One Line Source Installers 
 
+> Update: For a possibly easier approach see also 
+
+> * <https://github.com/cloudmesh/cloudmesh-installer/blob/master/README.md>
+> * h<ttps://github.com/cloudmesh/cloudmesh-installer/blob/master/FAQ.md>
+
 
 The install scripts are maintaned at
 
