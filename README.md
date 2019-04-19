@@ -8,6 +8,27 @@
 >
 > ---------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+THE FOLLOWING IS OUTDATED:
+
+
+
+
 The install scripts are maintaned at
 
 * <https://github.com/cloudmesh/get>
