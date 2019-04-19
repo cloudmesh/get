@@ -8,39 +8,33 @@
 >
 > ---------------------------
 
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We are providing at 
 
+* <https://github.com/cloudmesh/cloudmesh-install/blob/master/README.md>
+
+A a simple script manager for those that need to work on the cloudmesh source code.
+Please visit that page for more information. You can install the installer with 
+
+```bash
+$ pip install cloudmesh-installer
+```
 > .
 
-> .
+First we recomend to uninstall all old versions. you can find them with 
 
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
-
-> .
+\
+```bash
+find ~ -name "cloudmesh*"
+find / -name "cloudmesh*"
+```
+find all egs, wheels and links to them and delete them. Be careful so you do not delete your source
 
 
+Instead of reading on her, pleas go to 
 
 
+> * <https://github.com/cloudmesh/cloudmesh-installer/blob/master/README.md>
+> * <https://github.com/cloudmesh/cloudmesh-installer/blob/master/FAQ.md>
 
 
 
@@ -57,8 +51,6 @@
 
 
 THE FOLLOWING IS OUTDATED:
-
-
 
 
 The install scripts are maintaned at
@@ -224,18 +216,7 @@ cloudmesh-storage
 directories! so make sure they are up to date
 
 
-## Experimental installer scripts for cloudmesh Bundels
 
-We are providing at 
-
-* <https://github.com/cloudmesh/cloudmesh-install/blob/master/README.md>
-
-A very usefull install script manager for those that need to work on the cloudmesh source code.
-Please visit that page for more information. You can install the installer with 
-
-```bash
-$ pip install cloudmesh-installer
-```
 
 
 
