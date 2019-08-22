@@ -3,7 +3,7 @@
 # pytest -v --capture=no  tests/test_get.py
 # pytest -v tests/test_get.py
 ###############################################################
-from __future__ import print_function
+
 
 import getpass
 
