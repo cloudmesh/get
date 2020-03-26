@@ -2,9 +2,7 @@
 
 Location: https://github.com/cloudmesh/get/blob/master/README.md
 
-#######################################################
-# NOTICE - Developer install with cloudmesh-installer #
-#######################################################
+## NOTICE - Developer install with cloudmesh-installer 
 
 Please use cloudmesh-installer
 
@@ -28,10 +26,7 @@ In case you work on our class you can also do other bundles such as
 
     cloudmesh-installer get openstack
 
-
-#######################################################
-# NOTICE - User installer with pip #
-#######################################################
+# NOTICE - User installer with pip 
 
     pip install cloudmesh-cms
     pip install cloudmesh-openstack
