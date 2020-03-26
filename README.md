@@ -1,2 +1,2 @@
 # get
-https://github.com/cloudmesh/get/README.md
+https://github.com/cloudmesh/get/blob/master/README.md
