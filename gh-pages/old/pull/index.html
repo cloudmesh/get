@@ -1,0 +1,77 @@
+#! /bin/sh
+
+# curl -Ls http://cloudmesh.github.io/get/pull?$(date +%s) | sh
+
+# <pre>
+
+
+banner()
+{
+  echo
+  echo
+  echo "#################################################"
+  echo "# $@"
+  echo "#################################################"
+}
+
+# cloudmesh.github.io \
+# cloudmesh-community.github.io
+
+#
+# PULL
+#
+
+for f in  \
+ cloudmesh-common \
+ cloudmesh-cmd5 \
+ cloudmesh-sys \
+ cloudmesh-cloud \
+ cloudmesh-storage \
+ cloudmesh-emr \
+ cloudmesh-openapi \
+ cloudmesh-nn \
+ cloudmesh-nist \
+ cloudmesh-inventory \
+ cloudmesh-conda \
+ get \
+ about 
+do
+    banner pull $f
+    cd $f
+    pwd
+    git pull
+    cd ..
+done
+
+#cloudmesh-cloud
+
+
+#
+# UNINSTALL
+#
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys
+do
+  banner uninstall $f
+  cd $f
+  pwd
+  pip uninstall $f --yes
+  rm -f $f.egg-info
+  cd ..
+done
+
+
+for f in cloudmesh-common cloudmesh-cmd5 cloudmesh-sys
+do
+    banner pip install $f
+    cd $f
+    pwd
+    # python setup.py install
+    pip install -e .
+    cd ..
+done
+
+
+exit 0
+
+# </pre>

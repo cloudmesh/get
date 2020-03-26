@@ -1,0 +1,27 @@
+#! /bin/sh
+
+# <pre>
+
+### check that this is a venv
+### the python program exits 0 if running in venv
+isvenv='import sys;sys.exit(0 if hasattr(sys, "real_prefix") else 1)'
+if ! python -c "$isvenv"; then
+    echo "ERROR: virtual environment not detected"
+    exit $error_not_venv
+fi
+
+mkdir ~/github/cloudmesh
+cd github/cloudmesh
+git clone https://github.com/cloudmesh/base.git
+git clone https://github.com/cloudmesh/cmd3.git
+git clone https://github.com/cloudmesh/client.git
+cd base
+git checkout sh
+python setup.py install
+cd ../cmd3
+git checkout sh
+python setup.py install
+cd ../client
+python setup.py install
+echo "INSTALLATION COMPLETED, CHECK ABOVE FOR ERRORS"
+#</pre>

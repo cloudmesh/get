@@ -1,0 +1,41 @@
+#! /bin/sh
+
+# <pre>
+
+# curl -fsSL http://cloudmesh.github.io/get/robot/osx/user | sh
+
+echo "#####################################"
+echo "INSTALATION OF CLOUDEMSH ROBOT on OSX"
+echo "#####################################"
+
+
+mkdir -p ~/.matplotlib
+echo "backend : TkAgg" > ~/.matplotlib/matplotlibrc
+
+pyenv install 3.6.1
+pyenv virtualenv 3.6.1 ENV3
+
+pyenv activate ENV3
+
+pip install pip -U
+pip install setuptools -U
+
+mkdir github
+cd github
+git clone https://github.com/cloudmesh/cloudmesh.robot.git
+git clone https://github.com/cloudmesh/cloudmesh.common.git
+git clone https://github.com/cloudmesh/cloudmesh.cmd5.git
+
+cd cloudmesh.robot
+make source
+cms robot welcome
+
+
+echo "#####################################"
+echo "INSTALLATION COMPLETED"
+echo "CHECK ABOVE FOR ERRORS"
+echo "#####################################"
+
+exit 0
+
+#</pre>

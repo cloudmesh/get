@@ -1,0 +1,39 @@
+#! /bin/sh
+
+# curl -Ls http://cloudmesh.github.io/get/status | sh
+
+# <pre>
+
+banner()
+{
+  echo
+  echo
+  echo "#################################################"
+  echo "# $@"
+  echo "#################################################"
+}
+
+#
+# PULL
+#
+
+for f in  \
+ cloudmesh-openapi \
+ cloudmesh-nn \
+ cloudmesh-nist \
+ cloudmesh-inventory \
+ cloudmesh-conda \
+ cloudmesh-common \
+ cloudmesh-cmd5 \
+ cloudmesh-sys \
+ cloudmesh-cloud \
+ cloudmesh-storage \
+ cloudmesh-emr 
+do
+    banner pull $f
+    cd $f
+    git status
+    cd ..
+done
+
+

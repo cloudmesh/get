@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+curl -Ls http://cloudmesh.github.io/get?$(date +%s) | sh

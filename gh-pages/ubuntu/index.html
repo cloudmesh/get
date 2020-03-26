@@ -1,0 +1,30 @@
+#! /bin/sh
+
+# <pre>
+sudo apt-get update
+sudo apt-get -y install git
+sudo apt-get -y install python-virtualenv
+git clone https://github.com/cloudmesh/cloudmesh.git cloudmesh
+virtualenv ~/ENV
+source ~/ENV/bin/activate
+cd cloudmesh
+echo -e "\nsource ~/ENV/bin/activate\ncd cloudmesh\n" >> ~/.bashrc
+sudo ./install system
+./install requirements
+./install new
+./install cloudmesh
+cm-iu user fetch --username=$username
+cm-iu user create
+fab mongo.start
+fab mongo.boot
+fab user.mongo:cloudmesh
+fab mongo.simple
+#fab mongo.reset
+fab server.start
+cm project default $projectid
+cm cloud list
+cm cloud on india
+cm flavor india --refresh
+reset
+echo "INSTALLATION COMPLETED, CHECK ABOVE FOR ERRORS"
+#</pre>

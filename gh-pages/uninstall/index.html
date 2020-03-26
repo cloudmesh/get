@@ -1,0 +1,19 @@
+#! /bin/sh
+
+# <pre>
+
+echo #
+echo # UNINSTALL OLD CLOUDMESH, repeat 3 times to catch old versions
+echo #
+for i in {1..3}; do pip uninstall cloudmesh.cm4 --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.cmd5 --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.common --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.sys --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.openapi --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.nn --yes ; done
+for i in {1..3}; do pip uninstall cloudmesh.bar --yes ; done
+for i in {1..3}; do pip uninstall cm --yes ; done
+
+exit 0
+
+</pre>

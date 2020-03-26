@@ -1,0 +1,28 @@
+#! /bin/sh
+
+# <pre>
+
+# curl -fsSL http://cloudmesh.github.io/get/robot/osx/ansible | sudo sh
+
+echo "#####################################"
+echo "INSTALL ANSIBLE"
+echo "#####################################"
+
+sudo easy_install pip
+sudo pip install ansible
+
+#
+# latest ansible dev
+#
+# pip install git+git://github.com/ansible/ansible.git@devel
+
+echo "#####################################"
+echo "CHECK INSTALATION"
+echo "#####################################"
+
+which ansible
+ansible --version
+
+exit 0
+
+#</pre>
