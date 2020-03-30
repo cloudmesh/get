@@ -4,23 +4,23 @@
 
 # <pre>
 
-#################################################
-# Raspbery Pi Cloudmesh Cluster Instalation
-#################################################
-
-#
-# Update the system
-#
+echo "#################################################"
+echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
+echo "#################################################"
+echo
+echo "#"
+echo "# Update the system"
+echo "#"
 sudo apt-get update
 sudo apt-get full-upgrade
-#
-# Create a Python Virtual Env
-#
+echo "#"
+echo "# Create a Python Virtual Env"
+echo "#"
 python3 --version
 python3 -m venv ~/ENV3
-#
-# Add ENV3 to bashrc
-#
+echo "#"
+echo "# Add ENV3 to bashrc"
+echo "#"
 LINE='source $HOME/ENV3/bin/activate'
 FILE=$HOME/'.bashrc'
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
