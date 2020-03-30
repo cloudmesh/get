@@ -13,18 +13,20 @@ echo "# Update the system"
 echo "#"
 sudo apt-get update
 sudo apt-get full-upgrade
+echo
 echo "#"
 echo "# Create a Python Virtual Env ~/ENV3"
 echo "#"
 python3 --version
 python3 -m venv ~/ENV3
+echo
 echo "#"
 echo "# Add ENV3 to bashrc"
 echo "#"
 LINE='source $HOME/ENV3/bin/activate'
 FILE=$HOME/'.bashrc'
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-
+echo
 echo "Please activate with"
 echo
 echo "    source ~/ENV3/bin/activate"
