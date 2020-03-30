@@ -4,32 +4,35 @@
 
 # <pre>
 
+B='\033[0m'
+R='\033[0;31m'
+
 echo "#################################################"
 echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
 echo "#################################################"
 echo
-echo "#"
+echo "${R}#"
 echo "# Update the system"
-echo "#"
+echo "#${B}"
 sudo apt-get update
 sudo apt-get full-upgrade
 echo
-echo "#"
+echo "${R}#"
 echo "# Create a Python Virtual Env ~/ENV3"
-echo "#"
+echo "#${B}"
 python3 --version
 python3 -m venv ~/ENV3
 echo
-echo "#"
+echo "${R}#"
 echo "# Add ENV3 to bashrc"
-echo "#"
+echo "#${B}"
 LINE='source $HOME/ENV3/bin/activate'
 FILE=$HOME/'.bashrc'
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 echo
 echo "Please activate with"
 echo
-echo "    source ~/ENV3/bin/activate"
+echo "    ${R}source ~/ENV3/bin/activate${B}"
 echo
 exit 0
  
