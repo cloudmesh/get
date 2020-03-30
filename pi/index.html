@@ -8,10 +8,10 @@ NORMAL='\033[0m'
 RED='\033[0;31m'
 
 Echo() {
- echo  "${RED} $1 ${NORMAL}"
+ echo "${RED}$1${NORMAL}"
 }
 
-Echo "$#################################################"
+Echo "#################################################"
 Echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
 Echo "#################################################"
 echo
@@ -36,7 +36,7 @@ grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 echo
 Echo "Please activate with"
 echo
-Echo "    ${R}source ~/ENV3/bin/activate${B}"
+Echo "    source ~/ENV3/bin/activate"
 echo
 exit 0
  
