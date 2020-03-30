@@ -1,0 +1,34 @@
+#! /bin/sh
+
+# curl -Ls http://cloudmesh.github.io/get/pi | sh
+
+# <pre>
+
+cat <<EOF
+
+"#################################################"
+"# Raspbery Pi Cloudmesh Cluster Instalation
+"#################################################"
+
+#
+# Update the system
+#
+sudo apt-get update
+sudo apt-get full-upgrade
+#
+# Create a Python Virtual Env
+#
+python3 --version
+python3 -m venv ~/ENV3
+#
+# Add ENV3 to bashrc
+#
+LINE='source ~/ENV3/bin/activate'
+FILE='~/.bashrc'
+grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+
+exit 0
+ 
+
+EOF
+# </pre>
