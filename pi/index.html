@@ -22,7 +22,7 @@ python3 -m venv ~/ENV3
 # Add ENV3 to bashrc
 #
 LINE='source $HOME/ENV3/bin/activate'
-FILE='$HOME/.bashrc'
+FILE=$HOME/'.bashrc'
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
 exit 0
