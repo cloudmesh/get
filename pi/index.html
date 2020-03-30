@@ -8,7 +8,7 @@ NORMAL='\033[0m'
 RED='\033[0;31m'
 
 Echo() {
- echo "${RED}$1${NORMAL}"
+ echo "${RED}${1}${NORMAL}"
 }
 
 Echo "#################################################"
@@ -18,14 +18,19 @@ echo
 Echo "#"
 Echo "# Update the system"
 Echo "#"
-sudo apt-get update
-sudo apt-get full-upgrade
+sudo apt-get update -y
+sudo apt-get full-upgrade -y
 echo
 Echo "#"
 Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "#"
-python3 --version
 python3 -m venv ~/ENV3
+. ~/ENV3/bin/activate
+pip install pip -U
+which python
+which pip
+python3 --version
+pip --version
 echo
 Echo "#"
 Echo "# Add ENV3 to bashrc"
@@ -38,5 +43,5 @@ echo
 Echo "    source ~/ENV3/bin/activate"
 echo
 exit 0
- 
-# </pre>
+
+# </pre>   
