@@ -30,8 +30,8 @@ echo
 Echo "#
 Echo "# Add ENV3 to bashrc"
 Echo "#"
-LINE='source $HOME/ENV3/bin/activate'
-FILE=$HOME/'.bashrc'
+LINE="source ${HOME}/ENV3/bin/activate"
+FILE="${HOME}/.bashrc"
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 echo
 Echo "Please activate with"
