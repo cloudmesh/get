@@ -7,32 +7,36 @@
 B='\033[0m'
 R='\033[0;31m'
 
-echo "#################################################"
-echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
-echo "#################################################"
+function Echo() {
+ echo  "${R} $1 ${B}"
+}
+
+Echo "$#################################################"
+Echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
+Echo "#################################################"
 echo
-echo "${R}#"
-echo "# Update the system"
-echo "#${B}"
+Echo "#"
+Echo "# Update the system"
+Echo "#"
 sudo apt-get update
 sudo apt-get full-upgrade
 echo
-echo "${R}#"
-echo "# Create a Python Virtual Env ~/ENV3"
-echo "#${B}"
+Echo "#"
+Echo "# Create a Python Virtual Env ~/ENV3"
+Echo "#"
 python3 --version
 python3 -m venv ~/ENV3
 echo
-echo "${R}#"
-echo "# Add ENV3 to bashrc"
-echo "#${B}"
+Echo "#
+Echo "# Add ENV3 to bashrc"
+Echo "#"
 LINE='source $HOME/ENV3/bin/activate'
 FILE=$HOME/'.bashrc'
 grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 echo
-echo "Please activate with"
+Echo "Please activate with"
 echo
-echo "    ${R}source ~/ENV3/bin/activate${B}"
+Echo "    ${R}source ~/ENV3/bin/activate${B}"
 echo
 exit 0
  
