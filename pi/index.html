@@ -27,12 +27,11 @@ Echo "#"
 python3 --version
 python3 -m venv ~/ENV3
 echo
-Echo "#
+Echo "#"
 Echo "# Add ENV3 to bashrc"
 Echo "#"
 LINE="source ${HOME}/ENV3/bin/activate"
-FILE="${HOME}/.bashrc"
-grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 echo
 Echo "Please activate with"
 echo
