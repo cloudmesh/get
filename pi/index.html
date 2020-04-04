@@ -41,6 +41,20 @@ Echo "# Add ENV3 to bashrc"
 Echo "#"
 LINE="source ${HOME}/ENV3/bin/activate"
 grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+
+LINE="eval "$(ssh-agent -s)"
+grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+
+# Echo "#"
+# Echo "# Create ssh key if it does not exist"
+# Echo "#"
+# FILE=$HOME/.ssh/id_rsa.pub
+# if [ ! -e "$FILE" ]; then
+#     ssh-keygen -q -N "" -f .ssh/id_rsa <<< y
+# fi
+# LINE="eval "ssh-add"
+# grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+
 echo
 Echo "Please activate with"
 echo
