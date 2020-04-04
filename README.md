@@ -2,6 +2,12 @@
 
 Location: https://github.com/cloudmesh/get/blob/master/README.md
 
+## Instalation on a PI
+
+```
+$ curl -Ls http://cloudmesh.github.io/get/pi | sh
+```
+
 ## NOTICE - Developer install with cloudmesh-installer 
 
 Please use cloudmesh-installer
