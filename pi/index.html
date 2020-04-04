@@ -25,16 +25,16 @@ Echo "#"
 Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "#"
 python3 -m venv ~/ENV3
-. ~/ENV3/bin/activate
-~/ENV3/bin/pip install pip -U
+. ${HOME}/ENV3/bin/activate
+${HOME}/ENV3/bin/pip install pip -U
 which ~/ENV3/bin/python
 which ~/ENV3/bin/pip
-~/ENV3/bin/python3 --version
-~/ENV3/bin/pip --version
+${HOME}/ENV3/bin/python3 --version
+${HOME}/ENV3/bin/pip --version
 Echo "#"
 Echo "# Install cloudmesh-installer"
 Echo "#"
-~/ENV3/bin/pip install cloudmesh-installer -U
+${HOME}/ENV3/bin/pip install cloudmesh-installer -U
 Echo "#"
 Echo "# Add ENV3 to bashrc"
 Echo "#"
