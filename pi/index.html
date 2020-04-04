@@ -42,7 +42,7 @@ Echo "#"
 LINE="source ${HOME}/ENV3/bin/activate"
 grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
-LINE="eval "$(ssh-agent -s)"
+LINE="if [ -z "$SSH_AUTH_SOCK" ] ; then eval `$(ssh-agent -s)`; fi"
 grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
 # Echo "#"
