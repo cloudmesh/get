@@ -3,7 +3,6 @@
 # curl -Ls http://cloudmesh.github.io/get/pi | sh
 
 # <pre>
-
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
@@ -27,15 +26,15 @@ Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "#"
 python3 -m venv ~/ENV3
 . ~/ENV3/bin/activate
-pip install pip -U
-which python
-which pip
-python3 --version
-pip --version
+~/ENV3/bin/pip install pip -U
+which ~/ENV3/bin/python
+which ~/ENV3/bin/pip
+~/ENV3/bin/python3 --version
+~/ENV3/bin/pip --version
 Echo "#"
 Echo "# Install cloudmesh-installer"
 Echo "#"
-pip install cloudmesh-installer -U
+~/ENV3/bin/pip install cloudmesh-installer -U
 Echo "#"
 Echo "# Add ENV3 to bashrc"
 Echo "#"
