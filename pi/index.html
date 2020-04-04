@@ -42,8 +42,8 @@ Echo "#"
 LINE="source ${HOME}/ENV3/bin/activate"
 grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
-LINE='if [ -z "$SSH_AUTH_SOCK" ] ; then eval `$(ssh-agent -s)`; fi'
-grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+#LINE='if [ -z "$SSH_AUTH_SOCK" ] ; then eval `$(ssh-agent -s)`; fi'
+#grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
 # Echo "#"
 # Echo "# Create ssh key if it does not exist"
