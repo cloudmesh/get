@@ -35,10 +35,17 @@ Echo "#"
 Echo "# Install cloudmesh-installer"
 Echo "#"
 ${HOME}/ENV3/bin/pip install cloudmesh-installer -U
+mkdir -p ${HOME}/cm
+cd ${HOME}/cm
+git clone https://github.com/cloudmesh/cloudmesh_pi_burn.git
+cd ${HOME}/cm/cloudmesh_pi_burn
+pip install -e .
+cd ${HOME}/cm
 ${HOME}/ENV3/bin/cloudmesh-installer get pi
 Echo "#"
 Echo "# Add ENV3 to bashrc"
 Echo "#"
+cd ${HOME}
 LINE="source ${HOME}/ENV3/bin/activate"
 grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
