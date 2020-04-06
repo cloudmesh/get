@@ -18,17 +18,17 @@ Echo "#################################################"
 Echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
 Echo "#################################################"
 echo
-Echo "#"
+Echo "# -----------------------------------------------"
 Echo "# Update the system"
-Echo "#"
+Echo "# -----------------------------------------------"
 sudo apt-get update
 sudo apt-get full-upgrade
 sudo apt-get install -y libatlas-base-dev
 sudo apt-get install -y nmap
 echo
-Echo "#"
+Echo "# -----------------------------------------------"
 Echo "# Create a Python Virtual Env ~/ENV3"
-Echo "#"
+Echo "# -----------------------------------------------"
 python3 -m venv ~/ENV3
 . ${HOME}/ENV3/bin/activate
 pip install pip -U
@@ -36,9 +36,9 @@ which python
 which pip
 python3 --version
 pip --version
-Echo "#"
-Echo "# Install cloudmesh-installer"
-Echo "#"
+Echo "# -----------------------------------------------"
+Echo "# Install cloudmesh"
+Echo "# -----------------------------------------------"
 pip install cloudmesh-installer -U
 mkdir -p ${HOME}/cm
 cd ${HOME}/cm
@@ -51,19 +51,25 @@ Echo "# Add ENV3 to bashrc"
 Echo "#"
 cd ${HOME}
 
-AddToBashrc 'source ${HOME}/ENV3/bin/activate'  
-AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
-
-
-Echo "#"
+Echo "# -----------------------------------------------"
 Echo "# Create ssh key if it does not exist"
-Echo "#"
+Echo "# -----------------------------------------------"
 FILE=$HOME/.ssh/id_rsa.pub
 if [ ! -e "$FILE" ]; then
      yes y | ssh-keygen -q -N "" -f .ssh/id_rsa
 fi
 
+Echo "# -----------------------------------------------"
+Echo "# Update .bashrc"
+Echo "# -----------------------------------------------"
+
+AddToBashrc 'source ${HOME}/ENV3/bin/activate'  
+AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
 AddToBashrc "ssh-add"
+
+Echo "#################################################"
+Echo "# Install Completed                             #"
+Echo "#################################################"
 
 echo
 Echo "Please activate with"
