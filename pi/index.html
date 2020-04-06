@@ -36,6 +36,7 @@ which python
 which pip
 python3 --version
 pip --version
+echo
 Echo "# -----------------------------------------------"
 Echo "# Install cloudmesh"
 Echo "# -----------------------------------------------"
@@ -45,10 +46,7 @@ cd ${HOME}/cm
 cloudmesh-installer get pi
 cd cloudmesh_pi_burn
 pip install -e .
-cd ${HOME}/cm
-Echo "#"
-Echo "# Add ENV3 to bashrc"
-Echo "#"
+
 cd ${HOME}
 
 Echo "# -----------------------------------------------"
@@ -58,11 +56,11 @@ FILE=$HOME/.ssh/id_rsa.pub
 if [ ! -e "$FILE" ]; then
      yes y | ssh-keygen -q -N "" -f .ssh/id_rsa
 fi
-
+echo
 Echo "# -----------------------------------------------"
 Echo "# Update .bashrc"
 Echo "# -----------------------------------------------"
-
+echo
 AddToBashrc 'source ${HOME}/ENV3/bin/activate'  
 AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
 AddToBashrc "ssh-add"
