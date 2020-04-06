@@ -6,6 +6,10 @@
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
+AddToBashrc(){
+grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
+}
+
 Echo() {
  echo "${RED}${1}${NORMAL}"
 }
@@ -27,31 +31,29 @@ Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "#"
 python3 -m venv ~/ENV3
 . ${HOME}/ENV3/bin/activate
-${HOME}/ENV3/bin/pip install pip -U
-which ~/ENV3/bin/python
-which ~/ENV3/bin/pip
-${HOME}/ENV3/bin/python3 --version
-${HOME}/ENV3/bin/pip --version
+pip install pip -U
+which python
+which pip
+python3 --version
+pip --version
 Echo "#"
 Echo "# Install cloudmesh-installer"
 Echo "#"
-${HOME}/ENV3/bin/pip install cloudmesh-installer -U
+pip install cloudmesh-installer -U
 mkdir -p ${HOME}/cm
 cd ${HOME}/cm
-git clone https://github.com/cloudmesh/cloudmesh_pi_burn.git
-cd ${HOME}/cm/cloudmesh_pi_burn
+cloudmesh-installer get pi
+cd cloudmesh_pi_burn
 pip install -e .
 cd ${HOME}/cm
-${HOME}/ENV3/bin/cloudmesh-installer get pi
 Echo "#"
 Echo "# Add ENV3 to bashrc"
 Echo "#"
 cd ${HOME}
-LINE="source ${HOME}/ENV3/bin/activate"
-grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
 
-LINE='if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
-grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+AddToBashrc 'source ${HOME}/ENV3/bin/activate'  
+AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
+
 
 Echo "#"
 Echo "# Create ssh key if it does not exist"
@@ -60,8 +62,8 @@ FILE=$HOME/.ssh/id_rsa.pub
 if [ ! -e "$FILE" ]; then
      yes y | ssh-keygen -q -N "" -f .ssh/id_rsa
 fi
-LINE="ssh-add"
-grep -qF -- "$LINE" ~/.bashrc || echo "$LINE" >> ~/.bashrc
+
+AddToBashrc "ssh-add"
 
 echo
 Echo "Please activate with"
