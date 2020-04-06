@@ -6,6 +6,9 @@
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
+
+start=`date +%s`
+
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
 }
@@ -67,6 +70,12 @@ AddToBashrc "ssh-add"
 
 Echo "#################################################"
 Echo "# Install Completed                             #"
+Echo "#################################################"
+end=`date +%s`
+runtime=$((end-start))
+
+echo "Time to install:" ${runtime}
+echo
 Echo "#################################################"
 
 echo
