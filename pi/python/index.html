@@ -4,7 +4,13 @@
 #
 
 # <pre>
-VERSION='3.8.2'
+if [ $# -eq 0 ]
+then
+    VERSION='3.8.2'
+else
+    VERSION=$1
+fi
+
 NORMAL='\033[0m'
 RED='\033[0;31m'
 

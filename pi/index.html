@@ -3,11 +3,20 @@
 # curl -Ls http://cloudmesh.github.io/get/pi | sh
 #
 # <pre>
+start=`date +%s`
+
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
+if [ $# -eq 0 ]
+then
+    VERSION='3.8.2'
+else
+    VERSION=$1
+fi
 
-start=`date +%s`
+PYTHON=PYTHON${VERSION}
+
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
@@ -33,7 +42,7 @@ echo
 Echo "# -----------------------------------------------"
 Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "# -----------------------------------------------"
-python3 -m venv ~/ENV3
+${PYTHON} -m venv ~/ENV3
 . ${HOME}/ENV3/bin/activate
 pip install pip -U
 which python
