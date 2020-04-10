@@ -1,4 +1,5 @@
 #! /bin/sh
+
 # curl -Ls http://cloudmesh.github.io/get/pi/python | sh
 
 # <pre>
@@ -19,12 +20,6 @@ Echo() {
 Echo "#################################################"
 Echo "# Raspbery Pi Python $VERSION Instalation     #"
 Echo "#################################################"
-echo
-echo "This script runs on a PI4 about
-echo
-echo    * 160 seconds when you run it again
-echo
-echo  so please be patient
 echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"
@@ -48,31 +43,30 @@ sudo apt-get install -y build-essential \
 
 echo
 Echo "# -----------------------------------------------"
-Echo "# Download the source for Python $VERSION"
+Echo "# Download the source"
 Echo "# -----------------------------------------------"
 wget https://www.python.org/ftp/python/$VERSION/Python-$VERSION.tar.xz
 
 echo
 Echo "# -----------------------------------------------"
-Echo "# Compile Python $VERSION"
+Echo "# Compile Python"
 Echo "# -----------------------------------------------"
 tar xf Python-$VERSION.tar.xz
 cd Python-$VERSION
 ./configure --prefix=/usr/local/opt/python-$VERSION
 make -j echo
 Echo "# -----------------------------------------------"
-Echo "# Install Python $VERSION"
+Echo "# Install Python"
 Echo "# -----------------------------------------------"
 sudo make altinstall
-AddToBashrc "export PATH=$PATH:/usr/local/opt/python-$VERSION/bin"
 
 Echo "#################################################"
-Echo "# Install for Python $VERSION Completed         #"
+Echo "# Install Completed                             #"
 Echo "#################################################"
 end=`date +%s`
 runtime=$((end-start))
 echo
-echo "Time to install:" ${runtime} s"
+echo "Time to install:" ${runtime} s
 echo
 Echo "#################################################"
 
