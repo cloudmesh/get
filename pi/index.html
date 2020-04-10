@@ -17,7 +17,7 @@ Echo() {
 }
 
 Echo "#################################################"
-Echo "# Raspbery Pi Cloudmesh Cluster Instalation     #"
+Echo "# Raspbery Pi Cloudmesh Cluster Installation     #"
 Echo "#################################################"
 echo
 echo
@@ -69,10 +69,11 @@ AddToBashrc "ssh-add"
 Echo "#################################################"
 Echo "# Install Completed                             #"
 Echo "#################################################"
+echo
 end=`date +%s`
 runtime=$((end-start))
 echo
-echo "Time to install:" ${runtime} s"
+echo "Time to install: ${runtime} s"
 echo
 Echo "#################################################"
 
