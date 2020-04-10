@@ -8,14 +8,12 @@ start=`date +%s`
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
-# if [ $# -eq 0 ]
-# then
-#    VERSION='3.8.2'
-# else
-#    VERSION=$1
-# fi
+if [[ -z "${VERSION}" ]]; then
+    VERSION='3.8.2'
+else
+    VERSION=$1
+fi
 
-VERSION='3.8.2'
 PYTHON=PYTHON${VERSION}
 
 
