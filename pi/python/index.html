@@ -4,15 +4,11 @@
 #
 
 # <pre>
-start=`date +%s`
-
-if [[ -z "${VERSION}" ]]; then
-    VERSION='3.8.2'
-fi
-
+VERSION='3.8.2'
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
+start=`date +%s`
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
@@ -30,7 +26,7 @@ echo "This script runs on a PI4 about
 echo
 echo    * 160 seconds when you run it again
 echo
-echo  so please be patient.
+echo  so please be patient
 echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"

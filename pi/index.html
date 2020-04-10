@@ -3,17 +3,10 @@
 # curl -Ls http://cloudmesh.github.io/get/pi | sh
 #
 # <pre>
-start=`date +%s`
-
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
-if [[ -z "${VERSION}" ]]; then
-    VERSION='3.8.2'
-fi
-
-PYTHON=PYTHON${VERSION}
-
+start=`date +%s`
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
