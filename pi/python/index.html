@@ -17,6 +17,8 @@ start=`date +%s`
 if [ -z "$VERSION" ]; then
     VERSION='3.8.2'
 fi
+PYTHON="python${VERSION%.*}"
+PIP="pip${VERSION%.*}"
 
 NORMAL='\033[0m'
 RED='\033[0;31m'
@@ -38,6 +40,8 @@ echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"
 Echo "# -----------------------------------------------"
+startupdate=`date +%s`
+
 sudo apt-get update
 sudo apt-get full-upgrade
 sudo apt-get install -y build-essential \
@@ -54,17 +58,19 @@ sudo apt-get install -y build-essential \
     liblzma-dev\
     zlib1g-dev\
     libffi-dev
-
+endupdate=`date +%s`
 echo
 Echo "# -----------------------------------------------"
 Echo "# Download the source"
 Echo "# -----------------------------------------------"
+startdownload=`date +%s`
 wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
-
+enddownload=`date +%s`
 echo
 Echo "# -----------------------------------------------"
 Echo "# Compile Python"
 Echo "# -----------------------------------------------"
+startpython=`date +%s`
 tar xf Python-${VERSION}.tar.xz
 cd Python-${VERSION}
 ./configure --prefix=/usr/local/opt/python-${VERSION}
@@ -74,14 +80,29 @@ Echo "# Install Python"
 Echo "# -----------------------------------------------"
 sudo make altinstall
 AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
+. ~/bashrc
+
+python -m pip install -U pip
+python -m pip install -U matplotlib
+
+endpython=`date +%s`
 
 Echo "#################################################"
 Echo "# Install of Python ${VERSION} Completed"
 Echo "#################################################"
 end=`date +%s`
 runtime=$((end-start))
+downloadtime=$((end-start))
+pythontime=$((end-start))
+updatetime=$((end-start))
+
 echo
-echo "Time to install:  ${runtime} s"
+
+echo "Time to update and upgarde: ${updatetime} s"
+echo "Time to download Python:    ${downloadtime} s"
+echo "Time to install Python:     ${pythontime} s"
+
+echo "Time for total install:     ${runtime} s"
 echo
 Echo "#################################################"
 
