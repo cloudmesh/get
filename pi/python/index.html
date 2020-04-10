@@ -1,13 +1,22 @@
 #! /bin/sh
 
+#
 # curl -Ls http://cloudmesh.github.io/get/pi/python | sh
+#
 
 # <pre>
-VERSION='3.8.2'
+
+
+start=`date +%s`
+
+if [[ -z "${VERSION}" ]]; then
+    VERSION='3.8.2'
+fi
+
 NORMAL='\033[0m'
 RED='\033[0;31m'
 
-start=`date +%s`
+
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
@@ -18,7 +27,7 @@ Echo() {
 }
 
 Echo "#################################################"
-Echo "# Raspbery Pi Python $VERSION Instalation     #"
+Echo "# Raspbery Pi Python ${VERSION} Instalation     #"
 Echo "#################################################"
 echo
 Echo "# -----------------------------------------------"
@@ -45,15 +54,15 @@ echo
 Echo "# -----------------------------------------------"
 Echo "# Download the source"
 Echo "# -----------------------------------------------"
-wget https://www.python.org/ftp/python/$VERSION/Python-$VERSION.tar.xz
+wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
 
 echo
 Echo "# -----------------------------------------------"
 Echo "# Compile Python"
 Echo "# -----------------------------------------------"
-tar xf Python-$VERSION.tar.xz
-cd Python-$VERSION
-./configure --prefix=/usr/local/opt/python-$VERSION
+tar xf Python-${VERSION}.tar.xz
+cd Python-${VERSION}
+./configure --prefix=/usr/local/opt/python-${VERSION}
 make -j echo
 Echo "# -----------------------------------------------"
 Echo "# Install Python"
@@ -66,7 +75,7 @@ Echo "#################################################"
 end=`date +%s`
 runtime=$((end-start))
 echo
-echo "Time to install:" ${runtime} s
+echo "Time to install:  ${runtime} s"
 echo
 Echo "#################################################"
 
