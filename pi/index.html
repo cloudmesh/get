@@ -14,7 +14,7 @@ if [ -z "$VERSION" ]; then
     VERSION='3.8.2'
 fi
 
-PYTHON=python-${VERSION}
+PYTHON=python${VERSION}
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
