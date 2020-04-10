@@ -80,7 +80,7 @@ Echo "# Install Python"
 Echo "# -----------------------------------------------"
 sudo make altinstall
 AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
-. ~/bashrc
+. ~/.bashrc
 
 python -m pip install -U pip
 python -m pip install -U matplotlib
