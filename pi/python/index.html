@@ -6,17 +6,14 @@
 
 # <pre>
 
-
 start=`date +%s`
 
-if [ -z "${VERSION}" ]; then
+if [ -z "$VERSION" ]; then
     VERSION='3.8.2'
 fi
 
 NORMAL='\033[0m'
 RED='\033[0;31m'
-
-
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
