@@ -83,6 +83,7 @@ AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 . ${HOME}/.bashrc
 
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U pip
+sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U cython
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U matplotlib
 
 endpython=`date +%s`
