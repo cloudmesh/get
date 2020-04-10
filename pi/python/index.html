@@ -73,6 +73,7 @@ Echo "# -----------------------------------------------"
 Echo "# Install Python"
 Echo "# -----------------------------------------------"
 sudo make altinstall
+AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 
 Echo "#################################################"
 Echo "# Install of Python ${VERSION} Completed"
