@@ -3,6 +3,12 @@
 #
 # curl -Ls http://cloudmesh.github.io/get/pi/python | sh
 #
+# To specify a specific version:
+#
+# VERSION=3.8.2 curl -Ls http://cloudmesh.github.io/get/pi/python | sh
+#
+# The default VERSION is 3.8.2
+#
 
 # <pre>
 
@@ -26,6 +32,8 @@ Echo() {
 Echo "#################################################"
 Echo "# Raspbery Pi Python ${VERSION} Installation"
 Echo "#################################################"
+echo
+echo "Aproximate instalation time: 11 minutes"
 echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"
