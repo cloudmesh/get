@@ -31,15 +31,15 @@ Echo() {
  echo "${RED}${1}${NORMAL}"
 }
 
-Echo "#################################################"
+Echo "##########################################################"
 Echo "# Raspbery Pi Python ${VERSION} Installation"
-Echo "#################################################"
+Echo "##########################################################"
 echo
-echo "Aproximate instalation time: 11 minutes"
+echo "Aproximate instalation time: 23 minutes for python 3.8.2"
 echo
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 Echo "# Update the system"
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 startupdate=`date +%s`
 
 sudo apt-get update
@@ -61,24 +61,24 @@ sudo apt-get install -y build-essential \
 sudo apt-get install -y libatlas3-base libgfortran5
 endupdate=`date +%s`
 echo
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 Echo "# Download the source"
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 startdownload=`date +%s`
 wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
 enddownload=`date +%s`
 echo
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 Echo "# Compile Python"
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 startpython=`date +%s`
 tar xf Python-${VERSION}.tar.xz
 cd Python-${VERSION}
 ./configure --prefix=/usr/local/opt/python-${VERSION}
 make -j echo
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 Echo "# Install Python"
-Echo "# -----------------------------------------------"
+Echo "# --------------------------------------------------------"
 sudo make altinstall
 AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 . ${HOME}/.bashrc
@@ -86,28 +86,39 @@ AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 
 
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U pip
+startcython=`date +%s`
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U cython
+stopcython=`date +%s`
+
+startmatplotlib=`date +%s`
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U matplotlib
+startmatplotlib=`date +%s`
 
 endpython=`date +%s`
 
-Echo "#################################################"
+Echo "##########################################################"
 Echo "# Install of Python ${VERSION} Completed"
-Echo "#################################################"
+Echo "##########################################################"
 end=`date +%s`
 runtime=$((end-start))
 downloadtime=$((enddownload-startdownload))
 pythontime=$((endpython-startpython))
 updatetime=$((endupdate-startupdate))
+matplotlibtime=$((endmatplotlib-startmatplotlib))
+pythontime=$((endcython-startcython))
 
 echo
 echo "Time to update and upgarde: ${updatetime} s"
 echo "Time to download Python:    ${downloadtime} s"
+echo
+echo "Time to install Cython:     ${cythontime} s"
+echo "Time to install Matplotlib: ${matplotlibtime} s"
+echo
 echo "Time to install Python:     ${pythontime} s"
 echo
 echo "Time for total install:     ${runtime} s"
 echo
-Echo "#################################################"
+Echo "##########################################################"
 
 exit 0
 
