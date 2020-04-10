@@ -58,6 +58,7 @@ sudo apt-get install -y build-essential \
     liblzma-dev\
     zlib1g-dev\
     libffi-dev
+sudo apt-get install -y libatlas3-base libgfortran5
 endupdate=`date +%s`
 echo
 Echo "# -----------------------------------------------"
@@ -81,6 +82,8 @@ Echo "# -----------------------------------------------"
 sudo make altinstall
 AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 . ${HOME}/.bashrc
+
+
 
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U pip
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U cython
