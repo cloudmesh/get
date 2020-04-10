@@ -82,8 +82,8 @@ sudo make altinstall
 AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 . ~/.bashrc
 
-python -m pip install -U pip
-python -m pip install -U matplotlib
+${PYTHON} -m pip install -U pip
+${PYTHON} -m pip install -U matplotlib
 
 endpython=`date +%s`
 
@@ -92,16 +92,15 @@ Echo "# Install of Python ${VERSION} Completed"
 Echo "#################################################"
 end=`date +%s`
 runtime=$((end-start))
-downloadtime=$((end-start))
-pythontime=$((end-start))
-updatetime=$((end-start))
+downloadtime=$((enddownload-startdownload))
+pythontime=$((endpython-startpython))
+updatetime=$((endupdate-startupdate))
 
 echo
-
 echo "Time to update and upgarde: ${updatetime} s"
 echo "Time to download Python:    ${downloadtime} s"
 echo "Time to install Python:     ${pythontime} s"
-
+echo
 echo "Time for total install:     ${runtime} s"
 echo
 Echo "#################################################"
