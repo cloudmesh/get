@@ -11,10 +11,11 @@ RED='\033[0;31m'
 
 
 if [ -z "$VERSION" ]; then
-    VERSION='3.8'
+    VERSION='3.8.2'
 fi
 
-PYTHON=python${VERSION}
+PYTHON="python${VERSION%.*}"
+
 
 AddToBashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
@@ -28,15 +29,16 @@ Echo "#################################################"
 Echo "# Raspbery Pi Cloudmesh Cluster Installation     #"
 Echo "#################################################"
 echo
-echo "Aproximate instalation time: 3 minutes and 20 second"
+echo "Aproximate instalation time: 4-7 minutes"
 echo
 echo "Using Python ${VERSION}"
+echo "Expecting it to be accessible via $PYTHON"
 echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"
 Echo "# -----------------------------------------------"
 sudo apt-get update
-sudo apt-get full-upgrade
+sudo apt-get full-upgrade -y
 sudo apt-get install -y libatlas-base-dev
 sudo apt-get install -y nmap
 echo
@@ -46,6 +48,7 @@ Echo "# -----------------------------------------------"
 ${PYTHON} -m venv ~/ENV3
 . ${HOME}/ENV3/bin/activate
 pip install pip -U
+# pip install -y cython -U
 which python
 which pip
 python3 --version
