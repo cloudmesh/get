@@ -43,25 +43,26 @@ sudo apt-get install -y build-essential \
 
 echo
 Echo "# -----------------------------------------------"
-Echo "# Download the source"
+Echo "# Download the source for Python $VERSION"
 Echo "# -----------------------------------------------"
 wget https://www.python.org/ftp/python/$VERSION/Python-$VERSION.tar.xz
 
 echo
 Echo "# -----------------------------------------------"
-Echo "# Compile Python"
+Echo "# Compile Python $VERSION"
 Echo "# -----------------------------------------------"
 tar xf Python-$VERSION.tar.xz
 cd Python-$VERSION
 ./configure --prefix=/usr/local/opt/python-$VERSION
 make -j echo
 Echo "# -----------------------------------------------"
-Echo "# Install Python"
+Echo "# Install Python $VERSION"
 Echo "# -----------------------------------------------"
 sudo make altinstall
+AddToBashrc "export PATH=$PATH:/usr/local/opt/python-$VERSION/bin"
 
 Echo "#################################################"
-Echo "# Install Completed                             #"
+Echo "# Install for Python $VERSION Completed         #"
 Echo "#################################################"
 end=`date +%s`
 runtime=$((end-start))
