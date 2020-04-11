@@ -15,9 +15,11 @@ if [ -z "$VERSION" ]; then
 fi
 
 PYTHON="python${VERSION%.*}"
+PIP="pip{VERSION%.*}"
 
 
-AddToBashrc(){
+AddToBPYTHON="python${VERSION%.*}"
+ashrc(){
 grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
 }
 
@@ -37,28 +39,40 @@ echo
 Echo "# -----------------------------------------------"
 Echo "# Update the system"
 Echo "# -----------------------------------------------"
+
+start_update=`date +%s`
 sudo apt-get update
 sudo apt-get full-upgrade -y
 sudo apt-get install -y nmap
+end_update=`date +%s`
+
 echo
 Echo "# -----------------------------------------------"
 Echo "# Create a Python Virtual Env ~/ENV3"
 Echo "# -----------------------------------------------"
+
+start_venv=`date +%s`
 ${PYTHON} -m venv ~/ENV3
 . ${HOME}/ENV3/bin/activate
 pip install pip -U
 which python
 which pip
-python3 --version
+python --version
 pip --version
+pip install cython -U
+end_venv=`date +%s`
+
 echo
 Echo "# -----------------------------------------------"
 Echo "# Install cloudmesh"
 Echo "# -----------------------------------------------"
+
+start_cloudmesh=`date +%s`
 pip install cloudmesh-installer -U
 mkdir -p ${HOME}/cm
 cd ${HOME}/cm
 cloudmesh-installer get pi
+end_update=`date +%s`
 
 cd ${HOME}
 
