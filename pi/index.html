@@ -39,7 +39,6 @@ Echo "# Update the system"
 Echo "# -----------------------------------------------"
 sudo apt-get update
 sudo apt-get full-upgrade -y
-sudo apt-get install -y libatlas3-base libgfortran5
 sudo apt-get install -y nmap
 echo
 Echo "# -----------------------------------------------"
@@ -75,9 +74,9 @@ Echo "# -----------------------------------------------"
 Echo "# Update .bashrc"
 Echo "# -----------------------------------------------"
 echo
-AddToBashrc 'source ${HOME}/ENV3/bin/activate'  
 AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
 AddToBashrc "ssh-add"
+AddToBashrc 'source ${HOME}/ENV3/bin/activate'
 
 Echo "#################################################"
 Echo "# Install Completed                             #"
