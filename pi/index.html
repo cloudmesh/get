@@ -4,7 +4,7 @@
 #
 # <pre>
 
-start=`date +%s`
+start_total=`date +%s`
 
 NORMAL='\033[0m'
 RED='\033[0;31m'
@@ -96,8 +96,18 @@ Echo "#################################################"
 Echo "# Install Completed                             #"
 Echo "#################################################"
 echo
-end=`date +%s`
-runtime=$((end-start))
+end_total=`date +%s`
+time_update=$((end_update-start_update))
+time_total=$((end_total-start_total))
+time_venv=$((end_venv-start_venv))
+time_cloudmesh=$((end_cloudmesh-start_cloudmesh))
+echo
+echo
+echo "Time to update and upgarde: ${time_update} s"
+echo "Time to install the venv:   ${time_venv} s"
+echo "Time to install cloudmesh:  ${pythontime} s"
+echo
+echo "Time for total install:     ${runtime} s"
 echo
 echo "Time to install: ${runtime} s"
 echo
