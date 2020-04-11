@@ -88,11 +88,11 @@ AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U pip
 startcython=`date +%s`
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U cython
-stopcython=`date +%s`
+endcython=`date +%s`
 
 startmatplotlib=`date +%s`
 sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U matplotlib
-startmatplotlib=`date +%s`
+endmatplotlib=`date +%s`
 
 endpython=`date +%s`
 
