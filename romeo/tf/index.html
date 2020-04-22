@@ -1,0 +1,46 @@
+#! /bin/sh
+
+# curl -Ls http://cloudmesh.github.io/romeo/tf | sh
+
+# <pre>
+
+echo "#######################################################"
+echo "# NOTICE - Developer install of Tensorflow for Romeo  #"
+echo "#######################################################"
+echo
+
+    start_total=`date +%s`
+
+    deactivate
+    time python3 -m venv ENV3
+    source $BUILD/ENV3/bin/activate
+    time python3 -m pip install --upgrade pip
+    time pip install setuptools -U
+
+    source /scratch/$USER/ENV3/bin/activate
+    time pip install tensorflow-gpu
+
+Echo "#################################################"
+Echo "# Install Completed                             #"
+Echo "#################################################"
+echo
+end_total=`date +%s`
+time_total=$((end_total-start_total))
+echo
+echo
+echo "Time for total install:     ${time_total} s"
+echo
+Echo "#################################################"
+
+echo
+Echo "Please activate with"
+echo
+Echo "    source `pwd`/ENV3/bin/activate"
+echo
+exit 0
+
+```
+
+exit 0
+
+# </pre>
