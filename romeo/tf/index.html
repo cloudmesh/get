@@ -5,14 +5,9 @@
 # <pre>
 
 
-NORMAL='\033[0m'
-RED='\033[0;31m'
-
-Echo() {
- echo "${RED}${1}${NORMAL}"
-}
 
 PIP="python -m pip"
+PWF=`pwd`
 
 echo "#######################################################"
 echo "# NOTICE - Developer install of Tensorflow for Romeo  #"
@@ -28,9 +23,9 @@ echo
     time ${PIP} install --upgrade setuptools
     time ${PIP} install tensorflow-gpu
 
-Echo "#################################################"
-Echo "# Install Completed                             #"
-Echo "#################################################"
+echo "#################################################"
+echo "# Install Completed                             #"
+echo "#################################################"
 echo
 end_total=`date +%s`
 time_total=$((end_total-start_total))
@@ -38,12 +33,12 @@ echo
 echo
 echo "Time for total install:     ${time_total} s"
 echo
-Echo "#################################################"
+echo "#################################################"
 
 echo
-Echo "Please activate with"
+echo "Please activate with"
 echo
-Echo "    source `pwd`/ENV3/bin/activate"
+echo "    source ${PWD}/ENV3/bin/activate"
 echo
 exit 0
 
