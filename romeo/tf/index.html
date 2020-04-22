@@ -4,6 +4,14 @@
 
 # <pre>
 
+
+NORMAL='\033[0m'
+RED='\033[0;31m'
+    
+Echo() {
+ echo "${RED}${1}${NORMAL}"
+}
+
 echo "#######################################################"
 echo "# NOTICE - Developer install of Tensorflow for Romeo  #"
 echo "#######################################################"
@@ -13,10 +21,9 @@ echo
 
     time python3 -m venv ENV3
     source ENV3/bin/activate
-    time python3 -m pip install --upgrade pip
-    time pip install setuptools -U
 
-    source ENV3/bin/activate
+    time python -m pip install --upgrade pip
+    time pip install setuptools -U
     time pip install tensorflow-gpu
 
 Echo "#################################################"
