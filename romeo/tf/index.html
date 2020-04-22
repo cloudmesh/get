@@ -12,11 +12,11 @@ echo
     start_total=`date +%s`
 
     time python3 -m venv ENV3
-    source $BUILD/ENV3/bin/activate
+    source ENV3/bin/activate
     time python3 -m pip install --upgrade pip
     time pip install setuptools -U
 
-    source /scratch/$USER/ENV3/bin/activate
+    source ENV3/bin/activate
     time pip install tensorflow-gpu
 
 Echo "#################################################"
