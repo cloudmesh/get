@@ -12,6 +12,8 @@ Echo() {
  echo "${RED}${1}${NORMAL}"
 }
 
+PIP="python -m pip"
+
 echo "#######################################################"
 echo "# NOTICE - Developer install of Tensorflow for Romeo  #"
 echo "#######################################################"
@@ -22,9 +24,9 @@ echo
     time python3 -m venv ENV3
     . ENV3/bin/activate
 
-    time python -m pip install --upgrade pip
-    time pip install setuptools -U
-    time pip install tensorflow-gpu
+    time ${PIP} install --upgrade pip
+    time ${PIP} install --upgrade setuptools
+    time ${PIP} install tensorflow-gpu
 
 Echo "#################################################"
 Echo "# Install Completed                             #"
