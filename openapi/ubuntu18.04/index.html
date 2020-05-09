@@ -1,0 +1,165 @@
+#! /bin/sh
+#
+#To run this:
+#    export VERSION="3.8.2"
+#    export MONGOPWD=`read -s -p "Mongo Password: " password`
+#    curl -Ls http://cloudmesh.github.io/get/openapi/ubuntu18.04 | sh
+#
+# <pre>
+
+PYTHON="python"
+
+start_total=`date +%s`
+
+NORMAL='\033[0m'
+RED='\033[0;31m'
+
+AddToBashrc(){
+grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
+}
+
+Echo() {
+ echo "${RED}${1}${NORMAL}"
+}
+
+Echo "#################################################"
+Echo "# Cloudmesh OpenAPI Service Generator Installation #"
+Echo "#################################################"
+echo
+echo "Aproximate instalation time: 4-7 minutes"
+echo
+echo "Using Python ${VERSION}"
+echo "Expecting it to be accessible via $PYTHON"
+echo
+Echo "# -----------------------------------------------"
+Echo "# Update the system"
+Echo "# -----------------------------------------------"
+
+start_update=`date +%s`
+sudo apt-get update
+sudo apt-get full-upgrade -y
+sudo apt-get install libbz2-dev
+sudo apt-get install liblzma-dev
+
+if [ `python --version | awk '{print $2}'` == "${VERSION}" ]
+then
+    echo "Python version ${VERSION} is already installed no need to upgrade"
+else
+    cd /usr/src
+    if [ $? -eq 0 ]
+    then 
+        sudo wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
+        sudo tar xzf Python-3.8.2.tgz
+        cd /usr/src/Python-3.8.2
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+        sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.8 10
+        sudo update-alternatives --config python
+        sudo update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.8 10
+        sudo update-alternatives --config pip
+        sudo yes '' | update-alternatives --force --all && python --version
+        sudo pip install -U pip && pip --version
+    else
+        Echo "Error::  /usr/src directory does not exist. Create and restart."
+        exit 1
+    fi
+fi
+
+sudo apt-get install python3-venv
+
+end_update=`date +%s`
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Create a Python Virtual Env ~/ENV3"
+Echo "# -----------------------------------------------"
+
+start_venv=`date +%s`
+${PYTHON} -m venv ~/ENV3
+. ${HOME}/ENV3/bin/activate
+pip install pip -U
+which python
+which pip
+python --version
+pip --version
+end_venv=`date +%s`
+
+Echo "# -----------------------------------------------"
+Echo "# Create ssh key if it does not exist"
+Echo "# -----------------------------------------------"
+FILE=$HOME/.ssh/id_rsa.pub
+if [ ! -e "$FILE" ]; then
+     yes y | ssh-keygen -q -N "" -f $HOME/.ssh/id_rsa
+fi
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Install cloudmesh"
+Echo "# -----------------------------------------------"
+
+start_cloudmesh=`date +%s`
+pip install cloudmesh-installer -U
+mkdir -p ${HOME}/cm
+cd ${HOME}/cm
+cloudmesh-installer get cloud openapi
+cms help
+cms config set cloudmesh.profile.user=openstack_user
+cms config set cloudmesh.data.mongo.MONGO_AUTOINSTALL=True
+cms config set cloudmesh.data.mongo.MONGO_USERNAME=mongo
+cms config set cloudmesh.data.mongo.MONGO_PASSWORD=${MONGOPWD}
+cms admin mongo install
+
+PATH=${HOME}/local/mongo/bin:$PATH
+export $PATH
+cms init
+
+cd ${HOME}
+end_cloudmesh=`date +%s`
+
+
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Install scikitlearn dependencies"
+Echo "# -----------------------------------------------"
+pip install sklearn
+pip install pandas
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Update .bashrc"
+Echo "# -----------------------------------------------"
+echo
+AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
+AddToBashrc "ssh-add"
+AddToBashrc 'source ${HOME}/ENV3/bin/activate'
+
+Echo "#################################################"
+Echo "# Install Completed                             #"
+Echo "#################################################"
+echo
+end_total=`date +%s`
+time_update=$((end_update-start_update))
+time_total=$((end_total-start_total))
+time_venv=$((end_venv-start_venv))
+time_cloudmesh=$((end_cloudmesh-start_cloudmesh))
+echo
+echo
+echo "Time to update and upgarde: ${time_update} s"
+echo "Time to install the venv:   ${time_venv} s"
+echo "Time to install cloudmesh:  ${time_cloudmesh} s"
+echo
+echo "Time for total install:     ${time_total} s"
+echo
+echo "Time to install: ${time_total} s"
+echo
+Echo "#################################################"
+
+echo
+Echo "Please activate with"
+echo
+Echo "    source ~/ENV3/bin/activate"
+echo
+exit 0
+
+# </pre>
