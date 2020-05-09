@@ -54,6 +54,35 @@ Echo "# -----------------------------------------------"
 start_update=`date +%s`
 sudo apt-get update
 sudo apt-get full-upgrade -y
+
+# JB added:
+if [ `python --version | awk '{print $2}'` == "${VERSION}" ]
+then
+    echo "Python version ${VERSION} is already being used no need to upgrade"
+else
+    cd /usr/src
+    if [ $? -eq 0 ]
+    then 
+        sudo wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
+        sudo tar xzf Python-3.8.2.tgz
+        cd /usr/src/Python-3.8.2
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+        sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.8 10
+        sudo update-alternatives --config python
+        sudo update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.8 10
+        sudo update-alternatives --config pip
+        sudo yes '' | update-alternatives --force --all && python --version
+        sudo pip install -U pip && pip --version
+    else
+        Echo "Error::  /usr/src directory does not exist. Create and restart."
+        exit 1
+    fi
+fi
+
+sudo apt-get install python3-venv
+# end of JB updates
+
 end_update=`date +%s`
 
 echo
@@ -87,9 +116,14 @@ cms config set cloudmesh.data.mongo.MONGO_AUTOINSTALL=True
 cms config set cloudmesh.data.mongo.MONGO_USERNAME=mongo
 cms config set cloudmesh.data.mongo.MONGO_PASSWORD=${MONGOPWD}
 cms admin mongo install
-end_cloudmesh=`date +%s`
+
+# JB added
+export PATH=${HOME}/local/mongo/bin:$PATH
+cms init
+# JB added
 
 cd ${HOME}
+end_cloudmesh=`date +%s`
 
 Echo "# -----------------------------------------------"
 Echo "# Create ssh key if it does not exist"
