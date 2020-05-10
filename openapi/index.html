@@ -1,16 +1,12 @@
 #! /bin/sh
 #
-#
-# BUG FOR THIS WORK ssh-key should be exeting if not installed, we should start with sshkey
-#
 # Using python3
 #
-#   export MONGOPWD=`read -s -p "Mongo Password: " password`
-#   curl -Ls http://cloudmesh.github.io/get/openapi | sh
+#   curl -Ls http://cloudmesh.github.io/get/openapi/google/ | sh
 #
 # Using python3.8
 #
-#   VERSION='3.8.2' curl -Ls http://cloudmesh.github.io/get/openapi | sh
+#   VERSION='3.8.2' curl -Ls http://cloudmesh.github.io/get/pi | sh
 #
 # <pre>
 
@@ -38,8 +34,13 @@ Echo() {
  echo "${RED}${1}${NORMAL}"
 }
 
+
+
+
+
+
 Echo "#################################################"
-Echo "# Cloudmesh OpenAPI Service Generator Installation #"
+Echo "# Google Compute VM Ubuntu 19.10 Installation     #"
 Echo "#################################################"
 echo
 echo "Aproximate instalation time: 4-7 minutes"
@@ -51,40 +52,32 @@ Echo "# -----------------------------------------------"
 Echo "# Update the system"
 Echo "# -----------------------------------------------"
 
+
 start_update=`date +%s`
-sudo apt-get update
-sudo apt-get full-upgrade -y
-
-# JB added:
-if [ `python --version | awk '{print $2}'` == "${VERSION}" ]
-then
-    echo "Python version ${VERSION} is already being used no need to upgrade"
-else
-    cd /usr/src
-    if [ $? -eq 0 ]
-    then 
-        sudo wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
-        sudo tar xzf Python-3.8.2.tgz
-        cd /usr/src/Python-3.8.2
-        sudo ./configure --enable-optimizations
-        sudo make altinstall
-        sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.8 10
-        sudo update-alternatives --config python
-        sudo update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.8 10
-        sudo update-alternatives --config pip
-        sudo yes '' | update-alternatives --force --all && python --version
-        sudo pip install -U pip && pip --version
-    else
-        Echo "Error::  /usr/src directory does not exist. Create and restart."
-        exit 1
-    fi
-fi
-
+sudo apt -y update
+sudo apt -y install openssl curl
+sudo apt-get install gcc
+sudo apt-get install python3-pip
+sudo apt-get install python-pip
 sudo apt-get install python3-venv
-# end of JB updates
+# sudo apt -y install libreadline-gplv2-dev libncursesw5-dev
+# sudo apt -y libssl-dev
+# sudo apt -y libsqlite3-dev tk-dev
+# sudo apt -y libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
 
 end_update=`date +%s`
 
+echo
+Echo "# -----------------------------------------------"
+Echo "# Install Python 3.8.2"
+Echo "# -----------------------------------------------"
+tar -xvf Python-3.8.2.tgz
+cd Python-3.8.2
+./configure
+make
+sudo make altinstall
+python3.8 --version
+python3 --version
 echo
 Echo "# -----------------------------------------------"
 Echo "# Create a Python Virtual Env ~/ENV3"
@@ -109,29 +102,34 @@ start_cloudmesh=`date +%s`
 pip install cloudmesh-installer -U
 mkdir -p ${HOME}/cm
 cd ${HOME}/cm
-cloudmesh-installer get cloud openapi
-cms help
-cms config set cloudmesh.profile.user=openstack_user
-cms config set cloudmesh.data.mongo.MONGO_AUTOINSTALL=True
-cms config set cloudmesh.data.mongo.MONGO_USERNAME=mongo
-cms config set cloudmesh.data.mongo.MONGO_PASSWORD=${MONGOPWD}
-cms admin mongo install
-
-# JB added
-export PATH=${HOME}/local/mongo/bin:$PATH
-cms init
-# JB added
-
-cd ${HOME}
+cloudmesh-installer get openstack
+cloudmesh-installer get openapi
+cloudmesh-installer get google
 end_cloudmesh=`date +%s`
 
+cd ${HOME}
+
 Echo "# -----------------------------------------------"
-Echo "# Create ssh key if it does not exist"
+Echo "# Install Google Cloud Packages"
 Echo "# -----------------------------------------------"
-FILE=$HOME/.ssh/id_rsa.pub
-if [ ! -e "$FILE" ]; then
-     yes y | ssh-keygen -q -N "" -f .ssh/id_rsa
-fi
+
+start_google=`date +%s`
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+pip install --upgrade google-cloud-language
+pip install --upgrade google-cloud-translate
+end_google=`date +%s`
+
+Echo "# -----------------------------------------------"
+Echo "# Install Azure Cloud Packages"
+Echo "# -----------------------------------------------"
+
+start_azure=`date +%s`
+pip install --upgrade azure-cognitiveservices-language-textanalytics
+pip install msrest
+end_azure=`date +%s`
+
 echo
 Echo "# -----------------------------------------------"
 Echo "# Update .bashrc"
@@ -150,11 +148,15 @@ time_update=$((end_update-start_update))
 time_total=$((end_total-start_total))
 time_venv=$((end_venv-start_venv))
 time_cloudmesh=$((end_cloudmesh-start_cloudmesh))
+time_google=$((end_google-start_google))
+time_azure=$((end_azure-start_azure))
 echo
 echo
-echo "Time to update and upgarde: ${time_update} s"
+echo "Time to update and upgrade: ${time_update} s"
 echo "Time to install the venv:   ${time_venv} s"
 echo "Time to install cloudmesh:  ${time_cloudmesh} s"
+echo "Time to install google packages:  ${time_google} s"
+echo "Time to install azure:  ${time_azure} s"
 echo
 echo "Time for total install:     ${time_total} s"
 echo
