@@ -89,6 +89,7 @@ Echo "# Create ssh key if it does not exist"
 Echo "# -----------------------------------------------"
 FILE=$HOME/.ssh/id_rsa.pub
 if [ ! -e "$FILE" ]; then
+     mkdir -p -m 700 $HOME/.ssh
      yes y | ssh-keygen -q -N "" -f .ssh/id_rsa
 fi
 echo
