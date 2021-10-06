@@ -1,0 +1,126 @@
+#! /bin/sh
+
+#
+# curl -Ls http://cloudmesh.github.io/get/pi/python | sh
+#
+# To specify a specific version:
+#
+# VERSION=3.8.2 curl -Ls http://cloudmesh.github.io/get/pi/python | sh
+#
+# The default VERSION is 3.8.2
+#
+
+# <pre>
+
+start=`date +%s`
+
+if [ -z "$VERSION" ]; then
+    VERSION='3.8.2'
+fi
+PYTHON="python${VERSION%.*}"
+PIP="pip${VERSION%.*}"
+
+NORMAL='\033[0m'
+RED='\033[0;31m'
+
+AddToBashrc(){
+grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
+}
+
+Echo() {
+ echo "${RED}${1}${NORMAL}"
+}
+
+Echo "##########################################################"
+Echo "# Raspbery Pi Python ${VERSION} Installation"
+Echo "##########################################################"
+echo
+echo "Aproximate instalation time: 35 minutes for python 3.8.2"
+echo
+Echo "# --------------------------------------------------------"
+Echo "# Update the system"
+Echo "# --------------------------------------------------------"
+startupdate=`date +%s`
+
+sudo apt-get update
+sudo apt-get full-upgrade
+sudo apt-get install -y build-essential \
+    tk-dev\
+    libncurses5-dev\
+    libncursesw5-dev\
+    libreadline6-dev\
+    libdb5.3-dev\
+    libgdbm-dev\
+    libsqlite3-dev\
+    libssl-dev\
+    libbz2-dev\
+    libexpat1-dev\
+    liblzma-dev\
+    zlib1g-dev\
+    libffi-dev
+sudo apt-get install -y libatlas3-base libgfortran5
+endupdate=`date +%s`
+echo
+Echo "# --------------------------------------------------------"
+Echo "# Download the source"
+Echo "# --------------------------------------------------------"
+startdownload=`date +%s`
+wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+enddownload=`date +%s`
+echo
+Echo "# --------------------------------------------------------"
+Echo "# Compile Python"
+Echo "# --------------------------------------------------------"
+startpython=`date +%s`
+tar xf Python-${VERSION}.tar.xz
+cd Python-${VERSION}
+./configure --prefix=/usr/local/opt/python-${VERSION}
+make -j echo
+Echo "# --------------------------------------------------------"
+Echo "# Install Python"
+Echo "# --------------------------------------------------------"
+sudo make altinstall
+AddToBashrc "export PATH=$PATH:/usr/local/opt/python-${VERSION}/bin"
+. ${HOME}/.bashrc
+
+
+
+sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U pip
+startcython=`date +%s`
+sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U cython
+endcython=`date +%s`
+
+startmatplotlib=`date +%s`
+sudo /usr/local/opt/python-${VERSION}/bin/${PYTHON} -m pip install -U matplotlib
+endmatplotlib=`date +%s`
+
+endpython=`date +%s`
+
+Echo "##########################################################"
+Echo "# Install of Python ${VERSION} Completed"
+Echo "##########################################################"
+end=`date +%s`
+runtime=$((end-start))
+downloadtime=$((enddownload-startdownload))
+pythontime=$((endpython-startpython))
+updatetime=$((endupdate-startupdate))
+matplotlibtime=$((endmatplotlib-startmatplotlib))
+pythontime=$((endcython-startcython))
+
+echo
+echo "Time to update and upgarde: ${updatetime} s"
+echo "Time to download Python:    ${downloadtime} s"
+echo
+echo "Time to install Cython:     ${cythontime} s"
+echo "Time to install Matplotlib: ${matplotlibtime} s"
+echo
+echo "Time to install Python:     ${pythontime} s"
+echo
+echo "Time for total install:     ${runtime} s"
+echo
+Echo "##########################################################"
+
+exit 0
+
+# </pre>
+
