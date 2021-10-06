@@ -5,9 +5,9 @@
 #
 # To specify a specific version:
 #
-# VERSION=3.8.2 curl -Ls http://cloudmesh.github.io/get/pi/python | sh
+# VERSION=3.10.0 curl -Ls http://cloudmesh.github.io/get/pi/python | sh
 #
-# The default VERSION is 3.8.2
+# The default VERSION is 3.10.0
 #
 
 # <pre>
@@ -15,7 +15,7 @@
 start=`date +%s`
 
 if [ -z "$VERSION" ]; then
-    VERSION='3.8.2'
+    VERSION='3.10.0'
 fi
 PYTHON="python${VERSION%.*}"
 PIP="pip${VERSION%.*}"
@@ -35,7 +35,7 @@ Echo "##########################################################"
 Echo "# Raspbery Pi Python ${VERSION} Installation"
 Echo "##########################################################"
 echo
-echo "Aproximate instalation time: 35 minutes for python 3.8.2"
+echo "Aproximate instalation time: 35 minutes for python 3.10.0"
 echo
 Echo "# --------------------------------------------------------"
 Echo "# Update the system"
