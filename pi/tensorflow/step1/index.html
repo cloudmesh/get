@@ -16,14 +16,14 @@ done
 sudo apt-get -y update
 sudo apt-get -y upgrade
 
-# install pip and pip3
-sudo apt-get install python-pip python3-pip
+# install pip3
+sudo apt-get -y install python3-pip
 end_initial=`date +%s`
 time_initial=$((end_initial-start_initial))
 
 # install OpenCV
 start_opencv=`date +%s`
-sudo -H pip install opencv-contrib-python
+sudo -H pip3 install opencv-contrib-python
 end_opencv=`date +%s`
 time_opencv=$((end_opencv-start_opencv))
 
@@ -34,10 +34,10 @@ start_tfsetup=`date +%s`
 sudo pip uninstall tensorflow
 sudo pip3 uninstall tensorflow
 # install the dependencies (if not already onboard)
-sudo apt-get install gfortran
-sudo apt-get install libhdf5-dev libc-ares-dev libeigen3-dev
-sudo apt-get install libatlas-base-dev libopenblas-dev libblas-dev
-sudo apt-get install liblapack-dev
+sudo apt-get -y install gfortran
+sudo apt-get -y install libhdf5-dev libc-ares-dev libeigen3-dev
+sudo apt-get -y install libatlas-base-dev libopenblas-dev libblas-dev
+sudo apt-get -y install liblapack-dev
 # upgrade setuptools 47.1.1 -> 57.0.0
 sudo -H pip3 install --upgrade setuptools
 # utmost important: use only numpy version 1.19.5
