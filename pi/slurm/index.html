@@ -338,7 +338,7 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo chmod -R 777 /clusterfs")
     print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo apt install slurmd slurm-client -y")
+    results = Host.ssh(hosts=workers, command="sudo apt install slurmd slurm-client -y --fix-missing")
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/munge.key /etc/munge/munge.key")
     print(Printer.write(results))
