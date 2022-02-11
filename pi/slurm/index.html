@@ -340,7 +340,7 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='''sudo bash -c "> /etc/apt/sources.list"''')
     print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='''sudo bash -c "echo 'deb http://mirror.us.leaseweb.net/raspbian/raspbian buster main contrib non-free rpi' >> /etc/apt/sources.list"''')
+    results = Host.ssh(hosts=workers, command='''sudo bash -c "echo 'deb http://raspbian.mirrors.wvstateu.edu/raspbian/ buster main contrib non-free rpi' >> /etc/apt/sources.list"''')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo apt-get update -y")
     print(Printer.write(results))
