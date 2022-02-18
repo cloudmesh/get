@@ -352,6 +352,9 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo apt install slurmd slurm-client -y --fix-missing")
     print(Printer.write(results))
+    for entry in results:
+        if 'Could not connect to' in str(entry["stdout"]):
+            return "The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation."
     results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/munge.key /etc/munge/munge.key")
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf")
