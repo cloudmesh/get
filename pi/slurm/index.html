@@ -288,6 +288,8 @@ def step2():
         print(Printer.write(results))
 
     hostexecute("sudo exportfs -a", manager)
+    workerSeparator(workers)
+
     print(listOfWorkers)
     for worker in listOfWorkers:
         print(worker)
@@ -466,7 +468,10 @@ def step4():
         sudo apt update -y
         sudo apt full-upgrade -y
         """)
-    hostexecute(script, workers)        
+    hostexecute(script, workers)
+    workerSeparator(workers)
+
+    print(listOfWorkers)
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
     #
