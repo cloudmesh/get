@@ -194,6 +194,7 @@ def step2():
     #print(Printer.write(results))
     #results = Host.ssh(hosts=manager, command="sudo chmod 777 -R /clusterfs")
     #print(Printer.write(results))
+
     print(os.system(f"sudo blkid {device}"))
     results9 = Host.ssh(hosts=manager, command=f"sudo blkid {device}")
     print(Printer.write(results9))
@@ -241,16 +242,18 @@ def step2():
     if not Preexisting:
         results = Host.ssh(hosts=manager, command=f'''echo "/clusterfs {trueIP}/24(rw,sync,no_root_squash,no_subtree_check)" | sudo tee /etc/exports -a''')
         print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo exportfs -a")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo apt install nfs-common -y")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo mkdir /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo chown nobody.nogroup /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo chmod -R 777 /clusterfs")
-    print(Printer.write(results))
+
+    hostexecute("sudo exportfs -a", manager)
+
+    script = \
+        """
+        sudo apt install nfs-common -y
+        sudo mkdir /clusterfs
+        sudo chown nobody.nogroup /clusterfs
+        sudo chmod -R 777 /clusterfs
+        """
+    hostexecute(script, workers)
+
 
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/fstab''')
     print(Printer.write(results))
@@ -418,12 +421,27 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo apt full-upgrade -y")
     print(Printer.write(results))
+
+    #
+    #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
+    #
+
+    # PPOS ERROR HERE
+    #
+    #
+    #
+
     results = Host.ssh(hosts=workers, command="sudo apt install slurmd slurm-client -y --fix-missing")
     print(Printer.write(results))
     for entry in results:
         if 'Could not connect to' in str(entry["stdout"]):
             banner("The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation.")
             return "The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation."
+
+    #
+    #  HERE IS END OF THAT POTENTIAL ISSUE
+    #
+
     results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/munge.key /etc/munge/munge.key")
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf")
