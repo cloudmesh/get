@@ -289,9 +289,24 @@ def step2():
 
     hostexecute("sudo exportfs -a", manager)
 
+    for worker in listOfWorkers:
+        print(worker)
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=[worker],
+                               command="sudo apt install nfs-common -y")
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = "The script had trouble installing packages. Retrying."
+                    banner(msg)
+                    # return msg
+                    success = False
+            time.sleep(10)
+
     script = textwrap.dedent(
         f"""
-        sudo apt install nfs-common -y
         sudo mkdir /clusterfs
         sudo chown nobody.nogroup /clusterfs
         sudo chmod -R 777 /clusterfs
