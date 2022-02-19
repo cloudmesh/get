@@ -159,11 +159,13 @@ def step1(results):
     #parallel_execute(hosts,"sudo apt install ntpdate -y")
     #results2 = Host.ssh(hosts=hosts, command="sudo apt install ntpdate -y")
     #print(Printer.write(results2))
+    print(listOfWorkers)
     for worker in listOfWorkers:
+        print(worker)
         success = False
         while not success:
             success = True
-            results = Host.ssh(hosts=worker,
+            results = Host.ssh(hosts=[worker],
                                command="sudo apt install ntpdate -y")
             print(Printer.write(results))
             for entry in results:
