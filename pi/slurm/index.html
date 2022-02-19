@@ -289,13 +289,13 @@ def step2():
 
     hostexecute("sudo exportfs -a", manager)
 
-    script = \
-        """
+    script = textwrap.dedent(
+        f"""
         sudo apt install nfs-common -y
         sudo mkdir /clusterfs
         sudo chown nobody.nogroup /clusterfs
         sudo chmod -R 777 /clusterfs
-        """
+        """)
     hostexecute(script, workers)
 
 
@@ -344,7 +344,7 @@ def step3():
     print(hosts)
 
     #now doing actual step 3
-    script = \
+    script = textwrap.dedent(
         f"""
         sudo systemctl status nfs-server.service
         sudo systemctl start nfs-server.service
@@ -356,7 +356,7 @@ def step3():
         sudo sed -i 's/SlurmctldHost=workstation/SlurmctldHost={manager}({trueIP})/g' /etc/slurm-llnl/slurm.conf
         sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf
         cat /proc/sys/kernel/hostname
-    """
+        """)
     hostexecute(script, manager)        
 
     hostnames = []
@@ -391,8 +391,8 @@ def step3():
                            command=f'''echo "NodeName={hostnames[x]} NodeAddr={trueIPs[x]} CPUs={coreCounts[x]} State=UNKNOWN" | sudo tee /etc/slurm-llnl/slurm.conf -a''')
         print(Printer.write(results))
 
-    script = \
-        """
+    script = textwrap.dedent(
+        f"""
         echo "PartitionName=mycluster Nodes={workers} Default=YES MaxTime=INFINITE State=UP" | sudo tee /etc/slurm-llnl/slurm.conf -a
         sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup.conf > ~/cgroup.conf
         sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup_allowed_devices_file.conf > ~/cgroup_allowed_devices_file.conf
@@ -406,7 +406,7 @@ def step3():
         sudo systemctl start munge
         sudo systemctl enable slurmctld
         sudo systemctl start slurmctld
-        """
+        """)
     hostexecute(script, manager)        
 
         
@@ -438,8 +438,8 @@ def step4():
         hostnames.append(currentHostname)
     print(hostnames)
 
-    script = \
-        """
+    script = textwrap.dedent(
+        f"""
         sudo chown nobody.nogroup /clusterfs
         sudo chmod -R 777 /clusterfs
         #
@@ -450,7 +450,7 @@ def step4():
         sudo apt-get update -y
         sudo apt update -y
         sudo apt full-upgrade -y
-        """
+        """)
     hostexecute(script, workers)        
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
@@ -486,8 +486,8 @@ def step4():
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
 
-    script = \
-        """
+    script = textwrap.dedent(
+        f"""
         sudo cp /clusterfs/munge.key /etc/munge/munge.key
         sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf
         sudo cp /clusterfs/cgroup* /etc/slurm-llnl
@@ -495,14 +495,14 @@ def step4():
         sudo systemctl start munge
         sudo systemctl enable slurmd
         sudo systemctl start slurmd
-        """
+        """)
     hostexecute(script, workers)
     
-    script = \
-        """
+    script = textwrap.dedent(
+        f"""
         sinfo
         sudo sed -i 's/ReturnToService=1/ReturnToService=2/' /etc/slurm-llnl/slurm.conf
-        """
+        """)
     hostexecute(script, manager)
         
     banner("Slurm installed")
