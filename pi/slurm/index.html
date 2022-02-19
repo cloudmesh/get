@@ -306,26 +306,21 @@ def step3():
     print(hosts)
 
     #now doing actual step 3
-    results = Host.ssh(hosts=manager, command="sudo systemctl status nfs-server.service")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo systemctl start nfs-server.service")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo mount -a")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo apt install slurm-wlm -y")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo cp /usr/share/doc/slurm-client/examples/slurm.conf.simple.gz /etc/slurm-llnl")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo gzip -d /etc/slurm-llnl/slurm.conf.simple.gz")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo mv /etc/slurm-llnl/slurm.conf.simple /etc/slurm-llnl/slurm.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command=f'''sudo sed -i 's/SlurmctldHost=workstation/SlurmctldHost={manager}({trueIP})/g' /etc/slurm-llnl/slurm.conf''')
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command=f'''sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf''')
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="cat /proc/sys/kernel/hostname")
-    print(Printer.write(results))
+    script = \
+        f"""
+        sudo systemctl status nfs-server.service
+        sudo systemctl start nfs-server.service
+        sudo mount -a
+        sudo apt install slurm-wlm -y
+        sudo cp /usr/share/doc/slurm-client/examples/slurm.conf.simple.gz /etc/slurm-llnl
+        sudo gzip -d /etc/slurm-llnl/slurm.conf.simple.gz
+        sudo mv /etc/slurm-llnl/slurm.conf.simple /etc/slurm-llnl/slurm.conf
+        sudo sed -i 's/SlurmctldHost=workstation/SlurmctldHost={manager}({trueIP})/g' /etc/slurm-llnl/slurm.conf
+        sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf
+        cat /proc/sys/kernel/hostname
+    """
+    hostexecute(script, manager)        
+
     hostnames = []
     for entry in results:
         currentHostname = str(entry["stdout"])
@@ -357,32 +352,26 @@ def step3():
         results = Host.ssh(hosts=manager,
                            command=f'''echo "NodeName={hostnames[x]} NodeAddr={trueIPs[x]} CPUs={coreCounts[x]} State=UNKNOWN" | sudo tee /etc/slurm-llnl/slurm.conf -a''')
         print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command=f'''echo "PartitionName=mycluster Nodes={workers} Default=YES MaxTime=INFINITE State=UP" | sudo tee /etc/slurm-llnl/slurm.conf -a''')
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup.conf > ~/cgroup.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup_allowed_devices_file.conf > ~/cgroup_allowed_devices_file.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo cp ~/cgroup.conf /etc/slurm-llnl/cgroup.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo cp ~/cgroup_allowed_devices_file.conf /etc/slurm-llnl/cgroup_allowed_devices_file.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo rm ~/cgroup.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo rm ~/cgroup_allowed_devices_file.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo cp /etc/slurm-llnl/slurm.conf /etc/slurm-llnl/cgroup.conf /etc/slurm-llnl/cgroup_allowed_devices_file.conf /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo cp /etc/munge/munge.key /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo systemctl enable munge")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo systemctl start munge")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo systemctl enable slurmctld")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo systemctl start slurmctld")
-    print(Printer.write(results))
+
+    script = \
+        """
+        echo "PartitionName=mycluster Nodes={workers} Default=YES MaxTime=INFINITE State=UP" | sudo tee /etc/slurm-llnl/slurm.conf -a
+        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup.conf > ~/cgroup.conf
+        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup_allowed_devices_file.conf > ~/cgroup_allowed_devices_file.conf
+        sudo cp ~/cgroup.conf /etc/slurm-llnl/cgroup.conf
+        sudo cp ~/cgroup_allowed_devices_file.conf /etc/slurm-llnl/cgroup_allowed_devices_file.conf
+        sudo rm ~/cgroup.conf
+        sudo rm ~/cgroup_allowed_devices_file.conf
+        sudo cp /etc/slurm-llnl/slurm.conf /etc/slurm-llnl/cgroup.conf /etc/slurm-llnl/cgroup_allowed_devices_file.conf /clusterfs
+        sudo cp /etc/munge/munge.key /clusterfs
+        sudo systemctl enable munge
+        sudo systemctl start munge
+        sudo systemctl enable slurmctld
+        sudo systemctl start slurmctld
+        """
+    hostexecute(script, manager)        
+
+        
     results3 = Host.ssh(hosts=hosts, command="touch step3")
     print(Printer.write(results3))
     print("cms host reboot "+hosts)
@@ -411,23 +400,20 @@ def step4():
         hostnames.append(currentHostname)
     print(hostnames)
 
-    results = Host.ssh(hosts=workers, command="sudo chown nobody.nogroup /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo chmod -R 777 /clusterfs")
-    print(Printer.write(results))
-    #results = Host.ssh(hosts=workers, command='''sudo bash -c "echo 'nameserver 8.8.8.8 8.8.4.4' >> /etc/resolv.conf"''')
-    #print(Printer.write(results))
-    #results = Host.ssh(hosts=workers, command='''sudo bash -c "> /etc/apt/sources.list"''')
-    #print(Printer.write(results))
-    #results = Host.ssh(hosts=workers, command='''sudo bash -c "echo 'deb http://raspbian.mirrors.wvstateu.edu/raspbian/ buster main contrib non-free rpi' >> /etc/apt/sources.list"''')
-    #print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo apt-get update -y")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo apt update -y")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo apt full-upgrade -y")
-    print(Printer.write(results))
-
+    script = \
+        """
+        sudo chown nobody.nogroup /clusterfs
+        sudo chmod -R 777 /clusterfs
+        #
+        # sudo bash -c "echo 'nameserver 8.8.8.8 8.8.4.4' >> /etc/resolv.conf"
+        # sudo bash -c "> /etc/apt/sources.list"
+        # sudo bash -c "echo 'deb http://raspbian.mirrors.wvstateu.edu/raspbian/ buster main contrib non-free rpi' >> /etc/apt/sources.list"
+        #
+        sudo apt-get update -y
+        sudo apt update -y
+        sudo apt full-upgrade -y
+        """
+    hostexecute(script, workers)        
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
     #
@@ -462,24 +448,25 @@ def step4():
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
 
-    results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/munge.key /etc/munge/munge.key")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo cp /clusterfs/cgroup* /etc/slurm-llnl")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo systemctl enable munge")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo systemctl start munge")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo systemctl enable slurmd")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo systemctl start slurmd")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sinfo")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command="sudo sed -i 's/ReturnToService=1/ReturnToService=2/' /etc/slurm-llnl/slurm.conf")
-    print(Printer.write(results))
+    script = \
+        """
+        sudo cp /clusterfs/munge.key /etc/munge/munge.key
+        sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf
+        sudo cp /clusterfs/cgroup* /etc/slurm-llnl
+        sudo systemctl enable munge
+        sudo systemctl start munge
+        sudo systemctl enable slurmd
+        sudo systemctl start slurmd
+        """
+    hostexecute(script, workers)
+    
+    script = \
+        """
+        sinfo
+        sudo sed -i 's/ReturnToService=1/ReturnToService=2/' /etc/slurm-llnl/slurm.conf
+        """
+    hostexecute(script, manager)
+        
     banner("Slurm installed")
     results3 = Host.ssh(hosts=hosts, command="touch step4")
     print(Printer.write(results3))
