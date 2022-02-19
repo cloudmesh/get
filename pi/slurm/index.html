@@ -262,9 +262,10 @@ def step2():
         sudo chown nobody.nogroup -R /clusterfs
         sudo chmod -R 766 /clusterfs
         sudo apt install nfs-kernel-server -y
-        /sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2
         """)
     hostexecute(script, manager)
+    results = Host.ssh(hosts=manager, command=f'''/sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2''')
+    print(Printer.write(results))
     for entry in results:
         print(str(entry["stdout"]))
         ipaddress = str(entry["stdout"])
@@ -524,7 +525,8 @@ def step4():
             print(Printer.write(results))
             for entry in results:
                 if 'Could not connect to' in str(entry["stdout"]):
-                    msg = "The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation."
+                    msg = "The SLURM script could not install needed packages, but will try again. " \
+                          "Please consult the Known Issues section of the documentation."
                     banner(msg)
                     # return msg
                     success = False
