@@ -533,6 +533,7 @@ def step4():
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
 
+    '''
     script = textwrap.dedent(
         f"""
         sudo cp /clusterfs/munge.key /etc/munge/munge.key
@@ -544,6 +545,21 @@ def step4():
         sudo systemctl start slurmd
         """)
     hostexecute(script, workers)
+    '''
+    results = Host.ssh(hosts=workers, command='sudo cp /clusterfs/munge.key /etc/munge/munge.key')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo cp /clusterfs/cgroup* /etc/slurm-llnl')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo systemctl enable munge')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo systemctl start munge')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo systemctl enable slurmd')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo systemctl start slurmd')
+    print(Printer.write(results))
     
     script = textwrap.dedent(
         f"""
