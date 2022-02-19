@@ -90,6 +90,12 @@ def hostexecute(script, manager):
 
 ## Beginning to define SLURM installation
 
+#input
+# basename = "red"
+# no workers = "03" # "3" "01000" 00001-01000
+#output
+# red000  -> red, red001, red002, red003
+
 def step0():
     banner("Welcome to Slurm Installation. Initializing preliminary steps.")
     print("We assume that your manager and workers follow the 'red' naming schema.")
@@ -185,7 +191,7 @@ def step2():
         sudo chmod 777 -R /clusterfs
         """).strip()
     hostexecute(script, manager)
-       
+
     #results = Host.ssh(hosts=manager, command=f"sudo mkfs.ext4 -F {device}")
     #print(Printer.write(results))
     #results = Host.ssh(hosts=manager, command="sudo mkdir /clusterfs")
@@ -429,15 +435,29 @@ def step4():
     # PPOS ERROR HERE
     #
     #
+    # Err:3 http://raspbian.mirror.constant.com/raspbian buster/main armhf fonts-dejavu-core all 2.37-1
+    # Could not connect to raspbian.mirror.constant.com:80 (2001:19f0:1595:1403::1087),
+    # connection timed out Could not connect to raspbian.mirror.constant.com:80 (108.61.5.87), connection timed out
+
+
     #
-
-    results = Host.ssh(hosts=workers, command="sudo apt install slurmd slurm-client -y --fix-missing")
-    print(Printer.write(results))
-    for entry in results:
-        if 'Could not connect to' in str(entry["stdout"]):
-            banner("The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation.")
-            return "The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation."
-
+    # this is no longer executed in parallel, but for each worker one by one. We coudl use a process pool to avoid
+    # restrictions on the mirror that may limit parallel connections
+    #
+    for worker in workers:
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=[worker],
+                               command="sudo apt install slurmd slurm-client -y --fix-missing")
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = "The SLURM script could not install needed packages. Please consult the Known Issues section of the documentation."
+                    banner(msg)
+                    # return msg
+                    success = False
+            time.sleep(10)
     #
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
