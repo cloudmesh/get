@@ -371,7 +371,26 @@ def step3():
         sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf
         cat /proc/sys/kernel/hostname
         """)
-    hostexecute(script, manager)        
+    hostexecute(script, manager)
+
+    workerSeparator(workers)
+
+    print(listOfWorkers)
+    for worker in listOfWorkers:
+        print(worker)
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=[worker],
+                               command="sudo apt install nfs-common -y")
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = "The script had trouble installing packages. Retrying."
+                    banner(msg)
+                    # return msg
+                    success = False
+            time.sleep(10)
 
     hostnames = []
     for entry in results:
@@ -451,7 +470,7 @@ def step4():
         currentHostname = str(entry["stdout"])
         hostnames.append(currentHostname)
     print(hostnames)
-
+    '''
     script = textwrap.dedent(
         f"""
         sudo chown nobody.nogroup /clusterfs
@@ -466,6 +485,17 @@ def step4():
         sudo apt full-upgrade -y
         """)
     hostexecute(script, workers)
+    '''
+    results = Host.ssh(hosts=workers, command='sudo chown nobody.nogroup /clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo chmod -R 777 /clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo apt-get update -y')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo apt update -y')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo apt full-upgrade -y')
+    print(Printer.write(results))
     workerSeparator(workers)
 
     print(listOfWorkers)
