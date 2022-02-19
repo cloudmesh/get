@@ -306,16 +306,12 @@ def step2():
                     # return msg
                     success = False
             time.sleep(10)
-
-    print(f"this is the workers: {workers}")
-    script = textwrap.dedent(
-        f"""
-        sudo mkdir /clusterfs
-        sudo chown nobody.nogroup /clusterfs
-        sudo chmod -R 777 /clusterfs
-        """)
-    hostexecute(script, workers)
-
+    results = Host.ssh(hosts=workers, command="sudo mkdir /clusterfs")
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command="sudo chown nobody.nogroup /clusterfs")
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command="sudo chmod -R 777 /clusterfs")
+    print(Printer.write(results))
 
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/fstab''')
     print(Printer.write(results))
