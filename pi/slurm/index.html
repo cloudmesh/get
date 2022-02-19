@@ -288,7 +288,7 @@ def step2():
         print(Printer.write(results))
 
     hostexecute("sudo exportfs -a", manager)
-
+    print(listOfWorkers)
     for worker in listOfWorkers:
         print(worker)
         success = False
