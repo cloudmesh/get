@@ -226,7 +226,7 @@ def step2():
         sudo chmod -R 766 /clusterfs
         sudo apt install nfs-kernel-server -y
         /sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2
-        """
+        """)
     hostexecute(script, manager)
     for entry in results:
         print(str(entry["stdout"]))
