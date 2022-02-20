@@ -106,6 +106,11 @@ def workerSeparator(name):
         listOfWorkers.append(f"{s0}{n}")
 
 
+def managerNamer():
+    print(os.system("hostname"))
+    manager = print(os.system("hostname"))
+    print(f"The hostname of the manager is taken to be {manager} \n")
+
 ## Beginning to define SLURM installation
 
 #input
@@ -115,10 +120,13 @@ def workerSeparator(name):
 # red000  -> red, red001, red002, red003
 
 def step0():
-    banner("Welcome to Slurm Installation. Initializing preliminary steps.")
-    print("We assume that your manager and workers follow the 'red' naming schema.")
-    user_input_workers = input(str('''Please enter the naming schema of your red workers. For example, if you have 3\n
-    workers then enter "red0[1-3]". Another example for 7 workers is "red0[1-7]" (do not include quotation marks):\n'''))
+    banner("Welcome to SLURM Installation. Initializing preliminary steps.")
+    print("We assume that you run this script on the manager Pi and that your worker naming schema follows \n"
+          "an incremental naming schema.")
+    managerNamer()
+    user_input_workers = input(str('''Please enter the naming schema of your workers. For example, if you have 3\n
+        workers then enter "red0[1-3]". Another example for 7 workers is "red0[1-7]" (do not include 
+        quotation marks): \n'''))
 
     results = Host.ssh(hosts=manager, command="touch user_input_workers")
     print(Printer.write(results))
