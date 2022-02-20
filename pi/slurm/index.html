@@ -19,6 +19,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import yn_choice
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common import JobMultiHostScript
 from pprint import pprint
 import os
 import sys
@@ -141,8 +142,8 @@ def step0():
 
     hosts = hostsVariable(manager,workers)
 
-    results3 = Host.ssh(hosts=hosts, command="touch step0")
-    print(Printer.write(results3))
+    results = Host.ssh(hosts=hosts, command="touch step0")
+    print(Printer.write(results))
 
 def step1(results):
     # intro and asking for workers from user
@@ -302,11 +303,12 @@ def step2():
                     # return msg
                     success = False
             time.sleep(10)
-    results = Host.ssh(hosts=workers, command="sudo mkdir /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo chown nobody.nogroup /clusterfs")
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command="sudo chmod -R 777 /clusterfs")
+    script = """
+    sudo mkdir /clusterfs
+    sudo chown nobody.nogroup /clusterfs
+    sudo chmod -R 777 /clusterfs
+    """
+    results = JobMultiHostScript(script, "script_name", listOfWorkers)
     print(Printer.write(results))
 
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/fstab''')
@@ -451,6 +453,21 @@ def step4():
         """)
     hostexecute(script, workers)
     '''
+
+    listOfWorkers = Parameter.expand(workers)
+
+    banner("Now attempting to update packages. This may take a while.")
+    script = """
+        sudo chown nobody.nogroup /clusterfs
+        sudo chmod -R 777 /clusterfs
+        sudo apt-get update -y
+        sudo apt update -y
+        sudo apt full-upgrade -y
+        """
+    results = JobMultiHostScript(script, "script_name", listOfWorkers)
+    print(Printer.write(results))
+    # just take out this next redundant block if the above works
+    '''
     results = Host.ssh(hosts=workers, command='sudo chown nobody.nogroup /clusterfs')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo chmod -R 777 /clusterfs')
@@ -461,11 +478,8 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo apt full-upgrade -y')
     print(Printer.write(results))
+    '''
 
-    # make array with list of workers
-    listOfWorkers = Parameter.expand(workers)
-
-    print(listOfWorkers)
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
     #
