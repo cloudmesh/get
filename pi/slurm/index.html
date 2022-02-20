@@ -313,7 +313,7 @@ def step2():
     sudo chown nobody.nogroup /clusterfs
     sudo chmod -R 777 /clusterfs
     """
-    results = JobMultiHostScript(script, "script_name", listOfWorkers)
+    results = JobMultiHostScript.execute(script, "script_name", listOfWorkers)
     print(Printer.write(results))
 
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/fstab''')
@@ -466,7 +466,7 @@ def step4():
         sudo apt update -y
         sudo apt full-upgrade -y
         """
-    results = JobMultiHostScript(script, "script_name", listOfWorkers)
+    results = JobMultiHostScript.execute(script, "script_name", listOfWorkers)
     print(Printer.write(results))
     # just take out this next redundant block if the above works
     '''
