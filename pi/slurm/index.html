@@ -138,6 +138,21 @@ def get_IP(manager):
     print(trueIP)
     return trueIP
 
+# function that checks to see if a step has been run
+def check_step(step_number, device):
+    step_number_string = str(step_number)
+    just_the_step = f"step{step_number_string}"
+    changed_command = f"ls step{step_number_string}"
+    results = Host.ssh(hosts=device, command=changed_command)
+    print(Printer.write(results))
+    step_done = True
+    for entry in results:
+        if just_the_step in str(entry["stdout"]) and 'cannot access' in str(entry["stdout"]):
+            step_done = False
+            entry["stderr"] = "False"
+    return step_done
+
+
 # Beginning to define SLURM installation
 
 # input
@@ -171,12 +186,11 @@ def step0():
     StopWatch.stop("Current section time")
     StopWatch.benchmark()
 
-def step1(results):
+def step1():
     StopWatch.start("Current section time")
     # intro and asking for workers from user
     banner("Initializing Step 1 now.")
     manager = managerNamer()
-    print(Printer.write(results))
 
     workers = read_user_input_workers(manager)
 
@@ -565,98 +579,41 @@ def step4():
 
 #StopWatch.start("Total Runtime")
 
-banner("SLURM on Raspberry Pi Cluster Installation")
-manager = managerNamer()
-results9001 = Host.ssh(hosts=manager, command="ls step0")
-print(Printer.write(results9001))
-step0done = True
-for entry in results9001:
-    if 'step0' in str(entry["stdout"]) and 'cannot access' in str(entry["stdout"]):
-        step0done = False
-        entry["stderr"] = "False"
+# Here begins the script aside from the function definitions. In this part we run the steps by calling functions.
 
+banner("SLURM on Raspberry Pi Cluster Installation")
+
+# executing reading of device names.
+
+manager = managerNamer()
+
+step0done = check_step(0, manager)
 if not step0done:
     step0()
 
-# executing reading of workers
 workers = read_user_input_workers(manager)
 
-hosts = hostsVariable(manager,workers)
+hosts = hostsVariable(manager, workers)
 
-results = Host.ssh(hosts=hosts,command="ls step1")
-
-completed = True
-for entry in results:
-    if 'step1' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-        completed = False
-        entry["stderr"] = "False"
-if completed:
-    banner("Step 1 is done.")
-    pprint(results)
-    results42 = Host.ssh(hosts=hosts, command="ls step2")
-    completedSecondStep = True
-    for entry in results42:
-        if 'step2' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-            completedSecondStep = False
-            entry["stderr"] = "False"
-    if completedSecondStep:
-        banner("Step 2 is done.")
-    if not completedSecondStep:
-        banner("Step 2 is not done. Performing Step 2 now.")
-        step2()
-if not completed:
+step1done = check_step(1, hosts)
+if not step1done:
     banner("Step 1 is not done. Performing step 1 now.")
-    step1(results)
-    #os.system('touch step1')
-
-
-results42 = Host.ssh(hosts=hosts,command="ls step2")
-completed2 = True
-for entry in results42:
-    if 'step2' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-        completed2 = False
-        entry["stderr"]="False"
-if completed2:
-    banner("Step 2 is done.")
-    pprint(results42)
-    results43 = Host.ssh(hosts=hosts, command="ls step3")
-    completedThirdStep = True
-    for entry in results43:
-        if 'step3' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-            completedThirdStep = False
-            entry["stderr"] = "False"
-    if not completedThirdStep:
-        banner("Step 3 is not done. Performing step 3")
-        step3()
-if not completed2:
+    step1()
+step2done = check_step(2, hosts)
+if not step2done:
     banner("Step 2 is not done. Performing step 2 now.")
     step2()
-    #os.system('touch step2')
-
-results50 = Host.ssh(hosts=hosts,command="ls step3")
-completedThirdStep = True
-for entry in results50:
-    if 'step3' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-        completedThirdStep = False
-        entry["stderr"]="False"
-if completedThirdStep:
-    banner("Step 3 is done.")
-if not completedThirdStep:
+step3done = check_step(3, hosts)
+if not step3done:
     banner("Step 3 is not done. Performing step 3 now.")
     step3()
-
-results51 = Host.ssh(hosts=hosts,command="ls step4")
-completedFourthStep = True
-for entry in results51:
-    if 'step4' in str(entry["stderr"]) and 'cannot access' in str(entry["stderr"]):
-        completedFourthStep = False
-        entry["stderr"]="False"
-if completedFourthStep:
-    banner("Step 4 is done so SLURM should already be installed.")
-if not completedFourthStep:
-    banner("Step 4 is not done. Executing step 4 now.")
+step4done = check_step(4, hosts)
+if not step4done:
+    banner("Step 4 is not done. Performing step 4 now.")
     step4()
-
+if step4done:
+    banner("SLURM should already be installed. You can remove the step files from the"
+           "current working directory to restart the script. Try issuing command $ rm step[0-4]")
 
 
 '''
