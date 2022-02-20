@@ -25,6 +25,7 @@ import sys
 import re
 import textwrap
 import time
+import subprocess
 from cloudmesh.burn.usb import USB
 from cloudmesh.burn.sdcard import SDCard
 
@@ -107,9 +108,8 @@ def workerSeparator(name):
 
 
 def managerNamer():
-    print(os.system("hostname"))
-    manager = print(os.system("hostname"))
-    print(f"The hostname of the manager is taken to be {manager} \n")
+    managerName = subprocess.run(['hostname'], capture_output=True, text=True).stdout
+    print(f"The hostname of the manager is taken to be {managerName} \n")
 
 ## Beginning to define SLURM installation
 
