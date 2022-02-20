@@ -122,11 +122,11 @@ def managerNamer():
 
 def step0():
     banner("Welcome to SLURM Installation. Initializing preliminary steps.")
-    print("We assume that you run this script on the manager Pi and that your worker naming schema follows \n"
-          "an incremental naming schema. \n")
+    print("We assume that you run this script on the manager Pi and that your worker naming schema is \n"
+          "incremental in nature. \n")
     manager = managerNamer()
     user_input_workers = input(str('''Please enter the naming schema of your workers. For example, if you have 3 
-        workers then enter "red0[1-3]". Another example for 7 workers is "red0[1-7]" (do not include 
+        workers then enter "red0[1-3]". Another example for 7 workers is "worker[1-7]" (do not include
         quotation marks): \n'''))
 
     results = Host.ssh(hosts=manager, command="touch user_input_workers")
