@@ -115,6 +115,12 @@ def read_user_input_workers(manager):
         workers = str(entry["stdout"])
         return workers
 
+# tell user to ssh back to manager on reboot and reboot
+def tell_user_rebooting():
+    banner('''The cluster is rebooting. Wait a minute for the Pis to come back online and ssh into the manager. Then,'''
+           '''rerun the script by issuing "python3 slurm.py" to continue.''')
+    os.system("cms host reboot "+hosts)
+
 # Beginning to define SLURM installation
 
 # input
@@ -155,6 +161,7 @@ def step1(results):
 
     hosts = hostsVariable(manager,workers)
 
+    banner("Now updating packages. This may take a while.")
     results = Host.ssh(hosts=hosts, command="sudo apt-get update")
     print(Printer.write(results))
     #parallel_execute(hosts,"sudo apt install ntpdate -y")
@@ -166,7 +173,7 @@ def step1(results):
 
     print(listOfWorkers)
     for worker in listOfWorkers:
-        print(worker)
+        print(f"Now updating ntpdate module for {worker}.")
         success = False
         while not success:
             success = True
@@ -180,11 +187,9 @@ def step1(results):
                     # return msg
                     success = False
             time.sleep(10)
-    results3 = Host.ssh(hosts=hosts, command="touch step1")
-    print(Printer.write(results3))
-    print("cms host reboot "+hosts)
-    os.system("cms host reboot "+hosts)
-    #results4 = Host.ssh(hosts=hosts,command="sudo shutdown -r now")
+    results = Host.ssh(hosts=hosts, command="touch step1")
+    print(Printer.write(results))
+    tell_user_rebooting()
 
 
 def step2():
@@ -320,10 +325,9 @@ def step2():
     if not Preexisting:
         results = Host.ssh(hosts=workers, command=f'''echo "{trueIP}:/clusterfs    /clusterfs    nfs    defaults   0 0" | sudo tee /etc/fstab -a''')
         print(Printer.write(results))
-    results3 = Host.ssh(hosts=hosts, command="touch step2")
-    print(Printer.write(results3))
-    print("cms host reboot "+hosts)
-    os.system("cms host reboot "+hosts)
+    results = Host.ssh(hosts=hosts, command="touch step2")
+    print(Printer.write(results))
+    tell_user_rebooting()
 
 
 def step3():
@@ -415,11 +419,9 @@ def step3():
         """)
     hostexecute(script, manager)        
 
-        
-    results3 = Host.ssh(hosts=hosts, command="touch step3")
-    print(Printer.write(results3))
-    print("cms host reboot "+hosts)
-    os.system("cms host reboot "+hosts)
+    results = Host.ssh(hosts=hosts, command="touch step3")
+    print(Printer.write(results))
+    tell_user_rebooting()
 
 
 def step4():
@@ -580,16 +582,9 @@ if not step0done:
     step0()
 
 # executing reading of workers
-results = Host.ssh(hosts=manager, command='cat user_input_workers')
-print(Printer.write(results))
-for entry in results:
-    print(str(entry["stdout"]))
-    workers = str(entry["stdout"])
+workers = read_user_input_workers()
 
-# formulating hosts variable which has manager AND workers
-hosts = f'''{manager}'''+f''',{workers}'''
-hosts = str(hosts)
-print(hosts)
+hosts = hostsVariable(manager,workers)
 
 results = Host.ssh(hosts=hosts,command="ls step1")
 
