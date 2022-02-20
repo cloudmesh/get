@@ -108,7 +108,7 @@ def workerSeparator(name):
 
 
 def managerNamer():
-    manager = subprocess.run(['hostname'], capture_output=True, text=True).stdout
+    manager = subprocess.run(['hostname'], capture_output=True, text=True).stdout.strip()
     print(f"The hostname of the manager is taken to be {manager} \n")
     return manager
 
