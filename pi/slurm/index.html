@@ -120,6 +120,24 @@ def tell_user_rebooting():
            ''' rerun the script by issuing "python3 slurm.py" to continue.''')
     os.system("cms host reboot "+hosts)
 
+# function that returns ip of pi
+def get_IP(manager):
+    results = Host.ssh(hosts=manager, command="/sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2")
+    print(Printer.write(results))
+    for entry in results:
+        print(str(entry["stdout"]))
+        ipaddress = str(entry["stdout"])
+    print(ipaddress)
+    ipaddress2 = ipaddress.replace('inet ', '')
+    print(ipaddress2)
+    ipaddress3 = ipaddress2.split(' ')
+    print(ipaddress3)
+    ipaddress4 = [x for x in ipaddress3 if x]
+    print(ipaddress4)
+    trueIP = ipaddress4[0]
+    print(trueIP)
+    return trueIP
+
 # Beginning to define SLURM installation
 
 # input
@@ -129,6 +147,7 @@ def tell_user_rebooting():
 #  red000  -> red, red001, red002, red003
 
 def step0():
+    StopWatch.start("Current section time")
     banner("Welcome to SLURM Installation. Initializing preliminary steps.")
     print("We assume that you run this script on the manager Pi and that your worker naming schema is \n"
           "incremental in nature. \n")
@@ -149,8 +168,11 @@ def step0():
 
     results = Host.ssh(hosts=hosts, command="touch step0")
     print(Printer.write(results))
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
 
 def step1(results):
+    StopWatch.start("Current section time")
     # intro and asking for workers from user
     banner("Initializing Step 1 now.")
     manager = managerNamer()
@@ -188,11 +210,14 @@ def step1(results):
             time.sleep(10)
     results = Host.ssh(hosts=hosts, command="touch step1")
     print(Printer.write(results))
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
     tell_user_rebooting()
 
 
 def step2():
-    banner("Step 2")
+    StopWatch.start("Current section time")
+    banner("Initializing Step 2 now.")
     manager = managerNamer()
     if not yn_choice('Please insert USB storage medium into top USB 3.0 (blue) port on manager pi and press y when done'):
         Console.error("You pressed no but the script is continuing as normal...")
@@ -262,20 +287,7 @@ def step2():
         sudo apt install nfs-kernel-server -y
         """)
     hostexecute(script, manager)
-    results = Host.ssh(hosts=manager, command=f'''/sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2''')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        ipaddress = str(entry["stdout"])
-    print(ipaddress)
-    ipaddress2 = ipaddress.replace('inet ', '')
-    print(ipaddress2)
-    ipaddress3 = ipaddress2.split(' ')
-    print(ipaddress3)
-    ipaddress4 = [x for x in ipaddress3 if x]
-    print(ipaddress4)
-    trueIP = ipaddress4[0]
-    print(trueIP)
+    trueIP = get_IP(manager)
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/exports''')
     print(Printer.write(results))
     for entry in results:
@@ -325,26 +337,18 @@ def step2():
         print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command="touch step2")
     print(Printer.write(results))
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
     tell_user_rebooting()
 
 
 def step3():
-    #getting ip in case step 2 has not run
+    StopWatch.start("Current section time")
+    banner("Initializing Step 3 now.")
+
     manager = managerNamer()
-    results = Host.ssh(hosts=manager, command="/sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2")
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        ipaddress = str(entry["stdout"])
-    print(ipaddress)
-    ipaddress2 = ipaddress.replace('inet ', '')
-    print(ipaddress2)
-    ipaddress3 = ipaddress2.split(' ')
-    print(ipaddress3)
-    ipaddress4 = [x for x in ipaddress3 if x]
-    print(ipaddress4)
-    trueIP = ipaddress4[0]
-    print(trueIP)
+    # getting ip in case step 2 has not run
+    trueIP = get_IP(manager)
 
     # executing reading of workers
     workers = read_user_input_workers(manager)
@@ -419,10 +423,14 @@ def step3():
 
     results = Host.ssh(hosts=hosts, command="touch step3")
     print(Printer.write(results))
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
     tell_user_rebooting()
 
 
 def step4():
+    StopWatch.start("Current section time")
+    banner("Initializing Step 4 now.")
     manager = managerNamer()
     # executing reading of workers
     workers = read_user_input_workers(manager)
@@ -539,7 +547,9 @@ def step4():
         sudo sed -i 's/ReturnToService=1/ReturnToService=2/' /etc/slurm-llnl/slurm.conf
         """)
     hostexecute(script, manager)
-        
+
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
     banner("SLURM is now installed.")
     results = Host.ssh(hosts=hosts, command="touch step4")
     print(Printer.write(results))
@@ -630,7 +640,7 @@ for entry in results50:
         completedThirdStep = False
         entry["stderr"]="False"
 if completedThirdStep:
-    banner("Third step is done")
+    banner("Step 3 is done.")
 if not completedThirdStep:
     banner("Step 3 is not done. Performing step 3 now.")
     step3()
@@ -642,7 +652,7 @@ for entry in results51:
         completedFourthStep = False
         entry["stderr"]="False"
 if completedFourthStep:
-    banner("Step 4 is done so slurm should already be installed")
+    banner("Step 4 is done so SLURM should already be installed.")
 if not completedFourthStep:
     banner("Step 4 is not done. Executing step 4 now.")
     step4()
