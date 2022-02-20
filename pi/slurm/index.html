@@ -29,9 +29,9 @@ import subprocess
 from cloudmesh.burn.usb import USB
 from cloudmesh.burn.sdcard import SDCard
 
-hosts = "red,red0[1-3]"
-workers = "red0[1-3]"
-manager = "red"
+#hosts = "red,red0[1-3]"
+#workers = "red0[1-3]"
+#manager = "red"
 listOfWorkers = []
 
 ## Defining repeat attempt function
@@ -108,8 +108,9 @@ def workerSeparator(name):
 
 
 def managerNamer():
-    managerName = subprocess.run(['hostname'], capture_output=True, text=True).stdout
-    print(f"The hostname of the manager is taken to be {managerName} \n")
+    manager = subprocess.run(['hostname'], capture_output=True, text=True).stdout
+    print(f"The hostname of the manager is taken to be {manager} \n")
+    return manager
 
 ## Beginning to define SLURM installation
 
@@ -123,7 +124,7 @@ def step0():
     banner("Welcome to SLURM Installation. Initializing preliminary steps.")
     print("We assume that you run this script on the manager Pi and that your worker naming schema follows \n"
           "an incremental naming schema. \n")
-    managerNamer()
+    manager = managerNamer()
     user_input_workers = input(str('''Please enter the naming schema of your workers. For example, if you have 3 
         workers then enter "red0[1-3]". Another example for 7 workers is "red0[1-7]" (do not include 
         quotation marks): \n'''))
@@ -150,6 +151,7 @@ def step0():
 def step1(results):
     # intro and asking for workers from user
     banner("Initializing Step 1 now.")
+    manager = managerNamer()
     print(Printer.write(results))
     results = Host.ssh(hosts=manager, command='cat user_input_workers')
     print(Printer.write(results))
@@ -196,6 +198,7 @@ def step1(results):
 
 def step2():
     banner("Step 2")
+    manager = managerNamer()
     if not yn_choice('Please insert USB storage medium into top USB 3.0 (blue) port on manager pi and press y when done'):
         Console.error("You pressed no but the script is continuing as normal...")
         return ""
@@ -339,6 +342,7 @@ def step2():
 
 def step3():
     #getting ip in case step 2 has not run
+    manager = managerNamer()
     results = Host.ssh(hosts=manager, command="/sbin/ifconfig eth0 | grep 'inet' | cut -d: -f2")
     print(Printer.write(results))
     for entry in results:
@@ -440,6 +444,7 @@ def step3():
 
 
 def step4():
+    manager = managerNamer()
     # executing reading of workers
     results = Host.ssh(hosts=manager, command='cat user_input_workers')
     print(Printer.write(results))
@@ -515,7 +520,7 @@ def step4():
             for entry in results:
                 if 'Could not connect to' in str(entry["stdout"]):
                     msg = "The SLURM script could not install needed packages, but will try again. " \
-                          "Please consult the Known Issues section of the documentation."
+                          "This is expected behavior and it should fix itself within a few minutes."
                     banner(msg)
                     # return msg
                     success = False
@@ -563,7 +568,9 @@ def step4():
     results3 = Host.ssh(hosts=hosts, command="touch step4")
     print(Printer.write(results3))
     print("Rebooting cluster now.")
-    banner("After successful reboot, ssh back into manager and test slurm by issuing $ srun --nodes=3 hostname (change 3 to number of nodes if necessary)")
+    banner("After successful reboot, ssh back into manager and test SLURM by issuing $ srun --nodes=3 hostname "
+           "(change 3 to number of nodes if necessary). If it does not work right away, wait a minute for the "
+           "nodes to come back online.\n")
     os.system("cms host reboot "+hosts)
 
 
@@ -572,7 +579,8 @@ def step4():
 
 #StopWatch.start("Total Runtime")
 
-banner("Slurm on Raspberry Pi Cluster Installation")
+banner("SLURM on Raspberry Pi Cluster Installation")
+manager = managerNamer()
 results9001 = Host.ssh(hosts=manager, command="ls step0")
 print(Printer.write(results9001))
 step0done = True
@@ -655,7 +663,7 @@ for entry in results50:
 if completedThirdStep:
     banner("Third step is done")
 if not completedThirdStep:
-    banner("Third step is not done. Executing third step now")
+    banner("Step 3 is not done. Performing step 3 now.")
     step3()
 
 results51 = Host.ssh(hosts=hosts,command="ls step4")
@@ -665,9 +673,9 @@ for entry in results51:
         completedFourthStep = False
         entry["stderr"]="False"
 if completedFourthStep:
-    banner("Fourth step is done so slurm should already be installed")
+    banner("Step 4 is done so slurm should already be installed")
 if not completedFourthStep:
-    banner("Fourth step is not done. Executing fourth step now")
+    banner("Step 4 is not done. Executing step 4 now.")
     step4()
 
 
