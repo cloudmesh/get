@@ -19,7 +19,6 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import yn_choice
 from cloudmesh.common.Shell import Shell
-from cloudmesh.common.JobMultiHostScript import JobMultiHostScript
 from pprint import pprint
 import os
 import sys
@@ -308,12 +307,11 @@ def step2():
                     # return msg
                     success = False
             time.sleep(10)
-    script = """
-    sudo mkdir /clusterfs
-    sudo chown nobody.nogroup /clusterfs
-    sudo chmod -R 777 /clusterfs
-    """
-    results = JobMultiHostScript.execute(script, "script_name", listOfWorkers)
+    results = Host.ssh(hosts=workers, command='sudo mkdir /clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo chown nobody.nogroup /clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo chmod -R 777 /clusterfs')
     print(Printer.write(results))
 
     results = Host.ssh(hosts=manager, command=f'''sudo cat /etc/fstab''')
@@ -458,18 +456,6 @@ def step4():
 
     listOfWorkers = Parameter.expand(workers)
 
-    banner("Now attempting to update packages. This may take a while.")
-    script = """
-        sudo chown nobody.nogroup /clusterfs
-        sudo chmod -R 777 /clusterfs
-        sudo apt-get update -y
-        sudo apt update -y
-        sudo apt full-upgrade -y
-        """
-    results = JobMultiHostScript.execute(script, "script_name", listOfWorkers)
-    print(Printer.write(results))
-    # just take out this next redundant block if the above works
-    '''
     results = Host.ssh(hosts=workers, command='sudo chown nobody.nogroup /clusterfs')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo chmod -R 777 /clusterfs')
@@ -480,7 +466,6 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo apt full-upgrade -y')
     print(Printer.write(results))
-    '''
 
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
