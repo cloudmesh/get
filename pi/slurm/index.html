@@ -370,29 +370,10 @@ def step3():
         sudo mv /etc/slurm-llnl/slurm.conf.simple /etc/slurm-llnl/slurm.conf
         sudo sed -i 's/SlurmctldHost=workstation/SlurmctldHost={manager}({trueIP})/g' /etc/slurm-llnl/slurm.conf
         sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf
-        cat /proc/sys/kernel/hostname
         """)
     hostexecute(script, manager)
-
-    workerSeparator(workers)
-
-    print(listOfWorkers)
-    for worker in listOfWorkers:
-        print(worker)
-        success = False
-        while not success:
-            success = True
-            results = Host.ssh(hosts=[worker],
-                               command="sudo apt install nfs-common -y")
-            print(Printer.write(results))
-            for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
-                    msg = "The script had trouble installing packages. Retrying."
-                    banner(msg)
-                    # return msg
-                    success = False
-            time.sleep(10)
-
+    results = Host.ssh(hosts=workers, command="cat /proc/sys/kernel/hostname")
+    print(Printer.write(results))
     hostnames = []
     for entry in results:
         currentHostname = str(entry["stdout"])
