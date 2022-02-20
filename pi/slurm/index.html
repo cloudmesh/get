@@ -420,8 +420,8 @@ def step3():
     script = textwrap.dedent(
         f"""
         echo "PartitionName=mycluster Nodes={workers} Default=YES MaxTime=INFINITE State=UP" | sudo tee /etc/slurm-llnl/slurm.conf -a
-        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup.conf > ~/cgroup.conf
-        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/cgroup_allowed_devices_file.conf > ~/cgroup_allowed_devices_file.conf
+        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/configs/cgroup.conf > ~/cgroup.conf
+        sudo curl -L https://github.com/cloudmesh/cloudmesh-mpi/raw/main/doc/chapters/slurm/configs/cgroup_allowed_devices_file.conf > ~/cgroup_allowed_devices_file.conf
         sudo cp ~/cgroup.conf /etc/slurm-llnl/cgroup.conf
         sudo cp ~/cgroup_allowed_devices_file.conf /etc/slurm-llnl/cgroup_allowed_devices_file.conf
         sudo rm ~/cgroup.conf
