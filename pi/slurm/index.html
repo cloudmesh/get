@@ -117,7 +117,7 @@ def read_user_input_workers(manager):
 # tell user to ssh back to manager on reboot and reboot
 def tell_user_rebooting():
     banner('''The cluster is rebooting. Wait a minute for the Pis to come back online and ssh into the manager. Then,'''
-           '''rerun the script by issuing "python3 slurm.py" to continue.''')
+           ''' rerun the script by issuing "python3 slurm.py" to continue.''')
     os.system("cms host reboot "+hosts)
 
 # Beginning to define SLURM installation
@@ -493,12 +493,14 @@ def step4():
             for entry in results:
                 if 'Could not connect to' in str(entry["stdout"]):
                     msg = f"The SLURM script could not install needed packages, but will try again. " \
-                          f"This is expected behavior and it should fix itself within a few minutes." \
+                          f"This is expected behavior and it should fix itself within a few minutes. " \
                           f"Currently fixing {worker}."
                     banner(msg)
                     # return msg
                     success = False
-            time.sleep(10)
+                else:
+                    banner(f"Package installation has succeeded for {worker}. Moving on to next device.")
+            time.sleep(5)
     #
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
