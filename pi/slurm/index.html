@@ -564,7 +564,7 @@ def step4():
         """)
     hostexecute(script, manager)
         
-    banner("Slurm installed")
+    banner("SLURM is now installed.")
     results3 = Host.ssh(hosts=hosts, command="touch step4")
     print(Printer.write(results3))
     print("Rebooting cluster now.")
