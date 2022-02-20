@@ -32,7 +32,6 @@ from cloudmesh.burn.sdcard import SDCard
 #hosts = "red,red0[1-3]"
 #workers = "red0[1-3]"
 #manager = "red"
-listOfWorkers = []
 
 ## Defining repeat attempt function
 
@@ -91,34 +90,37 @@ def hostexecute(script, manager):
         results = Host.ssh(hosts=manager, command=command)
         print(Printer.write(results))
 
-## writing function to put workers into array
-
-
-def workerSeparator(name):
-    global listOfWorkers
-    i0 = name.index("[")
-    i1 = name.index("]")
-    s0 = name[:i0]
-    s1, s2 = name[i0+1:i1].split("-")
-    n0 = int(s1)
-    n1 = int(s2)
-    for n in range(n0, n1+1):
-        print(f"{s0}{n}")
-        listOfWorkers.append(f"{s0}{n}")
-
 
 def managerNamer():
     manager = subprocess.run(['hostname'], capture_output=True, text=True).stdout.strip()
     print(f"The hostname of the manager is taken to be {manager} \n")
     return manager
 
-## Beginning to define SLURM installation
 
-#input
-# basename = "red"
-# no workers = "03" # "3" "01000" 00001-01000
-#output
-# red000  -> red, red001, red002, red003
+# defining function which formulates hosts variable
+# the hosts variable has manager and workers
+
+def hostsVariable(manager,workers):
+    hosts = f'''{manager},{workers}'''
+    hosts = str(hosts)
+    return(hosts)
+
+# read the file user_input_workers
+def read_user_input_workers(manager):
+    results = Host.ssh(hosts=manager, command='cat user_input_workers')
+    print(Printer.write(results))
+    for entry in results:
+        print(str(entry["stdout"]))
+        workers = str(entry["stdout"])
+        return workers
+
+# Beginning to define SLURM installation
+
+# input
+#  basename = "red"
+#  no workers = "03" # "3" "01000" 00001-01000
+# output
+#  red000  -> red, red001, red002, red003
 
 def step0():
     banner("Welcome to SLURM Installation. Initializing preliminary steps.")
@@ -135,16 +137,10 @@ def step0():
     print(Printer.write(results))
 
     # intro and asking for workers from user
-    results = Host.ssh(hosts=manager, command='cat user_input_workers')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        workers = str(entry["stdout"])
+    workers = read_user_input_workers(manager)
 
-    # formulating hosts variable which has manager AND workers
-    hosts = f'''{manager},{workers}'''
-    hosts = str(hosts)
-    print(hosts)
+    hosts = hostsVariable(manager,workers)
+
     results3 = Host.ssh(hosts=hosts, command="touch step0")
     print(Printer.write(results3))
 
@@ -153,16 +149,10 @@ def step1(results):
     banner("Initializing Step 1 now.")
     manager = managerNamer()
     print(Printer.write(results))
-    results = Host.ssh(hosts=manager, command='cat user_input_workers')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        workers = str(entry["stdout"])
 
-    # formulating hosts variable which has manager AND workers
-    hosts = f'''{manager},{workers}'''
-    hosts = str(hosts)
-    print(hosts)
+    workers = read_user_input_workers(manager)
+
+    hosts = hostsVariable(manager,workers)
 
     results = Host.ssh(hosts=hosts, command="sudo apt-get update")
     print(Printer.write(results))
@@ -171,7 +161,7 @@ def step1(results):
     #print(Printer.write(results2))
 
     # make array with list of workers
-    workerSeparator(workers)
+    listOfWorkers = Parameter.expand(workers)
 
     print(listOfWorkers)
     for worker in listOfWorkers:
@@ -211,16 +201,9 @@ def step2():
     '''
 
     # executing reading of workers
-    results = Host.ssh(hosts=manager, command='cat user_input_workers')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        workers = str(entry["stdout"])
+    workers = read_user_input_workers(manager)
 
-    # formulating hosts variable which has manager AND workers
-    hosts = f'''{manager},{workers}'''
-    hosts = str(hosts)
-    print(hosts)
+    hosts = hostsVariable(manager,workers)
 
     card = SDCard()
     card.info()
@@ -250,10 +233,9 @@ def step2():
     #results = Host.ssh(hosts=manager, command="sudo chmod 777 -R /clusterfs")
     #print(Printer.write(results))
 
-    print(os.system(f"sudo blkid {device}"))
-    results9 = Host.ssh(hosts=manager, command=f"sudo blkid {device}")
-    print(Printer.write(results9))
-    for entry in results9:
+    results = Host.ssh(hosts=manager, command=f"sudo blkid {device}")
+    print(Printer.write(results))
+    for entry in results:
         print(str(entry["stdout"]))
         blkid = str(entry["stdout"])
     print(blkid)
@@ -300,7 +282,9 @@ def step2():
         print(Printer.write(results))
 
     hostexecute("sudo exportfs -a", manager)
-    workerSeparator(workers)
+
+    # make array with list of workers
+    listOfWorkers = Parameter.expand(workers)
 
     print(listOfWorkers)
     for worker in listOfWorkers:
@@ -359,16 +343,9 @@ def step3():
     print(trueIP)
 
     # executing reading of workers
-    results = Host.ssh(hosts=manager, command='cat user_input_workers')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        workers = str(entry["stdout"])
+    workers = read_user_input_workers(manager)
 
-    # formulating hosts variable which has manager AND workers
-    hosts = f'''{manager},{workers}'''
-    hosts = str(hosts)
-    print(hosts)
+    hosts = hostsVariable(manager,workers)
 
     #now doing actual step 3
     script = textwrap.dedent(
@@ -446,16 +423,9 @@ def step3():
 def step4():
     manager = managerNamer()
     # executing reading of workers
-    results = Host.ssh(hosts=manager, command='cat user_input_workers')
-    print(Printer.write(results))
-    for entry in results:
-        print(str(entry["stdout"]))
-        workers = str(entry["stdout"])
+    workers = read_user_input_workers(manager)
 
-    # formulating hosts variable which has manager AND workers
-    hosts = f'''{manager},{workers}'''
-    hosts = str(hosts)
-    print(hosts)
+    hosts = hostsVariable(manager,workers)
 
     #getting hostname count
     results = Host.ssh(hosts=workers, command="cat /proc/sys/kernel/hostname")
@@ -491,7 +461,9 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo apt full-upgrade -y')
     print(Printer.write(results))
-    workerSeparator(workers)
+
+    # make array with list of workers
+    listOfWorkers = Parameter.expand(workers)
 
     print(listOfWorkers)
     #
@@ -566,8 +538,8 @@ def step4():
     hostexecute(script, manager)
         
     banner("SLURM is now installed.")
-    results3 = Host.ssh(hosts=hosts, command="touch step4")
-    print(Printer.write(results3))
+    results = Host.ssh(hosts=hosts, command="touch step4")
+    print(Printer.write(results))
     print("Rebooting cluster now.")
     banner("After successful reboot, ssh back into manager and test SLURM by issuing $ srun --nodes=3 hostname "
            "(change 3 to number of nodes if necessary). If it does not work right away, wait a minute for the "
