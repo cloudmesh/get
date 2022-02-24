@@ -139,6 +139,8 @@ def get_IP(manager):
     return trueIP
 
 # function that checks to see if a step has been run
+
+
 def check_step(step_number, device):
     step_number_string = str(step_number)
     just_the_step = f"step{step_number_string}"
@@ -574,6 +576,35 @@ def step4():
     os.system("cms host reboot "+hosts)
 
 
+def step5():
+    StopWatch.start("Current section time")
+    banner("Initializing Step 5 now.")
+    manager = managerNamer()
+    # executing reading of workers
+    workers = read_user_input_workers(manager)
+
+    hosts = hostsVariable(manager, workers)
+    if not yn_choice('The script will now download Cloudmesh and install virtual Python environment on each worker'
+                     ' node. This is necessary to use MPI with SLURM. The process will take 4-7 minutes. Press'
+                     ' y and Enter when ready to continue...\n'):
+
+        Console.error("You pressed no but the script is continuing as normal...")
+        return ""
+    banner("This will take a while...")
+    results = Host.ssh(hosts=workers, command='curl -Ls https://raw.githubusercontent.com/cloudmesh/get/main/pi/index.html | sh -')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo apt-get install openmpi-bin')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='ENV3/bin/pip install mpi4py')
+    print(Printer.write(results))
+    StopWatch.stop("Current section time")
+    StopWatch.benchmark()
+    banner("MPI is now installed.")
+    results = Host.ssh(hosts=hosts, command="touch step5")
+    print(Printer.write(results))
+    print("Rebooting cluster now.")
+    os.system("cms host reboot " + hosts)
+
 #a = readfile("test1")
 #writefile("test2",a)
 
@@ -611,9 +642,10 @@ step4done = check_step(4, hosts)
 if not step4done:
     banner("Step 4 is not done. Performing step 4 now.")
     step4()
-if step4done:
-    banner("SLURM should already be installed. You can remove the step files from the "
-           "current working directory to restart the script. Try issuing command $ rm step[0-4]")
+step5done = check_step(5, hosts)
+if not step5done:
+    banner("Step 5 is not done. Performing step 5 now.")
+    step5()
 
 
 '''
