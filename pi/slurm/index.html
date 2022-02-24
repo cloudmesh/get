@@ -584,14 +584,33 @@ def step5():
     workers = read_user_input_workers(manager)
 
     hosts = hostsVariable(manager, workers)
-    if not yn_choice('The script will now download Cloudmesh and install virtual Python environment on each worker'
-                     ' node. This is necessary to use MPI with SLURM. The process will take 4-7 minutes. Press'
-                     ' y and Enter when ready to continue...\n'):
+    listOfWorkers = Parameter.expand(workers)
+    if not yn_choice('The script will now install virtual Python environment on each worker'
+                     ' node. This is necessary to use MPI with SLURM. The process may take upwards of half an hour'
+                     ' with 4 workers. Press y and Enter when ready to continue...\n'):
 
         Console.error("You pressed no but the script is continuing as normal...")
         return ""
     banner("This will take a while...")
-    results = Host.ssh(hosts=workers, command='curl -Ls https://raw.githubusercontent.com/cloudmesh/get/main/pi/index.html | sh -')
+    for worker in listOfWorkers:
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=worker,
+                               command="sudo apt-get install python3-venv python3-wheel python3-dev build-essential -y")
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = f"The SLURM script could not install needed packages, but will try again. " \
+                          f"This is expected behavior and it should fix itself within a few minutes. " \
+                          f"Currently fixing {worker}."
+                    banner(msg)
+                    # return msg
+                    success = False
+                else:
+                    banner(f"Package installation has succeeded for {worker}. Moving on to next device.")
+            time.sleep(5)
+    results = Host.ssh(hosts=workers, command='python3 -m venv ~/ENV3')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo apt-get install openmpi-bin')
     print(Printer.write(results))
