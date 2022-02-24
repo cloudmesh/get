@@ -155,6 +155,26 @@ def check_step(step_number, device):
     return step_done
 
 
+def try_installing_package(command_for_package, listOfWorkers):
+    for worker in listOfWorkers:
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=worker,
+                               command=command_for_package)
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = f"The SLURM script could not install needed packages, but will try again. " \
+                          f"This is expected behavior and it should fix itself within a few minutes. " \
+                          f"Currently fixing {worker}."
+                    banner(msg)
+                    # return msg
+                    success = False
+                else:
+                    banner(f"Package installation has succeeded for {worker}. Moving on to next device.")
+            time.sleep(5)
+
 # Beginning to define SLURM installation
 
 # input
@@ -209,21 +229,7 @@ def step1():
     listOfWorkers = Parameter.expand(workers)
 
     print(listOfWorkers)
-    for worker in listOfWorkers:
-        print(f"Now updating ntpdate module for {worker}.")
-        success = False
-        while not success:
-            success = True
-            results = Host.ssh(hosts=[worker],
-                               command="sudo apt install ntpdate -y")
-            print(Printer.write(results))
-            for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
-                    msg = "The script had trouble installing packages. Retrying."
-                    banner(msg)
-                    # return msg
-                    success = False
-            time.sleep(10)
+    try_installing_package("sudo apt install ntpdate -y", listOfWorkers)
     results = Host.ssh(hosts=hosts, command="touch step1")
     print(Printer.write(results))
     StopWatch.stop("Current section time")
@@ -320,21 +326,7 @@ def step2():
     listOfWorkers = Parameter.expand(workers)
 
     print(listOfWorkers)
-    for worker in listOfWorkers:
-        print(worker)
-        success = False
-        while not success:
-            success = True
-            results = Host.ssh(hosts=[worker],
-                               command="sudo apt install nfs-common -y")
-            print(Printer.write(results))
-            for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
-                    msg = "The script had trouble installing packages. Retrying."
-                    banner(msg)
-                    # return msg
-                    success = False
-            time.sleep(10)
+    try_installing_package("sudo apt install nfs-common -y", listOfWorkers)
     results = Host.ssh(hosts=workers, command='sudo mkdir /clusterfs')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo chown nobody.nogroup /clusterfs')
@@ -507,24 +499,7 @@ def step4():
     # this is no longer executed in parallel, but for each worker one by one. We coudl use a process pool to avoid
     # restrictions on the mirror that may limit parallel connections
     #
-    for worker in listOfWorkers:
-        success = False
-        while not success:
-            success = True
-            results = Host.ssh(hosts=worker,
-                               command="sudo apt install slurmd slurm-client -y --fix-missing")
-            print(Printer.write(results))
-            for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
-                    msg = f"The SLURM script could not install needed packages, but will try again. " \
-                          f"This is expected behavior and it should fix itself within a few minutes. " \
-                          f"Currently fixing {worker}."
-                    banner(msg)
-                    # return msg
-                    success = False
-                else:
-                    banner(f"Package installation has succeeded for {worker}. Moving on to next device.")
-            time.sleep(5)
+    try_installing_package("sudo apt install slurmd slurm-client -y --fix-missing", listOfWorkers)
     #
     #  HERE IS END OF THAT POTENTIAL ISSUE
     #
@@ -592,28 +567,10 @@ def step5():
         Console.error("You pressed no but the script is continuing as normal...")
         return ""
     banner("This will take a while...")
-    for worker in listOfWorkers:
-        success = False
-        while not success:
-            success = True
-            results = Host.ssh(hosts=worker,
-                               command="sudo apt-get install python3-venv python3-wheel python3-dev build-essential -y")
-            print(Printer.write(results))
-            for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
-                    msg = f"The SLURM script could not install needed packages, but will try again. " \
-                          f"This is expected behavior and it should fix itself within a few minutes. " \
-                          f"Currently fixing {worker}."
-                    banner(msg)
-                    # return msg
-                    success = False
-                else:
-                    banner(f"Package installation has succeeded for {worker}. Moving on to next device.")
-            time.sleep(5)
+    try_installing_package("sudo apt-get install python3-venv python3-wheel python3-dev build-essential -y", listOfWorkers)
     results = Host.ssh(hosts=workers, command='python3 -m venv ~/ENV3')
     print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='sudo apt-get install openmpi-bin')
-    print(Printer.write(results))
+    try_installing_package("sudo apt-get install openmpi-bin", listOfWorkers)
     results = Host.ssh(hosts=workers, command='ENV3/bin/pip install mpi4py')
     print(Printer.write(results))
     StopWatch.stop("Current section time")
