@@ -14,7 +14,7 @@ from cloudmesh.common.StopWatch import StopWatch
 from cloudmesh.common.util import banner
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.Host import Host
-from cloudmesh.common.util import readfile,writefile
+from cloudmesh.common.util import readfile, writefile
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import yn_choice
@@ -29,14 +29,16 @@ import subprocess
 from cloudmesh.burn.usb import USB
 from cloudmesh.burn.sdcard import SDCard
 
-#hosts = "red,red0[1-3]"
-#workers = "red0[1-3]"
-#manager = "red"
+
+# hosts = "red,red0[1-3]"
+# workers = "red0[1-3]"
+# manager = "red"
 
 ## Defining repeat attempt function
 
 def hline(c="="):
-    print(79*c)
+    print(79 * c)
+
 
 def execute(commands, sleep_time=1, repeat=10, driver=Shell.run):
     hline()
@@ -45,12 +47,12 @@ def execute(commands, sleep_time=1, repeat=10, driver=Shell.run):
 
     result = ""
     commands = textwrap.dedent(commands).strip()
-    c=0
+    c = 0
     for command in commands.splitlines():
 
-        #c = c + 1
-        #print(c,command)
-        #add_history(command)
+        # c = c + 1
+        # print(c,command)
+        # add_history(command)
 
         if command.strip().startswith("#"):
             print(command)
@@ -67,8 +69,8 @@ def execute(commands, sleep_time=1, repeat=10, driver=Shell.run):
                 if r:
                     print("error")
                 else:
-                    success=True
-                #print(r)
+                    success = True
+                # print(r)
                 time.sleep(sleep_time)
                 counter = counter + 1
                 if repeat < 0:
@@ -76,12 +78,11 @@ def execute(commands, sleep_time=1, repeat=10, driver=Shell.run):
                 else:
 
                     success = success or counter >= repeat
-            #os.system("sync")
+            # os.system("sync")
             if counter == repeat:
                 raise RuntimeError(f"Maximum repeats reached: {command}")
 
-
-    #return result
+    # return result
 
 
 def hostexecute(script, manager):
@@ -92,7 +93,9 @@ def hostexecute(script, manager):
 
 
 def managerNamer():
-    manager = subprocess.run(['hostname'], capture_output=True, text=True).stdout.strip()
+    manager = subprocess.run(['hostname'],
+                             capture_output=True,
+                             text=True).stdout.strip()
     print(f"The hostname of the manager is taken to be {manager} \n")
     return manager
 
@@ -100,10 +103,11 @@ def managerNamer():
 # defining function which formulates hosts variable
 # the hosts variable has manager and workers
 
-def hostsVariable(manager,workers):
+def hostsVariable(manager, workers):
     hosts = f'''{manager},{workers}'''
     hosts = str(hosts)
-    return(hosts)
+    return (hosts)
+
 
 # read the file user_input_workers
 def read_user_input_workers(manager):
@@ -114,11 +118,14 @@ def read_user_input_workers(manager):
         workers = str(entry["stdout"])
         return workers
 
+
 # tell user to ssh back to manager on reboot and reboot
 def tell_user_rebooting():
-    banner('''The cluster is rebooting. Wait a minute for the Pis to come back online and ssh into the manager. Then,'''
-           ''' rerun the script by issuing "./install_slurm.py" to continue.''')
-    os.system("cms host reboot "+hosts)
+    banner('The cluster is rebooting. Wait a minute for the Pis to come '
+           'back online and ssh into the manager. Then,'
+           ' rerun the script by issuing "python3 slurm.py" to continue.')
+    os.system("cms host reboot " + hosts)
+
 
 # function that returns ip of pi
 def get_IP(manager):
@@ -137,6 +144,7 @@ def get_IP(manager):
     trueIP = ipaddress4[0]
     print(trueIP)
     return trueIP
+
 
 # function that checks to see if a step has been run
 
@@ -175,6 +183,7 @@ def try_installing_package(command_for_package, listOfWorkers):
                     banner(f"Package installation has succeeded for {worker}.")
             time.sleep(5)
 
+
 # Beginning to define SLURM installation
 
 # input
@@ -201,12 +210,13 @@ def step0():
     # intro and asking for workers from user
     workers = read_user_input_workers(manager)
 
-    hosts = hostsVariable(manager,workers)
+    hosts = hostsVariable(manager, workers)
 
     results = Host.ssh(hosts=hosts, command="touch step0")
     print(Printer.write(results))
     StopWatch.stop("Current section time")
     StopWatch.benchmark()
+
 
 def step1():
     StopWatch.start("Current section time")
@@ -216,14 +226,14 @@ def step1():
 
     workers = read_user_input_workers(manager)
 
-    hosts = hostsVariable(manager,workers)
+    hosts = hostsVariable(manager, workers)
 
     banner("Now updating packages. This may take a while.")
     results = Host.ssh(hosts=hosts, command="sudo apt-get update")
     print(Printer.write(results))
-    #parallel_execute(hosts,"sudo apt install ntpdate -y")
-    #results2 = Host.ssh(hosts=hosts, command="sudo apt install ntpdate -y")
-    #print(Printer.write(results2))
+    # parallel_execute(hosts,"sudo apt install ntpdate -y")
+    # results2 = Host.ssh(hosts=hosts, command="sudo apt install ntpdate -y")
+    # print(Printer.write(results2))
 
     # make array with list of workers
     listOfWorkers = Parameter.expand(workers)
@@ -241,7 +251,8 @@ def step2():
     StopWatch.start("Current section time")
     banner("Initializing Step 2 now.")
     manager = managerNamer()
-    if not yn_choice('Please insert USB storage medium into top USB 3.0 (blue) port on manager pi and press y when done'):
+    if not yn_choice(
+            'Please insert USB storage medium into top USB 3.0 (blue) port on manager pi and press y when done'):
         Console.error("You pressed no but the script is continuing as normal...")
         return ""
     '''
@@ -255,7 +266,7 @@ def step2():
     # executing reading of workers
     workers = read_user_input_workers(manager)
 
-    hosts = hostsVariable(manager,workers)
+    hosts = hostsVariable(manager, workers)
 
     card = SDCard()
     card.info()
@@ -276,14 +287,14 @@ def step2():
         """).strip()
     hostexecute(script, manager)
 
-    #results = Host.ssh(hosts=manager, command=f"sudo mkfs.ext4 -F {device}")
-    #print(Printer.write(results))
-    #results = Host.ssh(hosts=manager, command="sudo mkdir /clusterfs")
-    #print(Printer.write(results))
-    #results = Host.ssh(hosts=manager, command="sudo chown nobody.nogroup -R /clusterfs")
-    #print(Printer.write(results))
-    #results = Host.ssh(hosts=manager, command="sudo chmod 777 -R /clusterfs")
-    #print(Printer.write(results))
+    # results = Host.ssh(hosts=manager, command=f"sudo mkfs.ext4 -F {device}")
+    # print(Printer.write(results))
+    # results = Host.ssh(hosts=manager, command="sudo mkdir /clusterfs")
+    # print(Printer.write(results))
+    # results = Host.ssh(hosts=manager, command="sudo chown nobody.nogroup -R /clusterfs")
+    # print(Printer.write(results))
+    # results = Host.ssh(hosts=manager, command="sudo chmod 777 -R /clusterfs")
+    # print(Printer.write(results))
 
     results = Host.ssh(hosts=manager, command=f"sudo blkid {device}")
     print(Printer.write(results))
@@ -317,7 +328,9 @@ def step2():
         if f'/clusterfs {trueIP}/24(rw,sync,no_root_squash,no_subtree_check)' in str(entry["stdout"]):
             Preexisting = True
     if not Preexisting:
-        results = Host.ssh(hosts=manager, command=f'''echo "/clusterfs {trueIP}/24(rw,sync,no_root_squash,no_subtree_check)" | sudo tee /etc/exports -a''')
+        command = f'echo "/clusterfs {trueIP}/24(rw,sync,no_root_squash,no_subtree_check)" | sudo tee /etc/exports -a'
+        results = Host.ssh(hosts=manager,
+                           command=command)
         print(Printer.write(results))
 
     hostexecute("sudo exportfs -a", manager)
@@ -341,7 +354,8 @@ def step2():
         if f'{trueIP}:/clusterfs    /clusterfs    nfs    defaults   0 0' in str(entry["stdout"]):
             Preexisting = True
     if not Preexisting:
-        results = Host.ssh(hosts=workers, command=f'''echo "{trueIP}:/clusterfs    /clusterfs    nfs    defaults   0 0" | sudo tee /etc/fstab -a''')
+        results = Host.ssh(hosts=workers,
+                           command=f'''echo "{trueIP}:/clusterfs    /clusterfs    nfs    defaults   0 0" | sudo tee /etc/fstab -a''')
         print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command="touch step2")
     print(Printer.write(results))
@@ -361,9 +375,9 @@ def step3():
     # executing reading of workers
     workers = read_user_input_workers(manager)
 
-    hosts = hostsVariable(manager,workers)
+    hosts = hostsVariable(manager, workers)
 
-    #now doing actual step 3
+    # now doing actual step 3
     script = textwrap.dedent(
         f"""
         sudo systemctl status nfs-server.service
@@ -402,13 +416,16 @@ def step3():
         trueIPs.append(trueIP)
     print(trueIPs)
     coreCounts = []
-    results = Host.ssh(hosts=workers, command="cat /sys/devices/system/cpu/cpu[0-9]*/topology/core_cpus_list | sort -u | wc -l")
+    results = Host.ssh(hosts=workers,
+                       command="cat /sys/devices/system/cpu/cpu[0-9]*/topology/core_cpus_list | sort -u | wc -l")
     for entry in results:
         currentCoreCount = str(entry["stdout"])
         coreCounts.append(currentCoreCount)
     for x in range(len(hostnames)):
+        command = f'echo "NodeName={hostnames[x]} NodeAddr={trueIPs[x]} CPUs={coreCounts[x]} State=UNKNOWN" '\
+                  '| sudo tee /etc/slurm-llnl/slurm.conf -a'
         results = Host.ssh(hosts=manager,
-                           command=f'''echo "NodeName={hostnames[x]} NodeAddr={trueIPs[x]} CPUs={coreCounts[x]} State=UNKNOWN" | sudo tee /etc/slurm-llnl/slurm.conf -a''')
+                           command=command)
         print(Printer.write(results))
 
     script = textwrap.dedent(
@@ -427,7 +444,7 @@ def step3():
         sudo systemctl enable slurmctld
         sudo systemctl start slurmctld
         """)
-    hostexecute(script, manager)        
+    hostexecute(script, manager)
 
     results = Host.ssh(hosts=hosts, command="touch step3")
     print(Printer.write(results))
@@ -443,9 +460,9 @@ def step4():
     # executing reading of workers
     workers = read_user_input_workers(manager)
 
-    hosts = hostsVariable(manager,workers)
+    hosts = hostsVariable(manager, workers)
 
-    #getting hostname count
+    # getting hostname count
     results = Host.ssh(hosts=workers, command="cat /proc/sys/kernel/hostname")
     print(Printer.write(results))
     hostnames = []
@@ -494,7 +511,6 @@ def step4():
     # Could not connect to raspbian.mirror.constant.com:80 (2001:19f0:1595:1403::1087),
     # connection timed out Could not connect to raspbian.mirror.constant.com:80 (108.61.5.87), connection timed out
 
-
     #
     # this is no longer executed in parallel, but for each worker one by one. We coudl use a process pool to avoid
     # restrictions on the mirror that may limit parallel connections
@@ -531,7 +547,7 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo systemctl start slurmd')
     print(Printer.write(results))
-    
+
     script = textwrap.dedent(
         f"""
         sinfo
@@ -548,7 +564,7 @@ def step4():
     banner("After successful reboot, ssh back into manager and test SLURM by issuing $ srun --nodes=3 hostname "
            "(change 3 to number of nodes if necessary). If it does not work right away, wait a minute for the "
            "nodes to come back online.\n")
-    os.system("cms host reboot "+hosts)
+    os.system("cms host reboot " + hosts)
 
 
 def step5():
@@ -563,11 +579,11 @@ def step5():
     if not yn_choice('The script will now install virtual Python environment on each worker'
                      ' node. This is necessary to use MPI with SLURM. The process may take upwards of half an hour'
                      ' with 4 workers. Press y and Enter when ready to continue...\n'):
-
         Console.error("You pressed no but the script is continuing as normal...")
         return ""
     banner("This will take a while...")
-    try_installing_package("sudo apt-get install python3-venv python3-wheel python3-dev build-essential -y", listOfWorkers)
+    try_installing_package("sudo apt-get install python3-venv python3-wheel python3-dev build-essential -y",
+                           listOfWorkers)
     results = Host.ssh(hosts=workers, command='python3 -m venv ~/ENV3')
     print(Printer.write(results))
     try_installing_package("sudo apt-get install openmpi-bin -y", listOfWorkers)
@@ -581,10 +597,11 @@ def step5():
     print("Rebooting cluster now.")
     os.system("cms host reboot " + hosts)
 
-#a = readfile("test1")
-#writefile("test2",a)
 
-#StopWatch.start("Total Runtime")
+# a = readfile("test1")
+# writefile("test2",a)
+
+# StopWatch.start("Total Runtime")
 
 # Here begins the script aside from the function definitions. In this part we run the steps by calling functions.
 
@@ -602,26 +619,18 @@ workers = read_user_input_workers(manager)
 
 hosts = hostsVariable(manager, workers)
 
-step1done = check_step(1, hosts)
-if not step1done:
-    banner("Step 1 is not done. Performing step 1 now.")
-    step1()
-step2done = check_step(2, hosts)
-if not step2done:
-    banner("Step 2 is not done. Performing step 2 now.")
-    step2()
-step3done = check_step(3, hosts)
-if not step3done:
-    banner("Step 3 is not done. Performing step 3 now.")
-    step3()
-step4done = check_step(4, hosts)
-if not step4done:
-    banner("Step 4 is not done. Performing step 4 now.")
-    step4()
-step5done = check_step(5, hosts)
-if not step5done:
-    banner("Step 5 is not done. Performing step 5 now.")
-    step5()
+steps = [
+    (1, step1),
+    (2, step2),
+    (3, step3),
+    (4, step4),
+    (5, step5)
+]
+
+for i, step in steps:
+    if not check_step(i, hosts):
+        banner(f"Step {i} is not done. Performing step {i} now.")
+        step()
 
 
 '''
@@ -638,3 +647,5 @@ print(results4)
 StopWatch.stop("Total Runtime")
 StopWatch.benchmark()
 '''
+
+# </pre>
