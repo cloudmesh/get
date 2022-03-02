@@ -123,7 +123,7 @@ def read_user_input_workers(manager):
 def tell_user_rebooting():
     banner('The cluster is rebooting. Wait a minute for the Pis to come '
            'back online and ssh into the manager. Then,'
-           ' rerun the script by issuing "python3 slurm.py" to continue.')
+           ' rerun the script by issuing "./install_slurm.py" to continue.')
     os.system("cms host reboot " + hosts)
 
 
