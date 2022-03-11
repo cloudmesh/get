@@ -593,11 +593,13 @@ def step5():
     results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1 && cd pmix && sudo git '
                                             'clone https://github.com/openpmix/openpmix.git source && cd source/ && '
                                             'git branch -a && sudo git checkout v2.1 && sudo git pull && sudo '
-                                            './autogen.sh && cd ../build/2.1/ && sudo ../../source/configure --prefix=/home/user/git/pmix/install/2.1')
+                                            './autogen.sh && cd ../build/2.1/')
     print(Printer.write(results))
     try_installing_package("sudo apt install libevent-dev",
                            listOfHosts)
-    results = Host.ssh(hosts=hosts, command='sudo ../../source/configure --prefix=/home/user/git/pmix/install/2.1')
+    results = Host.ssh(hosts=hosts, command='cd ~/pmix/source && ./configure --prefix=/home/user/git/pmix/install/2.1')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=hosts, command='cd ~/pmix/build/2.1 && make -j install >/dev/null')
     print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command='wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.gz')
     print(Printer.write(results))
