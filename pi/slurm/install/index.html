@@ -578,6 +578,7 @@ def step5():
     listOfWorkers = Parameter.expand(workers)
     print(listOfWorkers)
     print(hosts)
+    listOfManager = [manager]
     if not yn_choice('The script will now install virtual Python environment on each worker'
                      ' node. This is necessary to use MPI with SLURM. The process may take upwards of half an hour'
                      ' with 4 workers. Press y and Enter when ready to continue...\n'):
@@ -592,7 +593,7 @@ def step5():
     results = Host.ssh(hosts=workers, command='ENV3/bin/pip install mpi4py')
     print(Printer.write(results))
     try_installing_package("sudo apt install libevent-dev",
-                           manager)
+                           listOfManager)
     try_installing_package("sudo apt install libevent-dev",
                            listOfWorkers)
     results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1 && cd pmix && sudo git '
