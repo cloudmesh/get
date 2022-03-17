@@ -592,7 +592,9 @@ def step5():
     results = Host.ssh(hosts=workers, command='ENV3/bin/pip install mpi4py')
     print(Printer.write(results))
     try_installing_package("sudo apt install libevent-dev",
-                           hosts)
+                           manager)
+    try_installing_package("sudo apt install libevent-dev",
+                           listOfWorkers)
     results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1 && cd pmix && sudo git '
                                             'clone https://github.com/openpmix/openpmix.git source && cd source/ && '
                                             'git branch -a && sudo git checkout v2.1 && sudo git pull && sudo '
