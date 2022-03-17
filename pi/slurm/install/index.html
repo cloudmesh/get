@@ -576,7 +576,9 @@ def step5():
 
     hosts = hostsVariable(manager, workers)
     listOfWorkers = Parameter.expand(workers)
+    print(listOfWorkers)
     listOfHosts = Parameter.expand(hosts)
+    print(listOfHosts)
     if not yn_choice('The script will now install virtual Python environment on each worker'
                      ' node. This is necessary to use MPI with SLURM. The process may take upwards of half an hour'
                      ' with 4 workers. Press y and Enter when ready to continue...\n'):
