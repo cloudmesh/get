@@ -617,16 +617,16 @@ def step5():
                            listOfManager)
     try_installing_package("sudo apt install libevent-dev autoconf git libtool flex -y",
                            listOfWorkers)
-    results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1')
+    results = Host.ssh(hosts=hosts, command='sudo mkdir -p /usr/lib/pmix/build/2.1 /usr/lib/pmix/install/2.1')
     print(Printer.write(results))
-    try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source "
+    try_downloading_from_github("cd /usr/lib/pmix && sudo git clone https://github.com/openpmix/openpmix.git source "
                                 "&& cd source/ && git branch -a && sudo git checkout v2.1 && "
                                 "sudo git pull", listOfManager)
-    results = Host.ssh(hosts=manager, command='sudo cp -R pmix /clusterfs')
+    results = Host.ssh(hosts=manager, command='sudo cp -R /usr/lib/pmix /clusterfs')
     print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/pmix ~')
+    results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/pmix /usr/lib')
     print(Printer.write(results))
-    results = Host.ssh(hosts=hosts, command='cd pmix/source/ && sudo '
+    results = Host.ssh(hosts=hosts, command='cd /usr/lib/pmix/source/ && sudo '
                                             './autogen.sh && cd ../build/2.1/ && sudo ../../source/configure '
                                             '--prefix=/home/user/git/pmix/install/2.1 && '
                                             'sudo make -j install >/dev/null')
