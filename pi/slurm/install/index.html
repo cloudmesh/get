@@ -622,7 +622,7 @@ def step5():
     try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source "
                                 "&& cd source/ && git branch -a && sudo git checkout v2.1 && "
                                 "sudo git pull", listOfManager)
-    results = Host.ssh(hosts=manager, command='cp -R pmix /clusterfs')
+    results = Host.ssh(hosts=manager, command='sudo cp -R pmix /clusterfs')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/pmix ~')
     print(Printer.write(results))
