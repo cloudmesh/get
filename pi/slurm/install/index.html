@@ -193,7 +193,7 @@ def try_downloading_from_github(command_for_download, listOfWorkers):
                                command=command_for_download)
             print(Printer.write(results))
             for entry in results:
-                if 'Could not connect to' in str(entry["stdout"]):
+                if 'Failed to connect to' in str(entry["stderr"]):
                     msg = f"The SLURM script could not download needed packages, but will try again. " \
                           f"This is expected behavior and it should fix itself within a few minutes. " \
                           f"Currently fixing {worker}."
