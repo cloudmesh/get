@@ -184,6 +184,27 @@ def try_installing_package(command_for_package, listOfWorkers):
             time.sleep(5)
 
 
+def try_downloading_from_github(command_for_download, listOfWorkers):
+    for worker in listOfWorkers:
+        success = False
+        while not success:
+            success = True
+            results = Host.ssh(hosts=worker,
+                               command=command_for_download)
+            print(Printer.write(results))
+            for entry in results:
+                if 'Could not connect to' in str(entry["stdout"]):
+                    msg = f"The SLURM script could not download needed packages, but will try again. " \
+                          f"This is expected behavior and it should fix itself within a few minutes. " \
+                          f"Currently fixing {worker}."
+                    banner(msg)
+                    # return msg
+                    success = False
+                else:
+                    banner(f"Package download has succeeded for {worker}.")
+            time.sleep(5)
+
+
 # Beginning to define SLURM installation
 
 # input
@@ -596,8 +617,11 @@ def step5():
                            listOfManager)
     try_installing_package("sudo apt install libevent-dev autoconf git libtool flex -y",
                            listOfWorkers)
-    results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1 && cd pmix && sudo git '
-                                            'clone https://github.com/openpmix/openpmix.git source && cd source/ && '
+    results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1')
+    print(Printer.write(results))
+    try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source", listOfWorkers)
+    try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source", listOfManager)
+    results = Host.ssh(hosts=hosts, command='cd pmix/source/ && '
                                             'git branch -a && sudo git checkout v2.1 && sudo git pull && sudo '
                                             './autogen.sh && cd ../build/2.1/ && sudo ../../source/configure '
                                             '--prefix=/home/user/git/pmix/install/2.1 && '
