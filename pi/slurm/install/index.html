@@ -619,8 +619,11 @@ def step5():
                            listOfWorkers)
     results = Host.ssh(hosts=hosts, command='sudo mkdir -p pmix/build/2.1 pmix/install/2.1')
     print(Printer.write(results))
-    try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source", listOfWorkers)
     try_downloading_from_github("cd pmix && sudo git clone https://github.com/openpmix/openpmix.git source", listOfManager)
+    results = Host.ssh(hosts=manager, command='cp -R pmix /clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/pmix ~')
+    print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command='cd pmix/source/ && '
                                             'git branch -a && sudo git checkout v2.1 && sudo git pull && sudo '
                                             './autogen.sh && cd ../build/2.1/ && sudo ../../source/configure '
@@ -635,8 +638,12 @@ def step5():
     results = Host.ssh(hosts=hosts, command='cd openmpi-4.1.2 && sudo ./configure --prefix=/usr/local --with-slurm && '
                                             'sudo make all install')
     print(Printer.write(results))
-    results = Host.ssh(hosts=hosts, command='git clone https://github.com/SchedMD/slurm && cd slurm && '
-                                            'sudo ./configure --enable-debug --with-pmix')
+    results = Host.ssh(hosts=manager, command='git clone https://github.com/SchedMD/slurm && cp -R slurm '
+                                              '/clusterfs')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/slurm ~')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=hosts, command='cd slurm && sudo ./configure --enable-debug --with-pmix')
     print(Printer.write(results))
     StopWatch.stop("Current section time")
     StopWatch.benchmark()
