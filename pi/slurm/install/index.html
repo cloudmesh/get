@@ -628,7 +628,7 @@ def step5():
     print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command='cd /usr/lib/pmix/source/ && sudo '
                                             './autogen.sh && cd ../build/2.1/ && sudo ../../source/configure '
-                                            '--prefix=/home/user/git/pmix/install/2.1 && '
+                                            '--prefix=/usr/local && '
                                             'sudo make -j install >/dev/null')
     print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command='wget '
@@ -645,6 +645,8 @@ def step5():
     results = Host.ssh(hosts=workers, command='sudo cp -R /clusterfs/slurm ~')
     print(Printer.write(results))
     results = Host.ssh(hosts=hosts, command='cd slurm && sudo ./configure --enable-debug --with-pmix')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=hosts, command='cd slurm && make -j install > /dev/null')
     print(Printer.write(results))
     StopWatch.stop("Current section time")
     StopWatch.benchmark()
