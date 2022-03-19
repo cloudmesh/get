@@ -694,11 +694,15 @@ def step5():
     script = textwrap.dedent(
         f"""
             echo "PartitionName=mycluster Nodes={workers} Default=YES MaxTime=INFINITE State=UP" | sudo tee /etc/slurm-llnl/slurm.conf -a
+            sudo rm /clusterfs/slurm.conf
+            sudo cp /etc/slurm-llnl/slurm.conf /clusterfs
             """)
     hostexecute(script, manager)
     results = Host.ssh(hosts=workers, command='sudo rm /etc/slurm-llnl/slurm.conf')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo cp /clusterfs/slurm.conf /etc/slurm-llnl/slurm.conf')
+    print(Printer.write(results))
+    results = Host.ssh(hosts=workers, command='sudo chown -R slurm:slurm /var/spool/')
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo systemctl enable slurmd')
     print(Printer.write(results))
