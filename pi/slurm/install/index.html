@@ -405,8 +405,9 @@ def step3():
         sudo systemctl start nfs-server.service
         sudo mount -a
         sudo apt install slurm-wlm -y
-        sudo curl -L https://raw.githubusercontent.com/cloudmesh/cloudmesh-mpi/main/doc/chapters/slurm/configs/slurm.conf > ~/slurm.conf
-        sudo mv ~/slurm.conf /etc/slurm-llnl/
+        sudo cp /usr/share/doc/slurm-client/examples/slurm.conf.simple.gz /etc/slurm-llnl
+        sudo gzip -d /etc/slurm-llnl/slurm.conf.simple.gz
+        sudo mv /etc/slurm-llnl/slurm.conf.simple /etc/slurm-llnl/slurm.conf
         sudo sed -i 's/SlurmctldHost=workstation/SlurmctldHost={manager}({trueIP})/g' /etc/slurm-llnl/slurm.conf
         sudo sed -i "$(( $(wc -l </etc/slurm-llnl/slurm.conf)-2+1 )),$ d" /etc/slurm-llnl/slurm.conf
         """)
@@ -658,6 +659,10 @@ def step5():
     print("Rebooting cluster now.")
     os.system("cms host reboot " + hosts)
 
+'''
+sudo curl -L https://raw.githubusercontent.com/cloudmesh/cloudmesh-mpi/main/doc/chapters/slurm/configs/slurm.conf > ~/slurm.conf
+        sudo mv ~/slurm.conf /etc/slurm-llnl/
+'''
 
 # a = readfile("test1")
 # writefile("test2",a)
