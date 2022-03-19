@@ -514,12 +514,6 @@ def step4():
     print(Printer.write(results))
     results = Host.ssh(hosts=workers, command='sudo chmod -R 777 /clusterfs')
     print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='sudo apt-get update -y')
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='sudo apt update -y')
-    print(Printer.write(results))
-    results = Host.ssh(hosts=workers, command='sudo apt full-upgrade -y')
-    print(Printer.write(results))
 
     #
     #  HERE IS A POTENTIAL ISSUE AS THE NEXT COMMAND SEEMS TO FAIL OFTEN
