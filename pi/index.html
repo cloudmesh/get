@@ -10,9 +10,9 @@
 #
 #   curl -Ls http://cloudmesh.github.io/get/pi | sh
 #
-# Using python3.8
+# Using python3.9
 #
-#   VERSION='3.8.2' curl -Ls http://cloudmesh.github.io/get/pi | sh
+#   VERSION='3.9.2' curl -Ls http://cloudmesh.github.io/get/pi | sh
 #
 # production: curl -Ls http://cloudmesh.github.io/get/pi | sh -
 #
@@ -101,6 +101,16 @@ pip install cloudmesh-installer -U
 mkdir -p ${HOME}/cm
 cd ${HOME}/cm
 cloudmesh-installer get pi
+#### BEGIN WINDOWS BRANCH. IT IS ALSO THE BBRANCH FOR PI LINUX AND MAC E.G. THE NEW VERSION
+# IN FUTURE THIS SECTION WILL BE REMOVED AND THE BRANCH WILL BE RENAMED TO main
+# Temporarily use the windows mods als as we have not yet made it to main
+cd ${HOME}/cm/cloudmesh-pi-burn
+git checkout windows
+install -e .
+cd ${HOME}/cm/cloudmesh-inventory
+git checkout windows
+pip install -e .
+#### END WINDOWS BRANCH
 end_cloudmesh=`date +%s`
 
 cd ${HOME}
