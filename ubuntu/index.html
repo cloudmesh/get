@@ -1,0 +1,143 @@
+#! /bin/sh
+#
+# Using python3
+#
+#   curl -Ls http://cloudmesh.github.io/get/ubuntu | sh
+#
+# Using python3.10.4
+#
+#   VERSION='3.10.4' curl -Ls http://cloudmesh.github.io/get/ubuntu | sh
+#
+# <pre>
+
+start_total=`date +%s`
+
+NORMAL='\033[0m'
+RED='\033[0;31m'
+
+
+if [ -z "$VERSION" ]
+then
+    VERSION='3.10.4'
+    PYTHON="python3.10"
+    PIP="pip3.10"
+else
+    PYTHON="python${VERSION%.*}"
+    PIP="pip{VERSION%.*}"
+fi
+
+AddToBashrc(){
+grep -qF -- "${1}" ~/.bashrc || echo "${1}" >> "${HOME}/.bashrc"
+}
+
+Echo() {
+ echo "${RED}${1}${NORMAL}"
+}
+
+
+Echo "#################################################"
+Echo "# Raspbery Pi Cloudmesh Cluster Installation     #"
+Echo "#################################################"
+echo
+echo "Aproximate instalation time: be patient"
+echo
+echo "Using Python ${VERSION}"
+echo "Expecting it to be accessible via $PYTHON"
+echo
+Echo "# -----------------------------------------------"
+Echo "# Update the system"
+Echo "# -----------------------------------------------"
+
+
+start_update=`date +%s`
+sudo apt -y update
+sudo apt -y install openssl curl
+# sudo apt -y install libreadline-gplv2-dev libncursesw5-dev
+# sudo apt -y libssl-dev
+# sudo apt -y libsqlite3-dev tk-dev
+# sudo apt -y libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+
+end_update=`date +%s`
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Install Python 3.10.4"
+Echo "# -----------------------------------------------"
+mkdir -p ${HOME}/tmp
+cd ${HOME}/tmp
+wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION].tar.xz
+tar -xvf Python-${VERSION}.tar.xz
+cd Python-${VERSION}
+./configure
+make
+sudo make altinstall
+${PYTHON} --version
+echo
+Echo "# -----------------------------------------------"
+Echo "# Create a Python Virtual Env ~/ENV3"
+Echo "# -----------------------------------------------"
+
+start_venv=`date +%s`
+${PYTHON} -m venv ~/ENV3
+. ${HOME}/ENV3/bin/activate
+pip install pip -U
+which python
+which pip
+python --version
+pip --version
+end_venv=`date +%s`
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Install cloudmesh"
+Echo "# -----------------------------------------------"
+
+start_cloudmesh=`date +%s`
+pip install cloudmesh-installer -U
+mkdir -p ${HOME}/cm
+cd ${HOME}/cm
+cloudmesh-installer get cmd5
+cms help
+end_cloudmesh=`date +%s`
+
+cd ${HOME}
+
+echo
+Echo "# -----------------------------------------------"
+Echo "# Update .bashrc"
+Echo "# -----------------------------------------------"
+echo
+AddToBashrc 'if [ -z "$SSH_AUTH_SOCK" ] ; then eval "$(ssh-agent -s)"; fi'
+AddToBashrc "ssh-add"
+AddToBashrc 'source ${HOME}/ENV3/bin/activate'
+
+Echo "#################################################"
+Echo "# Install Completed                             #"
+Echo "#################################################"
+echo
+end_total=`date +%s`
+time_update=$((end_update-start_update))
+time_total=$((end_total-start_total))
+time_venv=$((end_venv-start_venv))
+time_cloudmesh=$((end_cloudmesh-start_cloudmesh))
+echo
+echo
+echo "Time to update and upgarde: ${time_update} s"
+echo "Time to install the venv:   ${time_venv} s"
+echo "Time to install cloudmesh:  ${time_cloudmesh} s"
+echo
+echo "Time for total install:     ${time_total} s"
+echo
+echo "Time to install: ${time_total} s"
+echo
+Echo "#################################################"
+
+echo
+Echo "Please activate with"
+echo
+Echo "    source ~/ENV3/bin/activate"
+echo
+exit 0
+
+# </pre>
+
